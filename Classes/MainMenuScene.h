@@ -29,8 +29,11 @@ public:
     Size winSize;
     Point origin;
     float fontSize;
-    LayerColor *lbackground;
+    LayerColor* lbackground;
     
+    //Bundle Related
+    Node* bundleNode;
+    float step;
     //Pointers to Everything
     ccArray *arrBundle;
     

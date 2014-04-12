@@ -58,6 +58,7 @@ bool MainMenu::init()
     auto lblPlayButton = Label::create("Play Game", Constants::fontName, fontSize);
     
     auto playItem = MenuItemLabel::create(lblPlayButton, CC_CALLBACK_1(MainMenu::menuCallback, this));
+    
     playItem->setColor(Color3B(LOGO_RGB)); //todo //del //temp
     
     auto settingButton = MenuItemImage::create("whiteCircle.png", "whiteCircle.png", CC_CALLBACK_1(MainMenu::menuCallback, this));
@@ -68,7 +69,7 @@ bool MainMenu::init()
     auto lblGameName = Label::create("ROUNDELS",Constants::fontName,fontSize);
     auto gameTitle = MenuItemLabel::create(lblGameName, CC_CALLBACK_1(MainMenu::menuCallback, this));
     
-    auto bundleNode = Node::create();
+    bundleNode = Node::create();
     
         /* Object Placement and other settings */
     
@@ -79,24 +80,24 @@ bool MainMenu::init()
     playItem->setPosition(Point(origin.x + visibleSize.width/2 , visibleSize.height/4));
     
     settingButton->setColor(Color3B(LOGO_RGB));
-    settingButton->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*0.80 ));
+    settingButton->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*0.85 ));
     settingButton->setScale(Util::getScreenRatio(settingButton)*0.2);
     
     
     tutorialButton->setColor(Color3B(LOGO_RGB));
-    tutorialButton->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*0.80 ));
+    tutorialButton->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*0.85 ));
     tutorialButton->setScale(Util::getScreenRatio(tutorialButton)*0.2);
     
     gameTitle->setEnabled(false);
     gameTitle->setColor(Color3B(INNER_LOGO_RGB));
-    gameTitle->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.80 ));
+    gameTitle->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.85 ));
     
     
     //Read XML and draw Bundle Circle
     const int bundleSize = LevelXML::getTotalBundlesSize();
     
     int r = winSize.width*0.4;
-    float step = 2*PI/bundleSize;
+    step = 2*PI/bundleSize;
     float theta= PI*0.5;
     
     for(int i=0; i < bundleSize;i++,theta+=step)
@@ -113,12 +114,22 @@ bool MainMenu::init()
         auto iBundle = Sprite::create("whiteCircle.png");
         iBundle->setColor(LevelXML::getBundleColorInnerAt(i));
         iBundle->setAnchorPoint(Point(0.5,0.5));
-        float deltaEclipse = iBundle->getBoundingBox().size.width*0.20;
+//        float deltaEclipse = iBundle->getBoundingBox().size.width*0.20; //to be saved
         iBundle->setScale(Util::getScreenRatioWidth(iBundle)*0.75);
         iBundle->setOpacity(GAME_OPACITY);
-        float x = (r+deltaEclipse)*cos(theta);
+//        float x = (r+deltaEclipse)*cos(theta); //to be saved
+        float x = r*cos(theta);
         float y = r*sin(theta);
         iBundle->setPosition(Point(x,y));
+        
+        /* Complicated Script */
+        iBundle->runAction( RepeatForever::create(
+                                                  Sequence::create(
+                                                                   ScaleBy::create(3,1.1),
+                                                                   ScaleBy::create(3,1.1)->reverse(),
+                                                                   NULL)
+                                                  ));
+
         
         auto oBundle = Sprite::create("whiteCircle.png");
         oBundle->setColor(LevelXML::getBundleColorOuterAt(i));
@@ -130,8 +141,8 @@ bool MainMenu::init()
         /* Complicated Script */
         oBundle->runAction( RepeatForever::create(
                                                 Sequence::create(
-                                                                 ScaleBy::create(1,1.5),
-                                                                 ScaleBy::create(1,-1.5),
+                                                                 ScaleBy::create(3,1.5),
+                                                                 ScaleBy::create(3,1.5)->reverse(),
                                                                  NULL)
                                                 ));
         
@@ -236,9 +247,14 @@ void MainMenu::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event)
 }
 
 void MainMenu::swipeLeft()
-{log("left");}
+{
+    
+    bundleNode->runAction(RotateBy::create(2.0, -1*step*(180.0/PI)));
+    log("left");
+}
 void MainMenu::swipeRight()
 {
+    bundleNode->runAction(RotateBy::create(2.0, step*(180.0/PI)));
     log("right");
 }
 void MainMenu::swipeUp()
