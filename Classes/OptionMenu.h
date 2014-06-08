@@ -1,24 +1,35 @@
-#ifndef __MAINMENU_SCENE_H__
-#define __MAINMENU_SCENE_H__
+//
+//  OptionMenu.h
+//  roundels
+//
+//  Created by Sanchit Gulati on 08/06/14.
+//
+//
+
+#ifndef __roundels__OptionMenu__
+#define __roundels__OptionMenu__
+
+#include <iostream>
 
 #include "cocos2d.h"
 #include "Constants.h"
 #include "LevelXML.h"
 #include "Util.h"
-
 #include "types/Button.h"
 #include "types/Rectton.h"
+#include "types/Header.h"
+#include "types/Radio.h"
 
 USING_NS_CC;
 
-class MainMenu : public cocos2d::Layer
+class OptionMenu : public cocos2d::Layer
 {
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
-
+    
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
-    virtual bool init();  
+    virtual bool init();
     
     // a selector callback
     void menuCallback(cocos2d::Ref* pSender);
@@ -34,11 +45,6 @@ public:
     float fontSize;
     LayerColor* lbackground;
     
-    //Bundle Related
-    Node* bundleNode;
-    float step;
-    //Pointers to Everything
-    ccArray *arrBundle;
     
     
     //touch delegated
@@ -55,27 +61,7 @@ public:
     void swipeDown();
     
     // implement the "static create()" method manually
-    CREATE_FUNC(MainMenu);
+    CREATE_FUNC(OptionMenu);
 };
 
-
-class PrimitivesClass : public cocos2d::Layer
-{
-public:
-    // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
-    virtual bool init();
- 
-    //Variables
-    Size winSize;
-    
-    
-    CustomCommand _customCommand;
-    void drawPolygon();
-    void drawCircle();
-    virtual void draw(Renderer *renderer, const kmMat4 &transform, bool transformUpdated) override;
-    void onDraw(const kmMat4 &transform, bool transformUpdated);
-    
-    CREATE_FUNC(PrimitivesClass);
-};
-
-#endif // __HELLOWORLD_SCENE_H__
+#endif /* defined(__roundels__OptionMenu__) */

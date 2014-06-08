@@ -10,7 +10,10 @@
 #include <string>
 
 
-std::string Constants::fontName = "fonts/Marker Felt.ttf";
-std::string Constants::bitmapFontName = "fonts/markerFelt.fnt";
-int Constants::defaultFontSize = 24;
+std::string Constants::fontName = "fonts/regular.ttf";
+std::string Constants::fontNameBold = "fonts/bold.ttf";
+std::string Constants::fontNameLight = "fonts/light.ttf";
+std::string Constants::bitmapFontName = "fonts/Comfortaa.fnt";
+int Constants::defaultFontSize = 42;
+int Constants::fontSize = 42;
 float Constants::vEdgeMargin = 0.0f;

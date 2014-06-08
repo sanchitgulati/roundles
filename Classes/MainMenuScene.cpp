@@ -1,6 +1,14 @@
 #include "MainMenuScene.h"
+#include "OptionMenu.h"
 
 USING_NS_CC;
+
+enum btnId
+{
+    bSetting,
+    bTutorial,
+    bPlay
+};
 
 Scene* MainMenu::createScene()
 {
@@ -41,6 +49,7 @@ bool MainMenu::init()
     winSize = Director::getInstance()->getWinSize();
     origin = Director::getInstance()->getVisibleOrigin();
     fontSize = Constants::defaultFontSize*(winSize.width/480);
+    Constants::fontSize = this->fontSize;
     Constants::vEdgeMargin = winSize.width/20.0f;
     
     /*Initiations Of Array */
@@ -50,43 +59,27 @@ bool MainMenu::init()
     lbackground = LayerColor::create(Color4B(BG_RGBA), visibleSize.width, visibleSize.height);
     this->addChild(lbackground,zBg);
     
-    auto closeItem = MenuItemImage::create(
-                                           "CloseNormal.png",
-                                           "CloseSelected.png",
-                                           CC_CALLBACK_1(MainMenu::menuCallback, this));
-    
-    auto lblPlayButton = Label::create("Play Game", Constants::fontName, fontSize);
-    
-    auto playItem = MenuItemLabel::create(lblPlayButton, CC_CALLBACK_1(MainMenu::menuCallback, this));
-    
-    playItem->setColor(Color3B(LOGO_RGB)); //todo //del //temp
-    
-    auto settingButton = MenuItemImage::create("whiteCircle.png", "whiteCircle.png", CC_CALLBACK_1(MainMenu::menuCallback, this));
+    auto btnSetting = Button::create("Setting",IMG_BUTTON_MENU,Color3B(LOGO_RGB));
+    btnSetting->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*0.85 ));
+    btnSetting->setCallback(CC_CALLBACK_1(MainMenu::menuCallback, this));
+    btnSetting->setTag(bSetting);
     
     
-    auto tutorialButton = MenuItemImage::create("whiteCircle.png", "whiteCircle.png", CC_CALLBACK_1(MainMenu::menuCallback, this));
+    auto btnTutorial = Button::create("Tutorial",IMG_BUTTON_TUTORIAL,Color3B(LOGO_RGB));
+    btnTutorial->setCallback(CC_CALLBACK_1(MainMenu::menuCallback, this));
+    btnTutorial->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*0.85 ));
+    btnTutorial->setTag(bTutorial);
+    
+    /* Object Placement and other settings */
+    
+    auto btnPlay = Rectton::create("PLAY ROUNDELS", Color3B(LOGO_RGB));
+    btnPlay->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.40));
+    btnPlay->setTag(bPlay);
     
     auto lblGameName = Label::create("ROUNDELS",Constants::fontName,fontSize);
     auto gameTitle = MenuItemLabel::create(lblGameName, CC_CALLBACK_1(MainMenu::menuCallback, this));
     
     bundleNode = Node::create();
-    
-        /* Object Placement and other settings */
-    
-    closeItem->setAnchorPoint(Point(1, 0));
-	closeItem->setPosition(Point(origin.x + visibleSize.width - Constants::vEdgeMargin,
-                                 origin.y + Constants::vEdgeMargin));
-    
-    playItem->setPosition(Point(origin.x + visibleSize.width/2 , visibleSize.height/4));
-    
-    settingButton->setColor(Color3B(LOGO_RGB));
-    settingButton->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*0.85 ));
-    settingButton->setScale(Util::getScreenRatio(settingButton)*0.2);
-    
-    
-    tutorialButton->setColor(Color3B(LOGO_RGB));
-    tutorialButton->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*0.85 ));
-    tutorialButton->setScale(Util::getScreenRatio(tutorialButton)*0.2);
     
     gameTitle->setEnabled(false);
     gameTitle->setColor(Color3B(INNER_LOGO_RGB));
@@ -96,7 +89,7 @@ bool MainMenu::init()
     //Read XML and draw Bundle Circle
     const int bundleSize = LevelXML::getTotalBundlesSize();
     
-    int r = winSize.width*0.4;
+    int r = winSize.width*0.45;
     step = 2*PI/bundleSize;
     float theta= PI*0.5;
     
@@ -111,7 +104,7 @@ bool MainMenu::init()
             log("Color.Green for %d bundle %d",i,LevelXML::getBundleColorOuterAt(i).g);
             log("Color.Blue for %d bundle %d",i,LevelXML::getBundleColorOuterAt(i).b);
         } */  //Hidden Log // Delete in release
-        auto iBundle = Sprite::create("whiteCircle.png");
+        auto iBundle = Sprite::create(IMG_CIRCLE_WHITE);
         iBundle->setColor(LevelXML::getBundleColorInnerAt(i));
         iBundle->setAnchorPoint(Point(0.5,0.5));
 //        float deltaEclipse = iBundle->getBoundingBox().size.width*0.20; //to be saved
@@ -146,14 +139,17 @@ bool MainMenu::init()
                                                                  NULL)
                                                 ));
         
+        //Commented the fancy curved font
+        {
+        /*
         //Add Text
         int lengthOfBundleName = std::strlen(LevelXML::getBundleNameAt(i).c_str());
         auto lblBundleName = LabelBMFont::create(LevelXML::getBundleNameAt(i), Constants::bitmapFontName);
-        lblBundleName->setScale(Util::getScreenRatio(lblBundleName)*0.1);
+        lblBundleName->setScale(Util::getScreenRatio(lblBundleName)*0.2);
         lblBundleName->setPosition(Point(x, y));
         int circumfence = oBundle->getBoundingBox().size.width;
         
-        /* Fancy Curved Bundle Name */
+        // Fancy Curved Bundle Name
         int tR = circumfence;
         float tStep = (PI*0.4)/lengthOfBundleName;
         float tTheta= 0;
@@ -167,22 +163,21 @@ bool MainMenu::init()
             tempSprite->setRotation(90 - tTheta*(180.0/PI));
             
         }
+        bundleNode->addChild(lblBundleName,bundleSize-i);
+        */
+        }
         
         bundleNode->addChild(oBundle,bundleSize-i);
         bundleNode->addChild(iBundle,bundleSize-i);
-        bundleNode->addChild(lblBundleName,bundleSize-i);
     }
     //End
     
     bundleNode->setPosition(Point(origin.x + visibleSize.width*(0.50),origin.y + visibleSize.height*0.30 ));
     this->addChild(bundleNode,zReloader);
     
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     // create menu, it's an autorelease object
-    auto menu = Menu::create(playItem, settingButton,tutorialButton,gameTitle, NULL);
-#else
-    auto menu = Menu::create(playItem, settingButton, tutorialButton,gameTitle, closeItem, NULL);
-#endif
+    auto menu = Menu::create(btnPlay, btnSetting,btnTutorial,gameTitle, NULL);
+
     menu->setPosition(Point::ZERO);
     this->addChild(menu, zMenu);
     
@@ -204,11 +199,26 @@ void MainMenu::update(float dt)
 
 void MainMenu::menuCallback(Ref* pSender)
 {
-    Director::getInstance()->end();
-
+    auto obj = (Node*)pSender;
+    log("Reached menuCallback from %d",obj->getTag());
+    
+    switch (obj->getTag()) {
+        case bPlay:
+            break;
+        case bSetting:
+            Director::getInstance()->replaceScene((Scene*)OptionMenu::create());
+            break;
+        case bTutorial:
+            break;
+        default:
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-    exit(0);
+            exit(0);
 #endif
+            Director::getInstance()->end();
+            break;
+    }
+
+
 }
 
 
@@ -248,13 +258,14 @@ void MainMenu::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event)
 
 void MainMenu::swipeLeft()
 {
-    
-    bundleNode->runAction(RotateBy::create(2.0, -1*step*(180.0/PI)));
+    if(bundleNode->getNumberOfRunningActions() == 0 )
+        bundleNode->runAction(RotateBy::create(0.5, -1*step*(180.0/PI)));
     log("left");
 }
 void MainMenu::swipeRight()
 {
-    bundleNode->runAction(RotateBy::create(2.0, step*(180.0/PI)));
+    if(bundleNode->getNumberOfRunningActions() == 0 )
+        bundleNode->runAction(RotateBy::create(0.5, step*(180.0/PI)));
     log("right");
 }
 void MainMenu::swipeUp()

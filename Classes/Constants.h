@@ -30,6 +30,18 @@
 
 #define SWIPE_THRESHOLD 100.0
 
+
+#define IMG_CIRCLE_WHITE "images/whiteCircle.png"
+#define IMG_RECT_WHITE "images/whiteRect.png"
+#define IMG_BUTTON_WHITE "images/whiteButton.png"
+
+
+#define IMG_BUTTON_MENU "images/btnMenu.png"
+#define IMG_BUTTON_TUTORIAL "images/btnTut.png"
+#define IMG_BUTTON_BACK "images/btnBack.png"
+#define IMG_BUTTON_OPTION "images/btnOption.png"
+#define IMG_TICK_GREEN "images/btnTick.png"
+
 enum zindex
 {
     zBg,
@@ -45,12 +57,18 @@ enum gamestate
     gsMenu,
 };
 
+
+
+
 class Constants
 {
 public:
     static std::string fontName;
+    static std::string fontNameBold;
+    static std::string fontNameLight;
     static std::string bitmapFontName;
     static int defaultFontSize;
+    static int fontSize;
     
     
     //Variables
