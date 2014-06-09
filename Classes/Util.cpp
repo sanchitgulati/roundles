@@ -36,3 +36,17 @@ float Util::getScreenRatioHeight(Node* obj)
     Size winSize = Director::getInstance()->getWinSize();
     return (winSize.height/obj->getBoundingBox().size.height);
 }
+
+Color3B Util::randomBrightColor()
+{
+    while (true) {
+        float requiredBrightness = 192;
+        Color3B c = Color3B(arc4random() % 255,arc4random() % 255,arc4random() % 255);
+        if (    c.r > requiredBrightness
+            ||  c.g > requiredBrightness
+            ||  c.b > requiredBrightness)
+        {
+            return c;
+        }
+    }
+}

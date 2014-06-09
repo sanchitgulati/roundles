@@ -1,5 +1,6 @@
 #include "MainMenuScene.h"
 #include "OptionMenu.h"
+#include "LevelMenu.h"
 
 USING_NS_CC;
 
@@ -56,7 +57,7 @@ bool MainMenu::init()
     arrBundle = new ccArray;
     
     /* Initiation Of Variables */
-    lbackground = LayerColor::create(Color4B(BG_RGBA), visibleSize.width, visibleSize.height);
+    lbackground = LayerColor::create(RGBA_BG, visibleSize.width, visibleSize.height);
     this->addChild(lbackground,zBg);
     
     auto btnSetting = Button::create("Setting",IMG_BUTTON_MENU,Color3B(LOGO_RGB));
@@ -206,9 +207,16 @@ void MainMenu::menuCallback(Ref* pSender)
         case bPlay:
             break;
         case bSetting:
-            Director::getInstance()->replaceScene((Scene*)OptionMenu::create());
+        {
+            auto s = (Scene*)OptionMenu::create();
+            Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_BG));
+        }
             break;
         case bTutorial:
+        {
+            auto s = (Scene*)LevelMenu::create();
+            Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_BG));
+        }
             break;
         default:
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)

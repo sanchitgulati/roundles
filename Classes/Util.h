@@ -23,5 +23,6 @@ public:
     static float getScreenRatio(Node*);
     static float getScreenRatioWidth(Node*);
     static float getScreenRatioHeight(Node*);
+    static Color3B randomBrightColor();
 };
 #endif /* defined(__OneClosedLoop__Util__) */

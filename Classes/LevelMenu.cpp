@@ -6,7 +6,7 @@
 //
 //
 
-#include "OptionMenu.h"
+#include "LevelMenu.h"
 #include "MainMenuScene.h"
 
 enum btnId
@@ -16,13 +16,13 @@ enum btnId
 
 USING_NS_CC;
 
-Scene* OptionMenu::createScene()
+Scene* LevelMenu::createScene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::create();
     
     // 'layer' is an autorelease object
-    auto layer = OptionMenu::create();
+    auto layer = LevelMenu::create();
     
     // add layer as a child to scene
     scene->addChild(layer);
@@ -32,7 +32,7 @@ Scene* OptionMenu::createScene()
 }
 
 // on "init" you need to initialize your instance
-bool OptionMenu::init()
+bool LevelMenu::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -43,10 +43,10 @@ bool OptionMenu::init()
     /* Touch Dispatcher */
     
     auto listener = EventListenerTouchOneByOne::create();
-    listener->onTouchBegan = CC_CALLBACK_2(OptionMenu::onTouchBegan, this);
-    listener->onTouchEnded = CC_CALLBACK_2(OptionMenu::onTouchEnded, this);
-    listener->onTouchMoved = CC_CALLBACK_2(OptionMenu::onTouchMoved, this);
-    listener->onTouchCancelled = CC_CALLBACK_2(OptionMenu::onTouchCancelled, this);
+    listener->onTouchBegan = CC_CALLBACK_2(LevelMenu::onTouchBegan, this);
+    listener->onTouchEnded = CC_CALLBACK_2(LevelMenu::onTouchEnded, this);
+    listener->onTouchMoved = CC_CALLBACK_2(LevelMenu::onTouchMoved, this);
+    listener->onTouchCancelled = CC_CALLBACK_2(LevelMenu::onTouchCancelled, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
     
     /* End */
@@ -65,28 +65,17 @@ bool OptionMenu::init()
     
     
     auto btnBack = Button::create("Back", IMG_BUTTON_BACK, Color3B(LOGO_RGB));
-    btnBack->setCallback(CC_CALLBACK_1(OptionMenu::menuCallback, this));
+    btnBack->setCallback(CC_CALLBACK_1(LevelMenu::menuCallback, this));
     btnBack->setTag(bBack);
     btnBack->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*0.85 ));
     
-    auto header = Header::create("Options",IMG_BUTTON_OPTION, Color3B(INNER_LOGO_RGB));
-    header->setEnabled(false);
-    header->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*0.85 ));
-    this->addChild(header);
+    auto tblLevel = TableLevel::create();
+    tblLevel->setPosition(Point(0,0));
+    this->addChild(tblLevel);
     
-    auto radioSound = Radio::create("Sound Effects");
-    radioSound->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.60));
     
-    auto radioMusic = Radio::create("Music");
-    radioMusic->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.50));
     
-    auto radioIAP = Radio::create("Manage Purchases");
-    radioIAP->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.40));
-    
-    auto radioLevels = Radio::create("Reset Levels");
-    radioLevels->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.30));
-    
-    auto menu = Menu::create(btnBack,radioMusic,radioIAP,radioLevels,radioSound, NULL);
+    auto menu = Menu::create(btnBack,NULL);
     menu->setPosition(Point(0,0));
     this->addChild(menu);
     
@@ -96,21 +85,21 @@ bool OptionMenu::init()
     return true;
 }
 
-void OptionMenu::update(float dt)
+void LevelMenu::update(float dt)
 {
     
 }
 
 
-void OptionMenu::menuCallback(Ref* pSender)
+void LevelMenu::menuCallback(Ref* pSender)
 {
     auto obj = (Node*)pSender;
     switch (obj->getTag()) {
-            case bBack:
+        case bBack:
         {
             auto s = (Scene*)MainMenu::create();
             Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_BG));
-
+            
         }
             break;
             default:
@@ -123,13 +112,13 @@ void OptionMenu::menuCallback(Ref* pSender)
 }
 
 
-bool OptionMenu::onTouchBegan(cocos2d::Touch *touch,cocos2d::Event *event)
+bool LevelMenu::onTouchBegan(cocos2d::Touch *touch,cocos2d::Event *event)
 {
     touchStart = touch->getLocation();
     return true;
 };
 
-void OptionMenu::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event)
+void LevelMenu::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event)
 {
     auto location = touch->getLocation();
     if(touchStart != Point::ZERO)
@@ -147,24 +136,24 @@ void OptionMenu::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event)
     }
 }
 
-void OptionMenu::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
+void LevelMenu::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
 {
     touchStart = Point::ZERO;
 }
 
-void OptionMenu::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event)
+void LevelMenu::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event)
 {
     touchStart = Point::ZERO;
 }
 
-void OptionMenu::swipeLeft()
+void LevelMenu::swipeLeft()
 {
     log("left");
 }
-void OptionMenu::swipeRight()
+void LevelMenu::swipeRight()
 {log("right");}
-void OptionMenu::swipeUp()
+void LevelMenu::swipeUp()
 {log("up");}
-void OptionMenu::swipeDown()
+void LevelMenu::swipeDown()
 {log("down");}
 

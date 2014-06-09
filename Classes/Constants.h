@@ -14,8 +14,8 @@
 
 #define PI 3.14
 
-#define BG_RGBA 237,237,237,255
-#define BG_RGB 237,237,237
+#define RGBA_BG Color4B(237,237,237,255)
+#define RGB_BG Color3B(237,237,237)
 
 #define LOGO_RGBA 128,215,232,255
 #define LOGO_RGB 128,215,232
