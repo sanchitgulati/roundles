@@ -13,6 +13,7 @@ USING_NS_CC;
 Rectton::Rectton(std::string text,Color3B color)
 {
     this->setEnabled(true);
+    this->activate();
     this->lblText = Label::create(text, Constants::fontNameBold, Constants::fontSize/2.0);
     
     this->backSprite = Sprite::create(IMG_BUTTON_WHITE);
@@ -21,7 +22,7 @@ Rectton::Rectton(std::string text,Color3B color)
     this->backSprite->setColor(color);
     auto sizeMenuItem = this->backSprite->getBoundingBox().size;
     this->setContentSize(sizeMenuItem);
-    this->lblText->setColor(Color3B::BLACK);
+    this->lblText->setColor(RGB_COLOR6);
     this->lblText->setAnchorPoint(Point(0.5f, 0.5f));
     
     this->addChild(backSprite);

@@ -80,13 +80,11 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
 		label->setAnchorPoint(Point::ZERO);
         label->setTag(123);
         cell->addChild(label);
-        log("Rendered Table at %s",string->getCString());
     }
     else
     {
-        log("!cell for %s",string->getCString());
         auto sprite = cell->getChildByTag(111);
-//        sprite->setColor(Color3B::MAGENTA);
+        sprite->setColor(Util::randomBrightColor());
         auto label = (LabelTTF*)cell->getChildByTag(123);
         label->setString(string->getCString());
     }

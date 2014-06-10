@@ -19,6 +19,7 @@
 #include "types/Rectton.h"
 #include "types/Header.h"
 #include "types/Radio.h"
+#include "types/Message.h"
 
 USING_NS_CC;
 

@@ -21,7 +21,7 @@ Header::Header(std::string text,std::string image,Color3B color)
     this->backSprite->setColor(color);
     auto sizeMenuItem = this->backSprite->getBoundingBox().size;
     this->setContentSize(sizeMenuItem);
-    this->lblText->setColor(Color3B::BLACK);
+    this->lblText->setColor(RGB_COLOR5);
     this->lblText->setAnchorPoint(Point(1.0f, 0.5f));
     this->lblText->setPositionX(-1* sizeMenuItem.width*0.60);
     

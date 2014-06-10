@@ -60,16 +60,21 @@ bool OptionMenu::init()
     
     
     /* Initiation Of Variables */
-    lbackground = LayerColor::create(RGBA_BG, visibleSize.width, visibleSize.height);
+    lbackground = LayerColor::create(RGBA_COLOR1, visibleSize.width, visibleSize.height);
     this->addChild(lbackground,zBg);
     
     
-    auto btnBack = Button::create("Back", IMG_BUTTON_BACK, Color3B(LOGO_RGB));
+    auto btnBack = Button::create("Back", IMG_BUTTON_BACK, RGB_COLOR2);
     btnBack->setCallback(CC_CALLBACK_1(OptionMenu::menuCallback, this));
     btnBack->setTag(bBack);
     btnBack->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*0.85 ));
     
-    auto header = Header::create("Options",IMG_BUTTON_OPTION, Color3B(INNER_LOGO_RGB));
+    
+    auto menu = Menu::create(btnBack,NULL);
+    menu->setPosition(Point(0,0));
+    this->addChild(menu);
+    
+    auto header = Header::create("Options",IMG_BUTTON_OPTION, RGB_COLOR3);
     header->setEnabled(false);
     header->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*0.85 ));
     this->addChild(header);
@@ -85,11 +90,43 @@ bool OptionMenu::init()
     
     auto radioLevels = Radio::create("Reset Levels");
     radioLevels->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.30));
+
     
-    auto menu = Menu::create(btnBack,radioMusic,radioIAP,radioLevels,radioSound, NULL);
-    menu->setPosition(Point(0,0));
-    this->addChild(menu);
+    auto group1 = Layer::create();
+    auto menu1 = Menu::create(radioMusic,radioIAP,radioLevels,radioSound, NULL);
+    group1->addChild(menu1);
+    menu1->setPosition(Point(0,0));
+    group1->setPosition(Point(0,0));
+    this->addChild(group1);
     
+    
+    auto radioSanchit = Radio::create("SG");
+    radioSanchit->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.60));
+    
+    auto radioRadhika = Radio::create("RD");
+    radioRadhika->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.50));
+    
+    
+    auto group2 = Layer::create();
+    auto menu2 = Menu::create(radioSanchit,radioRadhika,NULL);
+    group2->addChild(menu2);
+    menu2->setPosition(Point(0,0));
+    group2->setPosition(Point(0,0));
+    this->addChild(group2);
+    
+    
+    menu2->setVisible(false);
+    
+    
+    //Testing
+    menu1->setTag(101);
+    menu2->setTag(102);
+    group1->setTag(101);
+    group2->setTag(102);
+    
+    auto swipeMessage = Message::create("<< swipe to see more >>");
+    swipeMessage->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.15));
+    this->addChild(swipeMessage);
     
     //schedule update
     this->scheduleUpdate();
@@ -109,7 +146,7 @@ void OptionMenu::menuCallback(Ref* pSender)
             case bBack:
         {
             auto s = (Scene*)MainMenu::create();
-            Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_BG));
+            Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
 
         }
             break;
@@ -160,9 +197,25 @@ void OptionMenu::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event)
 void OptionMenu::swipeLeft()
 {
     log("left");
+    auto g1 = this->getChildByTag(101)->getChildByTag(101);
+    auto g2 = this->getChildByTag(102)->getChildByTag(102);
+    if(g1->getUserData())
+    {
+        g1->setUserData((bool*)false);
+        g1->setVisible(false);
+        g2->setVisible(true);
+    }
+    else
+    {
+        g1->setUserData((bool*)true);
+        g2->setVisible(false);
+        g1->setVisible(true);
+    }
+    
+    
 }
 void OptionMenu::swipeRight()
-{log("right");}
+{log("right");swipeLeft();}
 void OptionMenu::swipeUp()
 {log("up");}
 void OptionMenu::swipeDown()

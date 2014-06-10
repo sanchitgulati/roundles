@@ -14,17 +14,26 @@
 
 #define PI 3.14
 
-#define RGBA_BG Color4B(237,237,237,255)
-#define RGB_BG Color3B(237,237,237)
+#define RGBA_COLOR1 Color4B(255,255,255,255) // was bg //(237,237,237)
+#define RGB_COLOR1 Color3B(255,255,255)     // is bg
 
-#define LOGO_RGBA 128,215,232,255
-#define LOGO_RGB 128,215,232
+#define RGBA_COLOR2 Color4B(240,201,74,255) //was logo //(128,215,232)
+#define RGB_COLOR2 Color3B(240,201,74)      //Menu Item
 
-#define INNER_LOGO_RGBA 83,190,230,255
-#define INNER_LOGO_RGB 83,190,230
+#define RGBA_COLOR3 Color4B(51,113,126,255) //was inner logo  //(83,190,230)
+#define RGB_COLOR3 Color3B(51,113,126)      // Heading
 
-#define H1_LABEL_RGBA 79,79,79,255
-#define H1_LABEL_RGB 79,79,79
+#define RGBA_COLOR4 Color4B(235,239,242,255) // was heading  //(79,79,79)
+#define RGB_COLOR4 Color3B(235,239,242)      // is highlight
+
+#define RGBA_COLOR5 Color4B(83,190,230,255)
+#define RGB_COLOR5 Color3B(83,190,230)    //is text against bg
+
+#define RGBA_COLOR6 Color4B(255,255,255,255)
+#define RGB_COLOR6 Color3B(255,255,255) //is text against Menu Item
+
+
+
 
 #define GAME_OPACITY 220.0
 
@@ -69,7 +78,6 @@ public:
     static std::string bitmapFontName;
     static int defaultFontSize;
     static int fontSize;
-    
     
     //Variables
     static float vEdgeMargin;

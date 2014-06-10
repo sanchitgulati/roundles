@@ -60,11 +60,11 @@ bool LevelMenu::init()
     
     
     /* Initiation Of Variables */
-    lbackground = LayerColor::create(RGBA_BG, visibleSize.width, visibleSize.height);
+    lbackground = LayerColor::create(RGBA_COLOR1, visibleSize.width, visibleSize.height);
     this->addChild(lbackground,zBg);
     
     
-    auto btnBack = Button::create("Back", IMG_BUTTON_BACK, Color3B(LOGO_RGB));
+    auto btnBack = Button::create("Back", IMG_BUTTON_BACK, RGB_COLOR2);
     btnBack->setCallback(CC_CALLBACK_1(LevelMenu::menuCallback, this));
     btnBack->setTag(bBack);
     btnBack->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*0.85 ));
@@ -98,7 +98,7 @@ void LevelMenu::menuCallback(Ref* pSender)
         case bBack:
         {
             auto s = (Scene*)MainMenu::create();
-            Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_BG));
+            Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
             
         }
             break;

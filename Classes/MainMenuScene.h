@@ -8,6 +8,7 @@
 
 #include "types/Button.h"
 #include "types/Rectton.h"
+#include "types/Rotator.h"
 
 USING_NS_CC;
 
@@ -49,10 +50,10 @@ public:
     
     //touch handlers
     Point touchStart;
-    void swipeLeft();
-    void swipeRight();
-    void swipeUp();
-    void swipeDown();
+    void swipeLeft(Point location);
+    void swipeRight(Point location);
+    void swipeUp(Point location);
+    void swipeDown(Point location);
     
     // implement the "static create()" method manually
     CREATE_FUNC(MainMenu);

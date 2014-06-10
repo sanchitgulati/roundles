@@ -17,7 +17,7 @@ Radio::Radio(std::string text)
     this->setEnabled(true);
     lblText = Label::create(text, Constants::fontName, Constants::fontSize*0.70);
     lblText->setAnchorPoint(Point(0.0f,0.5f));
-    lblText->setColor(Color3B(LOGO_RGB));
+    lblText->setColor(RGB_COLOR5);
     
     circle = Sprite::create(IMG_CIRCLE_WHITE);
     circle->setScale(Util::getScreenRatio(circle)*0.1);
@@ -42,12 +42,12 @@ Radio::Radio(std::string text)
     on->setPositionX(1*(barSize.width/2.0f));
     off->setPositionX(1*(barSize.width/2.0f));
     
-    circle->setColor(Color3B::GRAY);
-    bar->setColor(Color3B::GRAY);
+    circle->setColor(RGB_COLOR4);
+    bar->setColor(RGB_COLOR4);
     
     
-    on->setColor(Color3B(LOGO_RGB));
-    off->setColor(Color3B(LOGO_RGB));
+    on->setColor(RGB_COLOR2);
+    off->setColor(RGB_COLOR2);
     
     this->addChild(circle);
     this->addChild(bar);
