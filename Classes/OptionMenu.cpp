@@ -8,6 +8,7 @@
 
 #include "OptionMenu.h"
 #include "MainMenuScene.h"
+#include "SimpleAudioEngine.h"
 
 enum btnId
 {
@@ -141,6 +142,9 @@ void OptionMenu::update(float dt)
 
 void OptionMenu::menuCallback(Ref* pSender)
 {
+    //Reached Callback Notification
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(SFX_BTN_CLICKED);
+    
     auto obj = (Node*)pSender;
     switch (obj->getTag()) {
             case bBack:

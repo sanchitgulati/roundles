@@ -28,6 +28,7 @@ public:
     static std::string getBundleNameAt(int);
     static Color3B getBundleColorInnerAt(int);
     static Color3B getBundleColorOuterAt(int);
+    
 };
 
 #endif /* defined(__OneClosedLoop__LevelXML__) */

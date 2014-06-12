@@ -23,6 +23,7 @@ public:
     Rectton(std::string text,Color3B color);
     static Rectton* create(std::string text,Color3B color);
     
+    
 };
 
 #endif /* defined(__roundels__Rectton__) */

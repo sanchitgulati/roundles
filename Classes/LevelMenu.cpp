@@ -8,6 +8,7 @@
 
 #include "LevelMenu.h"
 #include "MainMenuScene.h"
+#include "SimpleAudioEngine.h"
 
 enum btnId
 {
@@ -93,6 +94,9 @@ void LevelMenu::update(float dt)
 
 void LevelMenu::menuCallback(Ref* pSender)
 {
+    //Reached Callback Notification
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(SFX_BTN_CLICKED);
+    
     auto obj = (Node*)pSender;
     switch (obj->getTag()) {
         case bBack:

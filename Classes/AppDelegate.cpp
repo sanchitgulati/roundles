@@ -2,6 +2,8 @@
 #include "MainMenuScene.h"
 #include "LevelXML.h"
 
+#include "SimpleAudioEngine.h"
+
 USING_NS_CC;
 
 AppDelegate::AppDelegate() {
@@ -29,6 +31,17 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     //read from level file
     LevelXML::init();
+    
+    // preload background music and effect
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic( SFX_MUSIC );
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect( SFX_BTN_CLICKED );
+    
+    // set default volume
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.5);
+    CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.5);
+    
+    //Play Playholder Music
+    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic(SFX_MUSIC,true);
 
     // create a scene. it's an autorelease object
     auto scene = MainMenu::createScene();

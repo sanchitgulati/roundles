@@ -2,6 +2,8 @@
 #include "OptionMenu.h"
 #include "LevelMenu.h"
 
+#include "SimpleAudioEngine.h"
+
 USING_NS_CC;
 
 enum btnId
@@ -35,6 +37,10 @@ bool MainMenu::init()
     {
         return false;
     }
+    
+    /*Making Varibles Zero */
+    selectedBundle = 0;
+    
     /* Touch Dispatcher */
     
     auto listener = EventListenerTouchOneByOne::create();
@@ -73,19 +79,36 @@ bool MainMenu::init()
     
     /* Object Placement and other settings */
     
-    auto btnPlay = Rectton::create("PLAY ROUNDELS", RGB_COLOR2);
+    btnPlay = Rectton::create("PLAY ROUNDELS", RGB_COLOR2);
     btnPlay->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.30));
     btnPlay->setTag(bPlay);
     
-    auto lblGameName = Label::create("ROUNDELS",Constants::fontName,fontSize);
+    lblGameName = Label::createWithBMFont(Constants::bitmapFontName,"ROUNDELS");
     auto gameTitle = MenuItemLabel::create(lblGameName, CC_CALLBACK_1(MainMenu::menuCallback, this));
     
     bundleNode = Node::create();
     
     gameTitle->setEnabled(false);
-    gameTitle->setColor(RGB_COLOR3);
+    gameTitle->setColor(RGB_COLOR6);
+    gameTitle->setScale(Util::getScreenRatio(gameTitle)*0.4);
     gameTitle->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.85 ));
-    
+    for(int i = 0; i < lblGameName->getStringLength(); i++)
+    {
+        lblGameName->getLetter(i)->setColor(RGB_COLOR5);
+        
+        if(i == 1) // 1 is hardcored for "O"
+        {
+            //Add Compicated Animation Here
+            auto delay = DelayTime::create(3.0);
+            auto delaySmall = DelayTime::create(0.1f);
+            
+            auto moveBy = MoveBy::create(0.3f, Point(0,10));
+            auto seq = Sequence::create(moveBy,moveBy->reverse(),delaySmall, NULL);
+            auto sequence = Sequence::create(delay,seq,seq, NULL);
+            lblGameName->getLetter(i)->runAction(RepeatForever::create(sequence));
+            lblGameName->getLetter(i)->setColor(LevelXML::getBundleColorInnerAt(selectedBundle));
+        }
+    }
     
     //Read XML and draw Bundle Circle
     const int bundleSize = LevelXML::getTotalBundlesSize();
@@ -139,6 +162,9 @@ void MainMenu::update(float dt)
 
 void MainMenu::menuCallback(Ref* pSender)
 {
+    //Reached Callback Notification
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(SFX_BTN_CLICKED);
+    
     auto obj = (Node*)pSender;
     log("Reached menuCallback from %d",obj->getTag());
     
@@ -208,6 +234,12 @@ void MainMenu::swipeLeft(Point location)
     int multipler = (location.y > bundleNode->getPositionY() ? 1 : -1);
     if(bundleNode->getNumberOfRunningActions() == 0 )
         bundleNode->runAction(RotateBy::create(0.5, -1*multipler*step*(180.0/PI)));
+    
+    selectedBundle--;
+    if(selectedBundle == -1)
+        selectedBundle = LevelXML::getTotalBundlesSize()-1;
+    changeGameNameLetterColor();
+    
     log("left");
 }
 void MainMenu::swipeRight(Point location)
@@ -215,6 +247,13 @@ void MainMenu::swipeRight(Point location)
     int multipler = (location.y > bundleNode->getPositionY() ? 1 : -1);
     if(bundleNode->getNumberOfRunningActions() == 0 )
         bundleNode->runAction(RotateBy::create(0.5, multipler*step*(180.0/PI)));
+    
+    selectedBundle++;
+    if(selectedBundle == LevelXML::getTotalBundlesSize())
+        selectedBundle = 0;
+    changeGameNameLetterColor();
+    
+    
     log("right");
 }
 void MainMenu::swipeUp(Point location)
@@ -222,6 +261,16 @@ void MainMenu::swipeUp(Point location)
 void MainMenu::swipeDown(Point location)
 {log("down");}
 
+
+void MainMenu::changeGameNameLetterColor()
+{
+    auto c = LevelXML::getBundleColorInnerAt(selectedBundle);
+    lblGameName->getLetter(1)->runAction(TintTo::create(0.3f, c.r, c.g, c.b));
+}
+
+void MainMenu::changePlayRecttonText()
+{
+}
 
 
 //--------------------------------------------------------------------------//

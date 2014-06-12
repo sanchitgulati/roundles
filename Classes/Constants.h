@@ -32,8 +32,8 @@
 #define RGBA_COLOR6 Color4B(255,255,255,255)
 #define RGB_COLOR6 Color3B(255,255,255) //is text against Menu Item
 
-
-
+#define SFX_BTN_CLICKED "sfx/btn_Clicked.wav"
+#define SFX_MUSIC "sfx/caribbean_lobby-rick_dickert.mp3"
 
 #define GAME_OPACITY 220.0
 

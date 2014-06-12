@@ -41,6 +41,12 @@ public:
     //Pointers to Everything
     ccArray *arrBundle;
     
+    //Selected Gameplay
+    int selectedBundle;
+    
+    //Menu Pointers
+    Rectton* btnPlay;
+    Label* lblGameName;
     
     //touch delegated
     bool onTouchBegan(Touch* touch, Event  *event);
@@ -54,6 +60,9 @@ public:
     void swipeRight(Point location);
     void swipeUp(Point location);
     void swipeDown(Point location);
+    
+    void changeGameNameLetterColor();
+    void changePlayRecttonText();
     
     // implement the "static create()" method manually
     CREATE_FUNC(MainMenu);
