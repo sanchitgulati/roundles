@@ -19,10 +19,12 @@ class Rectton : public cocos2d::MenuItem
 {
     cocos2d::Sprite* backSprite;
     cocos2d::Label* lblText;
+    float _originalScale;
 public:
     Rectton(std::string text,Color3B color);
     static Rectton* create(std::string text,Color3B color);
-    
+    void selected();
+    void unselected();
     
 };
 

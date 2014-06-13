@@ -206,6 +206,9 @@ void OptionMenu::swipeLeft()
     if(g1->getUserData())
     {
         g1->setUserData((bool*)false);
+        
+        g1->runAction(RotateBy::create(4, Vertex3F(0, 360, 0)));
+        
         g1->setVisible(false);
         g2->setVisible(true);
     }

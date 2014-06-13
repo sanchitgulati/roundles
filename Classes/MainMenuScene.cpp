@@ -81,6 +81,7 @@ bool MainMenu::init()
     
     btnPlay = Rectton::create("PLAY ROUNDELS", RGB_COLOR2);
     btnPlay->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.30));
+    btnPlay->setCallback(CC_CALLBACK_1(MainMenu::menuCallback, this));
     btnPlay->setTag(bPlay);
     
     lblGameName = Label::createWithBMFont(Constants::bitmapFontName,"ROUNDELS");
@@ -170,6 +171,10 @@ void MainMenu::menuCallback(Ref* pSender)
     
     switch (obj->getTag()) {
         case bPlay:
+        {
+            auto s = (Scene*)LevelMenu::create();
+            Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
+        }
             break;
         case bSetting:
         {
@@ -178,10 +183,7 @@ void MainMenu::menuCallback(Ref* pSender)
         }
             break;
         case bTutorial:
-        {
-            auto s = (Scene*)LevelMenu::create();
-            Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
-        }
+        
             break;
         default:
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
@@ -203,6 +205,7 @@ bool MainMenu::onTouchBegan(cocos2d::Touch *touch,cocos2d::Event *event)
 
 void MainMenu::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event)
 {
+    
     auto location = touch->getLocation();
     if(touchStart != Point::ZERO)
     {
@@ -231,6 +234,9 @@ void MainMenu::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event)
 
 void MainMenu::swipeLeft(Point location)
 {
+    //Swipe accepted, Audio feedback
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(SFX_BTN_CLICKED);
+    
     int multipler = (location.y > bundleNode->getPositionY() ? 1 : -1);
     if(bundleNode->getNumberOfRunningActions() == 0 )
         bundleNode->runAction(RotateBy::create(0.5, -1*multipler*step*(180.0/PI)));
@@ -244,6 +250,10 @@ void MainMenu::swipeLeft(Point location)
 }
 void MainMenu::swipeRight(Point location)
 {
+    //Swipe accepted, Audio feedback
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(SFX_BTN_CLICKED);
+    
+    
     int multipler = (location.y > bundleNode->getPositionY() ? 1 : -1);
     if(bundleNode->getNumberOfRunningActions() == 0 )
         bundleNode->runAction(RotateBy::create(0.5, multipler*step*(180.0/PI)));
