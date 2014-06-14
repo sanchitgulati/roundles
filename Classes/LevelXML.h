@@ -19,16 +19,27 @@ class LevelXML
 {
 public:
     static pugi::xml_document doc;
-    static pugi::xml_document curBundle;
-    static pugi::xml_document curLevel;
+    static pugi::xml_node curBundle;
+    static pugi::xml_node curLevel;
+    static int curBundleNumber;
+    static int curLevelNumber;
+    
     static bool init();
     static void traverse();
     
     static int getTotalBundlesSize();
+    static int getTotalLevelsInBundle(int);
+    
     static std::string getBundleNameAt(int);
     static Color3B getBundleColorInnerAt(int);
     static Color3B getBundleColorOuterAt(int);
     
+    static bool setCurrentBundleId(int);
+    static bool setCurrentLevelId(int);
+    
+    static std::string getLevelNameAt(int);
+    static float getDidCompleteLevelAt(int);
+    static bool setLevelCompletedAt(int);
 };
 
 #endif /* defined(__OneClosedLoop__LevelXML__) */

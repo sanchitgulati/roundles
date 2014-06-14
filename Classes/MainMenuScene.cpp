@@ -172,6 +172,7 @@ void MainMenu::menuCallback(Ref* pSender)
     switch (obj->getTag()) {
         case bPlay:
         {
+            LevelXML::setCurrentBundleId(selectedBundle);
             auto s = (Scene*)LevelMenu::create();
             Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
         }

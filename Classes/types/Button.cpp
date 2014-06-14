@@ -10,7 +10,7 @@
 
 USING_NS_CC;
 
-enum {kZoomActionTag};
+enum {kZoomActionTag,kSlideActionTag};
 
 Button::Button(std::string text,std::string image,Color3B color)
 {
@@ -79,9 +79,13 @@ void Button::selected()
             _originalScale = this->getScale();
         }
         
-        Action *zoomAction = ScaleTo::create(0.1f, _originalScale * 1.2f);
+        auto slideDistance = this->getBoundingBox().size.height/8.0f;
+        Action *zoomAction = ScaleTo::create(0.2f, _originalScale * 0.8f);
         zoomAction->setTag(kZoomActionTag);
+        Action *slideAction = MoveBy::create(0.1f, Point(0, -1*slideDistance));
+        slideAction->setTag(kSlideActionTag);
         this->runAction(zoomAction);
+        this->runAction(slideAction);
     }
 }
 
@@ -92,9 +96,15 @@ void Button::unselected()
     {
         MenuItem::unselected();
         this->stopActionByTag(kZoomActionTag);
+        this->stopActionByTag(kSlideActionTag);
         Action *zoomAction = ScaleTo::create(0.1f, _originalScale);
         zoomAction->setTag(kZoomActionTag);
         this->runAction(zoomAction);
+        
+        
+        auto slideDistance = this->getBoundingBox().size.height/8.0f;
+        Action *slideActionReverse = MoveBy::create(0.05f, Point(0, slideDistance));
+        this->runAction(slideActionReverse);
     }
 }
 

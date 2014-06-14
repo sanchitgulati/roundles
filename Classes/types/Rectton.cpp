@@ -10,7 +10,7 @@
 
 USING_NS_CC;
 
-enum{kZoomActionTag};
+enum{kZoomActionTag,kSlideActionTag};
 
 Rectton::Rectton(std::string text,Color3B color)
 {
@@ -76,7 +76,13 @@ void Rectton::selected()
             _originalScale = this->getScale();
         }
         
-        Action *zoomAction = ScaleTo::create(0.1f, _originalScale * 1.2f);
+        auto slideDistance = this->getBoundingBox().size.height/2.0f;
+        
+        Action *slideAction = MoveBy::create(0.1f, Point(0, -1*slideDistance));
+        slideAction->setTag(kSlideActionTag);
+        this->runAction(slideAction);
+        
+        Action *zoomAction = ScaleTo::create(0.1f, _originalScale * 0.8f);
         zoomAction->setTag(kZoomActionTag);
         this->runAction(zoomAction);
     }
@@ -92,6 +98,11 @@ void Rectton::unselected()
         Action *zoomAction = ScaleTo::create(0.1f, _originalScale);
         zoomAction->setTag(kZoomActionTag);
         this->runAction(zoomAction);
+        
+        
+        auto slideDistance = this->getBoundingBox().size.height/2.0f;
+        Action *slideActionReverse = MoveBy::create(0.05f, Point(0, slideDistance));
+        this->runAction(slideActionReverse);
     }
 }
 

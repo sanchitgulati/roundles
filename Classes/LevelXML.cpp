@@ -11,6 +11,10 @@
 
 
 pugi::xml_document LevelXML::doc;
+pugi::xml_node LevelXML::curBundle;
+pugi::xml_node LevelXML::curLevel;
+int LevelXML::curBundleNumber = 0;
+int LevelXML::curLevelNumber = 0;
 
 bool LevelXML::init()
 {
@@ -154,3 +158,96 @@ Color3B LevelXML::getBundleColorOuterAt(int index)
     }
     return Color3B::BLACK;
 }
+
+/* To call only after curBundle is set */
+int LevelXML::getTotalLevelsInBundle(int index)
+{
+    if(curBundle == nullptr)
+        return -1;
+    int returnVal = 0;
+    pugi::xml_node level = curBundle.child("level");
+    for (; level; level = level.next_sibling())
+    {
+        returnVal++;
+    };
+    return returnVal;
+}
+
+
+bool LevelXML::setCurrentBundleId(int index)
+{
+    if(index <= getTotalBundlesSize())
+    {
+        int localIndex = 0;
+        pugi::xml_object_range<pugi::xml_named_node_iterator> itBundle = doc.children("bundle");
+        for(pugi::xml_named_node_iterator it=itBundle.begin(); it!=itBundle.end(); it++)
+        {
+            if(localIndex == index)
+            {
+                curBundle = static_cast<pugi::xml_node>(*it);
+                LevelXML::curBundleNumber = index;
+                return true;
+            }
+            localIndex++;
+        }
+    }
+    return false;
+}
+
+bool LevelXML::setCurrentLevelId(int index)
+{
+    if(index <= getTotalBundlesSize())
+    {
+        LevelXML::curLevelNumber = index;
+        int localIndex = 0;
+        pugi::xml_object_range<pugi::xml_named_node_iterator> itBundle = curBundle.children("level");
+        for(pugi::xml_named_node_iterator it=itBundle.begin(); it!=itBundle.end(); it++)
+        {
+            if(localIndex == index)
+            {
+                curLevel = static_cast<pugi::xml_node>(*it);
+                LevelXML::curLevelNumber = index;
+                return true;
+            }
+            localIndex++;
+        }
+    }
+    return false;
+}
+
+
+
+std::string LevelXML::getLevelNameAt(int index)
+{
+    std::string returnVal = "";
+    if(curBundle == nullptr)
+        return returnVal;
+    int localIndex = 0;
+    pugi::xml_object_range<pugi::xml_named_node_iterator> itBundle = curBundle.children("level");
+    for(pugi::xml_named_node_iterator it=itBundle.begin(); it!=itBundle.end(); it++)
+    {
+        if(localIndex == index)
+        {
+            returnVal = it->child("title").text().get();
+            
+        }
+        localIndex++;
+    }
+    return returnVal;
+}
+
+float LevelXML::getDidCompleteLevelAt(int index)
+{
+    char key[10];
+    sprintf(key, "%d-%d",curBundleNumber,index);
+    return cocos2d::UserDefault::getInstance()->getBoolForKey(key, false);
+}
+
+bool LevelXML::setLevelCompletedAt(int index)
+{
+    char key[10];
+    sprintf(key, "%d-%d",curBundleNumber,index);
+    cocos2d::UserDefault::getInstance()->setBoolForKey(key, true);
+    return true;
+}
+

@@ -30,6 +30,51 @@
 			<element type="single" positionX="3" positionY="3"></element>
 		</data>
 	</level>
+    <level id="3">
+		<title>Deja vu</title>
+		<data>
+			<element type="start" positionX="4" positionY="2"></element>
+			<element type="single" positionX="3" positionY="1"></element>
+			<element type="single" positionX="2" positionY="1"></element>
+			<element type="single" positionX="2" positionY="0"></element>
+			<element type="single" positionX="1" positionY="1"></element>
+			<element type="single" positionX="1" positionY="0"></element>
+			<element type="single" positionX="1" positionY="2"></element>
+			<element type="single" positionX="1" positionY="3"></element>
+			<element type="single" positionX="2" positionY="3"></element>
+			<element type="single" positionX="3" positionY="3"></element>
+		</data>
+	</level>
+    <level id="4">
+		<title>That's some serious shit son'</title>
+		<data>
+			<element type="start" positionX="4" positionY="2"></element>
+			<element type="single" positionX="3" positionY="1"></element>
+			<element type="single" positionX="2" positionY="1"></element>
+			<element type="single" positionX="2" positionY="0"></element>
+			<element type="single" positionX="1" positionY="1"></element>
+			<element type="single" positionX="1" positionY="0"></element>
+			<element type="single" positionX="1" positionY="2"></element>
+			<element type="single" positionX="1" positionY="3"></element>
+			<element type="single" positionX="2" positionY="3"></element>
+			<element type="single" positionX="3" positionY="3"></element>
+		</data>
+	</level>
+    <level id="5">
+		<title>Hit It!</title>
+		<data>
+			<element type="start" positionX="4" positionY="2"></element>
+			<element type="single" positionX="3" positionY="1"></element>
+			<element type="single" positionX="2" positionY="1"></element>
+			<element type="single" positionX="2" positionY="0"></element>
+			<element type="single" positionX="1" positionY="1"></element>
+			<element type="single" positionX="1" positionY="0"></element>
+			<element type="single" positionX="1" positionY="2"></element>
+			<element type="single" positionX="1" positionY="3"></element>
+			<element type="single" positionX="2" positionY="3"></element>
+			<element type="single" positionX="3" positionY="3"></element>
+		</data>
+	</level>
 </bundle>
 <bundle value="Violet Pill" gridX="5" gridY="5" rgb_inner="187,140,189" rgb_outer="138,68,171">
 	<level id="1">

@@ -41,6 +41,11 @@ bool OptionMenu::init()
     {
         return false;
     }
+    
+    /* Variable Initialization */
+    selectedMenu = 0;
+    
+    
     /* Touch Dispatcher */
     
     auto listener = EventListenerTouchOneByOne::create();
@@ -93,13 +98,10 @@ bool OptionMenu::init()
     radioLevels->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.30));
 
     
-    auto group1 = Layer::create();
-    auto menu1 = Menu::create(radioMusic,radioIAP,radioLevels,radioSound, NULL);
-    group1->addChild(menu1);
-    menu1->setPosition(Point(0,0));
-    group1->setPosition(Point(0,0));
-    this->addChild(group1);
-    
+    auto menuSetting = Menu::create(radioMusic,radioIAP,radioLevels,radioSound, NULL);
+    menuSetting->setPosition(Point(0,0));
+    this->addChild(menuSetting);
+
     
     auto radioSanchit = Radio::create("SG");
     radioSanchit->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.60));
@@ -108,22 +110,18 @@ bool OptionMenu::init()
     radioRadhika->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.50));
     
     
-    auto group2 = Layer::create();
-    auto menu2 = Menu::create(radioSanchit,radioRadhika,NULL);
-    group2->addChild(menu2);
-    menu2->setPosition(Point(0,0));
-    group2->setPosition(Point(0,0));
-    this->addChild(group2);
+    auto menuCredits = Menu::create(radioSanchit,radioRadhika,NULL);
+    menuCredits->setPosition(Point(0,0));
+    this->addChild(menuCredits);
     
     
-    menu2->setVisible(false);
+    menuCredits->setVisible(false);
+    
     
     
     //Testing
-    menu1->setTag(101);
-    menu2->setTag(102);
-    group1->setTag(101);
-    group2->setTag(102);
+    menuSetting->setTag(101);
+    menuCredits->setTag(102);
     
     auto swipeMessage = Message::create("<< swipe to see more >>");
     swipeMessage->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.15));
@@ -201,14 +199,11 @@ void OptionMenu::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event)
 void OptionMenu::swipeLeft()
 {
     log("left");
-    auto g1 = this->getChildByTag(101)->getChildByTag(101);
-    auto g2 = this->getChildByTag(102)->getChildByTag(102);
+    auto g1 = this->getChildByTag(101);
+    auto g2 = this->getChildByTag(102);
     if(g1->getUserData())
     {
         g1->setUserData((bool*)false);
-        
-        g1->runAction(RotateBy::create(4, Vertex3F(0, 360, 0)));
-        
         g1->setVisible(false);
         g2->setVisible(true);
     }
@@ -222,9 +217,13 @@ void OptionMenu::swipeLeft()
     
 }
 void OptionMenu::swipeRight()
-{log("right");swipeLeft();}
+{
+    swipeLeft();
+}
 void OptionMenu::swipeUp()
 {log("up");}
 void OptionMenu::swipeDown()
 {log("down");}
+
+
 

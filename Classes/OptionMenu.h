@@ -45,6 +45,8 @@ public:
     Point origin;
     float fontSize;
     LayerColor* lbackground;
+    int selectedMenu;
+    cocos2d::Vector<cocos2d::Menu *> menuList;
     
     
     

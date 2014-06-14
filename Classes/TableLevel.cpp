@@ -8,6 +8,7 @@
 
 #include "TableLevel.h"
 #include "Util.h"
+#include "LevelXML.h"
 
 USING_NS_CC;
 USING_NS_CC_EXT;
@@ -22,8 +23,11 @@ bool TableLevel::init()
     
     winSize = Director::getInstance()->getWinSize();
     tableSize = this->getContentSize();
-    cellSize = Size(tableSize.width - 2*Constants::vEdgeMargin,220);
-    tableSize = Size(winSize.width,winSize.height*0.80);
+    
+    auto calcTemp = (winSize.height*0.70)/5.5f;
+    
+    cellSize = Size(tableSize.width - 2*Constants::vEdgeMargin,calcTemp);
+    tableSize = Size(winSize.width,winSize.height*0.70);
     
     
 	TableView* tableView = TableView::create(this,Size(tableSize.width,tableSize.height));
@@ -60,15 +64,29 @@ Size TableLevel::tableCellSizeForIndex(TableView *table, ssize_t idx)
 
 TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
 {
-    auto string = String::createWithFormat("%ld", idx);
+    auto string = String::createWithFormat("%s", LevelXML::getLevelNameAt(idx).c_str());
+    log("Name Of level %s",string->getCString());
+    
     TableViewCell *cell = table->dequeueCell();
     if (!cell) {
         cell = new TableViewCell(); //Can Be Customized, refer to TestCpp
         cell->autorelease();
-        Sprite* sprite = Sprite::create("whiteRect.png");
+        Sprite* sprite = Sprite::create(IMG_BUTTON_LEVEL);
         Size temp = sprite->getBoundingBox().size;
         sprite->setScale((cellSize.width/temp.width),1);
-        sprite->setColor(Util::randomBrightColor());
+        
+        switch (idx%2) {
+            case 0:
+                sprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber)) ;
+                break;
+            case 1:
+                sprite->setColor(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber)) ;
+                break;
+            default:
+                break;
+        }
+        
+        
         sprite->setAnchorPoint(Point::ZERO);
         sprite->setPosition(Point(0, 0));
         sprite->setTag(111);
@@ -76,7 +94,7 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
         
         auto label = LabelTTF::create(string->getCString(), Constants::fontName, Constants::defaultFontSize);
         label->setPosition(Point::ZERO);
-        label->setColor(Color3B::GREEN);
+        label->setColor(Color3B::BLACK);
 		label->setAnchorPoint(Point::ZERO);
         label->setTag(123);
         cell->addChild(label);
@@ -84,8 +102,19 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
     else
     {
         auto sprite = cell->getChildByTag(111);
-        sprite->setColor(Util::randomBrightColor());
+        switch (idx%2) {
+            case 0:
+                sprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber)) ;
+                break;
+            case 1:
+                sprite->setColor(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber)) ;
+                break;
+            default:
+                break;
+        }
+        
         auto label = (LabelTTF*)cell->getChildByTag(123);
+        log("Name Of level %s",string->getCString());
         label->setString(string->getCString());
     }
 
@@ -95,5 +124,5 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
 
 ssize_t TableLevel::numberOfCellsInTableView(TableView *table)
 {
-    return 50;
+    return LevelXML::getTotalLevelsInBundle(LevelXML::curBundleNumber);
 }
