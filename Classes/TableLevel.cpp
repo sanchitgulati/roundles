@@ -9,6 +9,7 @@
 #include "TableLevel.h"
 #include "Util.h"
 #include "LevelXML.h"
+#include "GameScene.h"
 
 USING_NS_CC;
 USING_NS_CC_EXT;
@@ -44,7 +45,12 @@ bool TableLevel::init()
 
 void TableLevel::tableCellTouched(TableView* table, TableViewCell* cell)
 {
-//    CCLOG("cell touched at index: %ld", cell->getIdx());
+    log("cell touched at index: %ld", cell->getIdx());
+    LevelXML::setCurrentLevelId(static_cast<int>(cell->getIdx()));
+    
+    auto s = (Scene*)GameScene::create();
+    Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
+    
     switch (cell->getIdx())
     {
         case 0:
@@ -64,8 +70,7 @@ Size TableLevel::tableCellSizeForIndex(TableView *table, ssize_t idx)
 
 TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
 {
-    auto string = String::createWithFormat("%s", LevelXML::getLevelNameAt(idx).c_str());
-    log("Name Of level %s",string->getCString());
+    auto string = String::createWithFormat("%s", LevelXML::getLevelNameAt(static_cast<int>(idx)).c_str());
     
     TableViewCell *cell = table->dequeueCell();
     if (!cell) {

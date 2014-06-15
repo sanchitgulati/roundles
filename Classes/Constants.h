@@ -47,6 +47,8 @@
 
 #define IMG_BUTTON_MENU "images/btnMenu.png"
 #define IMG_BUTTON_LEVEL "images/btnLevel.png"
+#define IMG_BUTTON_HINT "images/btnHint.png"
+#define IMG_BUTTON_RESTART "images/btnRestart.png"
 #define IMG_BUTTON_TUTORIAL "images/btnTut.png"
 #define IMG_BUTTON_BACK "images/btnBack.png"
 #define IMG_BUTTON_OPTION "images/btnOption.png"

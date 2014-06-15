@@ -55,9 +55,6 @@ bool LevelMenu::init()
     visibleSize = Director::getInstance()->getVisibleSize();
     winSize = Director::getInstance()->getWinSize();
     origin = Director::getInstance()->getVisibleOrigin();
-    fontSize = Constants::defaultFontSize*(winSize.width/480);
-    Constants::fontSize = this->fontSize;
-    Constants::vEdgeMargin = winSize.width/20.0f;
     
     
     /* Initiation Of Variables */

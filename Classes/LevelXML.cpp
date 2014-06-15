@@ -8,7 +8,7 @@
 
 
 #include "LevelXML.h"
-
+#include "Util.h"
 
 pugi::xml_document LevelXML::doc;
 pugi::xml_node LevelXML::curBundle;
@@ -223,8 +223,8 @@ std::string LevelXML::getLevelNameAt(int index)
     if(curBundle == nullptr)
         return returnVal;
     int localIndex = 0;
-    pugi::xml_object_range<pugi::xml_named_node_iterator> itBundle = curBundle.children("level");
-    for(pugi::xml_named_node_iterator it=itBundle.begin(); it!=itBundle.end(); it++)
+    pugi::xml_object_range<pugi::xml_named_node_iterator> itLevel = curBundle.children("level");
+    for(pugi::xml_named_node_iterator it=itLevel.begin(); it!=itLevel.end(); it++)
     {
         if(localIndex == index)
         {
@@ -250,4 +250,20 @@ bool LevelXML::setLevelCompletedAt(int index)
     cocos2d::UserDefault::getInstance()->setBoolForKey(key, true);
     return true;
 }
+
+std::vector<LevelElement> LevelXML::getCurrentLevel()
+{
+    auto vec = std::vector<LevelElement>();
+    pugi::xml_object_range<pugi::xml_named_node_iterator> itElement = curLevel.child("data").children("element");
+    for(pugi::xml_named_node_iterator it=itElement.begin(); it!=itElement.end(); it++)
+    {
+        LevelElement temp = LevelElement();
+        temp.type = std::atoi(it->attribute("type").value());
+        temp.x = std::atoi(it->attribute("positionX").value());
+        temp.y = std::atoi(it->attribute("positionY").value());
+        vec.push_back(temp);
+    }
+    return vec;
+}
+
 

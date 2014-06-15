@@ -15,6 +15,18 @@
 
 USING_NS_CC;
 
+enum {
+    eStart,
+    eSingle
+};
+
+struct LevelElement
+{
+    int type;
+    int x;
+    int y;
+};
+
 class LevelXML
 {
 public:
@@ -40,6 +52,9 @@ public:
     static std::string getLevelNameAt(int);
     static float getDidCompleteLevelAt(int);
     static bool setLevelCompletedAt(int);
+    
+    
+    static std::vector<LevelElement> getCurrentLevel();
 };
 
 #endif /* defined(__OneClosedLoop__LevelXML__) */
