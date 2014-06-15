@@ -6,9 +6,7 @@
 #include "LevelXML.h"
 #include "Util.h"
 
-#include "types/Button.h"
-#include "types/Rectton.h"
-#include "types/Rotator.h"
+#include "types/types.h"
 
 USING_NS_CC;
 

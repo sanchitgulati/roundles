@@ -16,10 +16,7 @@
 #include "LevelXML.h"
 #include "Util.h"
 #include "TableLevel.h"
-#include "types/Button.h"
-#include "types/Rectton.h"
-#include "types/Header.h"
-#include "types/Radio.h"
+#include "types/types.h"
 
 USING_NS_CC;
 

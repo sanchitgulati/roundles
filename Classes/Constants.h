@@ -32,6 +32,10 @@
 #define RGBA_COLOR6 Color4B(255,255,255,255)
 #define RGB_COLOR6 Color3B(255,255,255) //is text against Menu Item
 
+
+#define RGB_COLOR7 Color3B(83,101,121)
+#define RGBA_COLOR7 Color4B(83,101,121,255)  // is black
+
 #define SFX_BTN_CLICKED "sfx/btn_Clicked.wav"
 #define SFX_MUSIC "sfx/caribbean_lobby-rick_dickert.mp3"
 

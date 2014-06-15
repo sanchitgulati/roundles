@@ -15,11 +15,8 @@
 #include "Constants.h"
 #include "LevelXML.h"
 #include "Util.h"
-#include "types/Button.h"
-#include "types/Rectton.h"
-#include "types/Header.h"
-#include "types/Radio.h"
-#include "types/Message.h"
+
+#include "types/types.h"
 
 USING_NS_CC;
 

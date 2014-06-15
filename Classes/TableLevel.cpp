@@ -50,17 +50,6 @@ void TableLevel::tableCellTouched(TableView* table, TableViewCell* cell)
     
     auto s = (Scene*)GameScene::create();
     Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
-    
-    switch (cell->getIdx())
-    {
-        case 0:
-        {
-            log("At case 0");
-        }
-            break;
-        default:
-            break;
-    }
 }
 
 Size TableLevel::tableCellSizeForIndex(TableView *table, ssize_t idx)

@@ -88,21 +88,50 @@ bool GameScene::init()
     backgroundCircle->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.35 ));
     this->addChild(backgroundCircle);
     
+    /*Getting Scale For Future Use */
+    auto scaleSprite = Sprite::create(IMG_CIRCLE_WHITE);
+    scaleSprite->setScale(Util::getScreenRatio(scaleSprite)*0.14);
+    auto scale = scaleSprite->getScale();
+    auto size = scaleSprite->getBoundingBox().size.width + 16;
+    
     auto levelNode = Node::create();
     /* Load Up Level */
-    auto level = LevelXML::getCurrentLevel();
-    for (std::vector<LevelElement>::iterator it = level.begin() ; it != level.end(); ++it)
+    level = LevelXML::getCurrentLevel();
+    
+    std::vector<Node*> gridStatus;
+    for(int i = 0; i < LevelXML::getGridSizeX()*LevelXML::getGridSizeY();i++ )
     {
-        log("Type %d at Point(%d,%d)",it->type,it->x,it->y);
-        auto element = Sprite::create(IMG_CIRCLE_WHITE);
-        element->setScale(Util::getScreenRatio(element)*0.15);
-        auto size = element->getBoundingBox().size.width + 16;
-        element->setColor(Color3B(83,101,121));
-        element->setPosition(it->x*size, it->y*size);
-        levelNode->addChild(element);
+        gridStatus.push_back(Node::create());
     }
     
-    levelNode->setPosition(Point(Constants::vEdgeMargin, Constants::vEdgeMargin + 128));
+    player = Player::create(IMG_CIRCLE_WHITE);
+    for (std::vector<LevelElement>::iterator it = level.begin() ; it != level.end(); ++it)
+    {
+        switch (it->type) {
+            case eStart:
+            {
+                player->x = it->x;
+                player->y = it->y;
+                player->setPosition(it->x*size, it->y*size);
+                player->setScale(scale);
+                player->setTotalElements(static_cast<int>(level.size()));
+                levelNode->addChild(player);
+            }
+                break;
+            case eSingle:
+            {
+                auto element = Single::create(IMG_CIRCLE_WHITE);
+                element->setScale(scale);
+                element->setPosition(it->x*size, it->y*size);
+                levelNode->addChild(element);
+//                gridStatus[it->x*LevelXML::getGridSizeX()+it->y] = element;
+            }
+            default:
+                break;
+        }
+    }
+    
+    levelNode->setPosition(Point(Constants::vEdgeMargin + 32, Constants::vEdgeMargin + 128));
     this->addChild(levelNode);
     
     menu->setPosition(Point::ZERO);
@@ -126,7 +155,22 @@ void GameScene::menuCallback(Ref* pSender)
     
     auto obj = (Node*)pSender;
     switch (obj->getTag()) {
+        case bBack:
+        {
+            auto s = (Scene*)LevelMenu::create();
+            Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
             break;
+        }
+        case bRestart:
+        {
+            auto s = (Scene*)GameScene::create();
+            Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
+            break;
+        }
+        case bHint:
+        {
+            break;
+        }
         default:
             Director::getInstance()->end();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
@@ -173,7 +217,9 @@ void GameScene::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event)
 
 void GameScene::swipeLeft()
 {
-    log("left");
+    for(int i = player->x; i >= 0; i++)
+    {
+    }
 }
 void GameScene::swipeRight()
 {log("right");}

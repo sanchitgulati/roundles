@@ -16,10 +16,8 @@
 #include "LevelXML.h"
 #include "Util.h"
 #include "TableLevel.h"
-#include "types/Button.h"
-#include "types/Rectton.h"
-#include "types/Header.h"
-#include "types/Radio.h"
+
+#include "types/types.h"
 
 USING_NS_CC;
 
@@ -46,6 +44,11 @@ public:
     float fontSize;
     LayerColor* lbackground;
     
+    //Player
+    Player* player;
+    
+    //Level
+    std::vector<LevelElement> level;
     
     
     //touch delegated

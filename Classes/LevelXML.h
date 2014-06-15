@@ -20,6 +20,10 @@ enum {
     eSingle
 };
 
+typedef struct {
+    int x, y;
+} iPoint;
+
 struct LevelElement
 {
     int type;
@@ -53,6 +57,8 @@ public:
     static float getDidCompleteLevelAt(int);
     static bool setLevelCompletedAt(int);
     
+    static int getGridSizeX();
+    static int getGridSizeY();
     
     static std::vector<LevelElement> getCurrentLevel();
 };
