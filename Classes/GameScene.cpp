@@ -14,6 +14,8 @@
 
 enum{bBack,bHint,bRestart};
 
+enum{zSingle,zPlayer}; //zPlayer to be last
+
 USING_NS_CC;
 
 Scene* GameScene::createScene()
@@ -90,41 +92,71 @@ bool GameScene::init()
     
     /*Getting Scale For Future Use */
     auto scaleSprite = Sprite::create(IMG_CIRCLE_WHITE);
-    scaleSprite->setScale(Util::getScreenRatio(scaleSprite)*0.14);
-    auto scale = scaleSprite->getScale();
-    auto size = scaleSprite->getBoundingBox().size.width + 16;
+    float scale = 1.0f;
+    int gridSize = (LevelXML::getGridSizeX() > LevelXML::getGridSizeY() ? LevelXML::getGridSizeX() : LevelXML::getGridSizeY());
+    switch (gridSize) {
+        case 3:
+            scale = 0.17f;
+            break;
+        case 4:
+            scale = 0.16f;
+            break;
+        case 5:
+            scale = 0.15f;
+            break;
+        case 6:
+            scale = 0.14f;
+            break;
+        case 7:
+            scale = 0.13f;
+            break;
+        case 8:
+            scale = 0.12f;
+            break;
+        case 9:
+            scale = 0.11f;
+            break;
+        case 10:
+            scale = 0.10f;
+            break;
+        default:
+            log("Invalid Grid Size, using default 1.0f");
+            return false;
+            break;
+    }
+    scaleSprite->setScale(Util::getScreenRatio(scaleSprite)*scale);
+    _size = scaleSprite->getBoundingBox().size.width*1.4f;
     
-    auto levelNode = Node::create();
+    levelNode = Node::create();
     /* Load Up Level */
     level = LevelXML::getCurrentLevel();
     
-    std::vector<Node*> gridStatus;
-    for(int i = 0; i < LevelXML::getGridSizeX()*LevelXML::getGridSizeY();i++ )
-    {
-        gridStatus.push_back(Node::create());
-    }
-    
-    player = Player::create(IMG_CIRCLE_WHITE);
     for (std::vector<LevelElement>::iterator it = level.begin() ; it != level.end(); ++it)
     {
         switch (it->type) {
             case eStart:
             {
+                
+                player = Player::create(IMG_CIRCLE_WHITE);
                 player->x = it->x;
                 player->y = it->y;
-                player->setPosition(it->x*size, it->y*size);
+                player->setPosition(getScreenCoordinates(it->x, it->y));
                 player->setScale(scale);
-                player->setTotalElements(static_cast<int>(level.size()));
+                player->setTotalElements(static_cast<int>(level.size() - 1)); // to be changed with diffrent element types
+                player->setLocalZOrder(zPlayer);
                 levelNode->addChild(player);
-            }
+                it = level.erase(it);
                 break;
+            }
             case eSingle:
             {
                 auto element = Single::create(IMG_CIRCLE_WHITE);
                 element->setScale(scale);
-                element->setPosition(it->x*size, it->y*size);
+                element->setPosition(getScreenCoordinates(it->x, it->y));
+                element->setLocalZOrder(zSingle);
+                it->ccElement = element;
                 levelNode->addChild(element);
-//                gridStatus[it->x*LevelXML::getGridSizeX()+it->y] = element;
+                break;
             }
             default:
                 break;
@@ -217,13 +249,104 @@ void GameScene::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event)
 
 void GameScene::swipeLeft()
 {
-    for(int i = player->x; i >= 0; i++)
+    for(int i = player->x - 1; i >= 0; i--)
     {
+        auto ret = captureElementAndAnimate(i,player->y);
+        if(ret)
+            return;
     }
 }
 void GameScene::swipeRight()
-{log("right");}
+{
+    for(int i = player->x + 1; i <= LevelXML::getGridSizeX(); i++)
+    {
+        auto ret = captureElementAndAnimate(i,player->y);
+        if(ret)
+            return;
+    }
+}
 void GameScene::swipeUp()
-{log("up");}
+{
+    for(int i = player->y + 1; i <= LevelXML::getGridSizeY(); i++)
+    {
+        auto ret = captureElementAndAnimate(player->x,i);
+        if(ret)
+            return;
+    }
+}
 void GameScene::swipeDown()
-{log("down");}
+{
+    for(int i = player->y - 1; i >= 0; i--)
+    {
+        auto ret = captureElementAndAnimate(player->x,i);
+        if(ret)
+            return;
+    }
+}
+
+
+
+/* ---------------------- Util -----------------------*/
+
+Point GameScene::getScreenCoordinates(int x, int y)
+{
+    return Point(x*_size,y*_size);
+}
+
+LevelElement GameScene::getLevelElementAt(int x, int y,bool del)
+{
+    LevelElement element = LevelElement();
+    for (std::vector<LevelElement>::iterator it = level.begin() ; it != level.end(); ++it)
+    {
+        if(it->x == x && it->y == y)
+        {
+            element = static_cast<LevelElement>(*it);
+            if(del == true)
+            {
+                it = level.erase(it);
+                break;
+            }
+        }
+    }
+    return element;
+}
+
+void GameScene::checkMoves(int x,int y)
+{
+    auto element = getLevelElementAt(x,y,true);
+    if(element.type != eNull);
+}
+
+bool GameScene::captureElementAndAnimate(int x,int y)
+{
+    auto element = getLevelElementAt(x,y,true);
+    if(element.type != eNull)
+    {
+        auto deltaX = abs(player->x - x) ;
+        auto deltaY = abs(player->y - y) ;
+        
+        float animationDelta = (deltaX > deltaY ? deltaX : deltaY) * 0.10; // 0.10 is constant
+     
+        
+        player->x = x;
+        player->y = y;
+        
+        
+        player->capture(element.type,animationDelta);
+        
+        auto move = MoveTo::create(animationDelta, getScreenCoordinates(x,y));
+        auto move_ease_in = EaseBounceOut::create(move->clone() );
+        player->runAction(Sequence::create(move_ease_in, NULL));
+        
+        auto callFunc = CallFuncN::create(CC_CALLBACK_1(GameScene::deleteCCElementFromLevelNode,this, true));
+        auto delay = DelayTime::create(animationDelta); //relative to move to of player
+        element.ccElement->runAction(Sequence::create(delay,callFunc,NULL));
+        return true;
+    }
+    return false;
+}
+
+void GameScene::deleteCCElementFromLevelNode(Node * sender,bool cleanup)
+{
+    sender->removeAllChildrenWithCleanup(cleanup);
+}

@@ -40,6 +40,8 @@ public:
     //Variables
     Size visibleSize;
     Size winSize;
+    float _size;
+    Node* levelNode;
     Point origin;
     float fontSize;
     LayerColor* lbackground;
@@ -63,6 +65,12 @@ public:
     void swipeRight();
     void swipeUp();
     void swipeDown();
+    
+    LevelElement getLevelElementAt(int x,int y,bool del = false);
+    bool captureElementAndAnimate(int x,int y);
+    void checkMoves(int x,int y);
+    void deleteCCElementFromLevelNode(Node * sender,bool cleanup);
+    Point getScreenCoordinates(int x,int y);
     
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);

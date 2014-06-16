@@ -268,12 +268,17 @@ std::vector<LevelElement> LevelXML::getCurrentLevel()
 
 int LevelXML::getGridSizeX()
 {
-    return std::atoi(curBundle.attribute("GridX").value());
+    return std::atoi(curLevel.attribute("gridX").value());
 }
 
 int LevelXML::getGridSizeY()
 {
-    return std::atoi(curBundle.attribute("GridY").value());
+    return std::atoi(curLevel.attribute("gridY").value());
+}
+
+int LevelXML::getLevelId()
+{
+    return std::atoi(curLevel.attribute("id").value());
 }
 
 

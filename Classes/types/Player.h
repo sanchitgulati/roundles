@@ -21,11 +21,13 @@ public:
     cocos2d::Sprite* sprite;
     cocos2d::Sprite* innerSprite;
     int totalElements;
+    int capturedElements;
     
     
     virtual bool init();
     static Player* create(const char* image);
     void setScale(float);
     void setTotalElements(int);
+    bool capture(int type,float animationDelta);
 };
 #endif /* defined(__roundels__Player__) */

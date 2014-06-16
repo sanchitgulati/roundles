@@ -15,6 +15,7 @@ using namespace cocos2d;
 
 bool Player::init()
 {
+    capturedElements = 0;
     return true;
 }
 
@@ -57,5 +58,26 @@ void Player::setTotalElements(int value)
 {
     totalElements = value;
     innerSprite->setScale((1.0/totalElements));
+}
+
+bool Player::capture(int type,float animationDelta)
+{
+    switch (type) {
+        case eNull:
+            log("Cannot capture NULL");
+            return false;
+            break;
+        case eSingle:
+        {
+            capturedElements ++;
+            float val = (1.0 / (totalElements-capturedElements == 0 ? 1.01 : totalElements-capturedElements));
+            innerSprite->runAction(ScaleTo::create(animationDelta, val));
+            return true;
+            break;
+        }
+        default:
+            return false;
+            break;
+    }
 }
 

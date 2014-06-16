@@ -16,6 +16,7 @@
 USING_NS_CC;
 
 enum {
+    eNull,
     eStart,
     eSingle
 };
@@ -29,6 +30,13 @@ struct LevelElement
     int type;
     int x;
     int y;
+    cocos2d::Node* ccElement;
+    LevelElement()
+    {
+        type = eNull;
+        x = 0;
+        y = 0;
+    }
 };
 
 class LevelXML
@@ -59,6 +67,7 @@ public:
     
     static int getGridSizeX();
     static int getGridSizeY();
+    static int getLevelId();
     
     static std::vector<LevelElement> getCurrentLevel();
 };
