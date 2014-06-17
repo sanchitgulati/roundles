@@ -23,6 +23,7 @@ Player::Player(const char* image)
 {
     sprite = Sprite::create(image);
     sprite->setColor(RGB_COLOR7);
+    sprite->setAnchorPoint(Point(0, 0));
     this->addChild(sprite);
     
     innerSprite = Sprite::create(image);

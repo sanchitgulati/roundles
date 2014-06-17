@@ -47,9 +47,12 @@ void TableLevel::tableCellTouched(TableView* table, TableViewCell* cell)
 {
     log("cell touched at index: %ld", cell->getIdx());
     LevelXML::setCurrentLevelId(static_cast<int>(cell->getIdx()));
-    
-    auto s = (Scene*)GameScene::create();
-    Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
+    auto callFunc = CallFunc::create([this]()
+    {
+        auto s = (Scene*)GameScene::create();
+        Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
+    });
+    cell->runAction(Sequence::create(RotateBy::create(0.1f, Vertex3F(0, 10, 0)),callFunc,NULL));
 }
 
 Size TableLevel::tableCellSizeForIndex(TableView *table, ssize_t idx)
@@ -87,9 +90,9 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
         cell->addChild(sprite);
         
         auto label = LabelTTF::create(string->getCString(), Constants::fontName, Constants::defaultFontSize);
-        label->setPosition(Point::ZERO);
-        label->setColor(Color3B::BLACK);
-		label->setAnchorPoint(Point::ZERO);
+        label->setPosition(Point(Constants::vEdgeMargin, cellSize.height - Constants::vEdgeMargin));
+        label->setColor(Color3B::WHITE);
+		label->setAnchorPoint(Point(0,1));
         label->setTag(123);
         cell->addChild(label);
     }
@@ -108,7 +111,6 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
         }
         
         auto label = (LabelTTF*)cell->getChildByTag(123);
-        log("Name Of level %s",string->getCString());
         label->setString(string->getCString());
     }
 

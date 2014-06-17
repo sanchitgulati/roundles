@@ -92,35 +92,35 @@ bool GameScene::init()
     
     /*Getting Scale For Future Use */
     auto scaleSprite = Sprite::create(IMG_CIRCLE_WHITE);
-    float scale = 1.0f;
+    float scale = 0.5f;
     int gridSize = (LevelXML::getGridSizeX() > LevelXML::getGridSizeY() ? LevelXML::getGridSizeX() : LevelXML::getGridSizeY());
     switch (gridSize) {
         case 3:
-            scale = 0.17f;
-            break;
-        case 4:
             scale = 0.16f;
             break;
-        case 5:
+        case 4:
             scale = 0.15f;
             break;
-        case 6:
+        case 5:
             scale = 0.14f;
             break;
-        case 7:
+        case 6:
             scale = 0.13f;
             break;
-        case 8:
+        case 7:
             scale = 0.12f;
             break;
-        case 9:
+        case 8:
             scale = 0.11f;
             break;
-        case 10:
+        case 9:
             scale = 0.10f;
             break;
+        case 10:
+            scale = 0.9f;
+            break;
         default:
-            log("Invalid Grid Size, using default 1.0f");
+            log("Invalid Grid Size, using default 0.5f");
             return false;
             break;
     }
@@ -130,7 +130,7 @@ bool GameScene::init()
     levelNode = Node::create();
     /* Load Up Level */
     level = LevelXML::getCurrentLevel();
-    
+    std::vector<LevelElement>::iterator toDel;
     for (std::vector<LevelElement>::iterator it = level.begin() ; it != level.end(); ++it)
     {
         switch (it->type) {
@@ -142,10 +142,10 @@ bool GameScene::init()
                 player->y = it->y;
                 player->setPosition(getScreenCoordinates(it->x, it->y));
                 player->setScale(scale);
-                player->setTotalElements(static_cast<int>(level.size() - 1)); // to be changed with diffrent element types
+                player->setTotalElements(static_cast<int>(level.size())); // to be changed with diffrent element types
                 player->setLocalZOrder(zPlayer);
                 levelNode->addChild(player);
-                it = level.erase(it);
+                toDel = it;
                 break;
             }
             case eSingle:
@@ -162,8 +162,12 @@ bool GameScene::init()
                 break;
         }
     }
+    level.erase(toDel); //Delete Player from Level Vector
     
-    levelNode->setPosition(Point(Constants::vEdgeMargin + 32, Constants::vEdgeMargin + 128));
+    log("level size with %d height %d into %f",LevelXML::getGridSizeX(),LevelXML::getGridSizeY(),_size);
+    levelNode->setContentSize(Size(Point(LevelXML::getGridSizeX()*_size,LevelXML::getGridSizeY()*_size)));
+    levelNode->setAnchorPoint(Point(0.5, 0.5));
+    levelNode->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.35 ));
     this->addChild(levelNode);
     
     menu->setPosition(Point::ZERO);
@@ -176,7 +180,6 @@ bool GameScene::init()
 
 void GameScene::update(float dt)
 {
-    
 }
 
 
@@ -296,6 +299,7 @@ Point GameScene::getScreenCoordinates(int x, int y)
 LevelElement GameScene::getLevelElementAt(int x, int y,bool del)
 {
     LevelElement element = LevelElement();
+    element.type = eNull;
     for (std::vector<LevelElement>::iterator it = level.begin() ; it != level.end(); ++it)
     {
         if(it->x == x && it->y == y)
@@ -335,7 +339,7 @@ bool GameScene::captureElementAndAnimate(int x,int y)
         player->capture(element.type,animationDelta);
         
         auto move = MoveTo::create(animationDelta, getScreenCoordinates(x,y));
-        auto move_ease_in = EaseBounceOut::create(move->clone() );
+        auto move_ease_in = EaseBounceInOut::create(move->clone() );
         player->runAction(Sequence::create(move_ease_in, NULL));
         
         auto callFunc = CallFuncN::create(CC_CALLBACK_1(GameScene::deleteCCElementFromLevelNode,this, true));

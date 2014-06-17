@@ -19,6 +19,7 @@ bool Single::init()
 Single::Single(const char* image)
 {
     sprite = Sprite::create(image);
+    sprite->setAnchorPoint(Point(0, 0));
     sprite->setColor(RGB_COLOR7);
     this->addChild(sprite);
 }
