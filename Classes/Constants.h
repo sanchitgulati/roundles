@@ -44,6 +44,11 @@
 #define SWIPE_THRESHOLD 100.0
 
 
+#define IMG_CIRCLE_BTN "images/circleBtn2.png"
+#define IMG_CIRCLE_OBJECT "images/circleBtn.png"
+#define IMG_CIRCLE_MM "images/circleMM.png"
+#define IMG_CIRCLE_SHADOW "images/circleShadow.png"
+
 #define IMG_CIRCLE_WHITE "images/whiteCircle.png"
 #define IMG_RECT_WHITE "images/whiteRect.png"
 #define IMG_BUTTON_WHITE "images/whiteButton.png"
@@ -53,7 +58,10 @@
 #define IMG_BUTTON_LEVEL "images/btnLevel.png"
 #define IMG_BUTTON_HINT "images/btnHint.png"
 #define IMG_BUTTON_RESTART "images/btnRestart.png"
+
 #define IMG_BUTTON_TUTORIAL "images/btnTut.png"
+#define IMG_BUTTON_ACHIEVE "images/btnAchieve.png"
+
 #define IMG_BUTTON_BACK "images/btnBack.png"
 #define IMG_BUTTON_OPTION "images/btnOption.png"
 #define IMG_TICK_GREEN "images/btnTick.png"

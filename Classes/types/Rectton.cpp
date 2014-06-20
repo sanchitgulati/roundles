@@ -18,10 +18,10 @@ Rectton::Rectton(std::string text,Color3B color)
     _originalScale = 0;
     this->setAnchorPoint(Point(0.5f, 0.5f));
     
-    this->lblText = Label::create(text, Constants::fontNameBold, Constants::fontSize/2.0);
+    this->lblText = Label::create(text, Constants::fontNameBold, Constants::fontSize/1.2);
     
     this->backSprite = Sprite::create(IMG_BUTTON_WHITE);
-    this->backSprite->setScale(Util::getScreenRatio(backSprite)*0.4);
+    this->backSprite->setScale(Util::getScreenRatioWidth(backSprite)*0.6);
     
     this->backSprite->setColor(color);
     auto sizeMenuItem = this->backSprite->getBoundingBox().size;
@@ -31,12 +31,13 @@ Rectton::Rectton(std::string text,Color3B color)
     this->setScale(Util::getScreenRatio(backSprite)*0.4);
     
     _originalScale = this->getScale();
+    _originalPosition = this->getPosition();
     
     this->lblText->setColor(RGB_COLOR6);
     
     
     this->backSprite->setAnchorPoint(Point(0.0f,0.0f));
-    this->lblText->setPosition(Point(sizeMenuItem.width/8.0f,sizeMenuItem.height/8.0f ));
+    this->lblText->setPosition(Point(sizeMenuItem.width/8.0f,sizeMenuItem.height/4.0f ));
     this->lblText->setAnchorPoint(Point(0.0f, 0.0f));
     
     this->addChild(backSprite);
@@ -74,15 +75,16 @@ void Rectton::selected()
         else
         {
             _originalScale = this->getScale();
+            _originalPosition = this->getPosition();
         }
         
-        auto slideDistance = this->getBoundingBox().size.height/2.0f;
+        auto slideDistance = this->getBoundingBox().size.height/8.0f;
         
         Action *slideAction = MoveBy::create(0.1f, Point(0, -1*slideDistance));
         slideAction->setTag(kSlideActionTag);
         this->runAction(slideAction);
         
-        Action *zoomAction = ScaleTo::create(0.1f, _originalScale * 0.8f);
+        Action *zoomAction = ScaleTo::create(0.1f, _originalScale * 0.95f);
         zoomAction->setTag(kZoomActionTag);
         this->runAction(zoomAction);
     }
@@ -99,9 +101,7 @@ void Rectton::unselected()
         zoomAction->setTag(kZoomActionTag);
         this->runAction(zoomAction);
         
-        
-        auto slideDistance = this->getBoundingBox().size.height/2.0f;
-        Action *slideActionReverse = MoveBy::create(0.05f, Point(0, slideDistance));
+        Action *slideActionReverse = MoveTo::create(0.05f, _originalPosition);
         this->runAction(slideActionReverse);
     }
 }

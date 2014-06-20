@@ -59,6 +59,8 @@ bool MainMenu::init()
     Constants::fontSize = this->fontSize;
     Constants::vEdgeMargin = winSize.width/20.0f;
     
+    
+    
     /*Initiations Of Array */
     arrBundle = new ccArray;
     
@@ -66,13 +68,18 @@ bool MainMenu::init()
     lbackground = LayerColor::create(RGBA_COLOR1, visibleSize.width, visibleSize.height);
     this->addChild(lbackground,zBg);
     
+    
+    emitter = ParticleSystemQuad::create("particleTexture.plist");
+    emitter->setBlendAdditive(false);
+    this->addChild(emitter,zBg);
+    
     auto btnSetting = Button::create("Setting",IMG_BUTTON_MENU,RGB_COLOR2);
     btnSetting->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*0.85 ));
     btnSetting->setCallback(CC_CALLBACK_1(MainMenu::menuCallback, this));
     btnSetting->setTag(bSetting);
     
     
-    auto btnTutorial = Button::create("Tutorial",IMG_BUTTON_TUTORIAL,RGB_COLOR2);
+    auto btnTutorial = Button::create("Achievements",IMG_BUTTON_ACHIEVE,RGB_COLOR2);
     btnTutorial->setCallback(CC_CALLBACK_1(MainMenu::menuCallback, this));
     btnTutorial->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*0.85 ));
     btnTutorial->setTag(bTutorial);
@@ -108,6 +115,10 @@ bool MainMenu::init()
             auto sequence = Sequence::create(delay,seq,seq, NULL);
             lblGameName->getLetter(i)->runAction(RepeatForever::create(sequence));
             lblGameName->getLetter(i)->setColor(LevelXML::getBundleColorInnerAt(selectedBundle));
+            Color4F colorInner = Color4F(LevelXML::getBundleColorInnerAt(selectedBundle));
+            Color4F colorOuter = Color4F(LevelXML::getBundleColorOuterAt(selectedBundle));
+            emitter->setStartColor(colorInner);
+            emitter->setEndColor(colorOuter);
         }
     }
     
@@ -277,6 +288,7 @@ void MainMenu::changeGameNameLetterColor()
 {
     auto c = LevelXML::getBundleColorInnerAt(selectedBundle);
     lblGameName->getLetter(1)->runAction(TintTo::create(0.3f, c.r, c.g, c.b));
+    emitter->runAction(TintTo::create(0.3f, c.r, c.g, c.b));
 }
 
 void MainMenu::changePlayRecttonText()

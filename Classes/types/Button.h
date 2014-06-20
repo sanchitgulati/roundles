@@ -22,6 +22,7 @@ class Button : public cocos2d::MenuItem
     cocos2d::Sprite* foreSprite;
     cocos2d::Label* lblText;
     float _originalScale;
+    Point _originalPosition;
 public:
     Button(std::string text,std::string image,Color3B color);
     static Button* create(std::string text,std::string image,Color3B color);

@@ -36,8 +36,8 @@ Rect Rotator::getBoundingBox()
 
 Rotator::Rotator(Color3B outerColor,Color3B innerColor)
 {
-    outer = Sprite::create(IMG_CIRCLE_WHITE);
-    inner = Sprite::create(IMG_CIRCLE_WHITE);
+    outer = Sprite::create(IMG_CIRCLE_MM);
+    inner = Sprite::create(IMG_CIRCLE_SHADOW);
     
     outer->setAnchorPoint(Point(0.5,0.5));
     inner->setAnchorPoint(Point(0.5,0.5));
@@ -45,29 +45,31 @@ Rotator::Rotator(Color3B outerColor,Color3B innerColor)
     outer->setColor(outerColor);
     inner->setColor(outerColor);
     
-    inner->setScale(Util::getScreenRatioWidth(inner)*0.75);
-    inner->setOpacity(GAME_OPACITY);
+    outer->setScale(Util::getScreenRatioWidth(outer)*0.75);
+    
+    inner->setOpacity(100);
     outer->setOpacity(GAME_OPACITY);
     
-    outer->setScale(inner->getScale()*0.30);
+    inner->setScale(Util::getScreenRatioWidth(inner)*0.65);
     
     
-    inner->runAction( RepeatForever::create(
+    outer->runAction( RepeatForever::create(
                                               Sequence::create(
                                                                ScaleBy::create(3,1.1),
                                                                ScaleBy::create(3,1.1)->reverse(),
                                                                NULL)
                                               ));
     
-    outer->runAction( RepeatForever::create(
+    inner->runAction( RepeatForever::create(
                                               Sequence::create(
-                                                               ScaleBy::create(3,1.5),
-                                                               ScaleBy::create(3,1.5)->reverse(),
+                                                               ScaleBy::create(3,1.25),
+                                                               ScaleBy::create(3,1.25)->reverse(),
                                                                NULL)
                                               ));
     
-    this->addChild(outer);
+    
     this->addChild(inner);
+    this->addChild(outer);
     this->setOpacity(GAME_OPACITY);
 
 

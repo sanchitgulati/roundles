@@ -15,7 +15,7 @@ Header::Header(std::string text,std::string image,Color3B color)
     this->setEnabled(true);
     this->lblText = Label::create(text, Constants::fontNameBold, Constants::fontSize*0.75);
     this->foreSprite = Sprite::create(image);
-    this->backSprite = Sprite::create(IMG_CIRCLE_WHITE);
+    this->backSprite = Sprite::create(IMG_CIRCLE_OBJECT);
     this->backSprite->setScale(Util::getScreenRatio(backSprite)*0.2);
     this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*0.15);
     this->backSprite->setColor(color);

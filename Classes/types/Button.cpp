@@ -19,13 +19,14 @@ Button::Button(std::string text,std::string image,Color3B color)
 
     this->lblText = Label::create(text, Constants::fontName, Constants::fontSize/2.0);
     this->foreSprite = Sprite::create(image);
-    this->backSprite = Sprite::create(IMG_CIRCLE_WHITE);
-    this->backSprite->setScale(Util::getScreenRatio(backSprite)*0.2);
-    this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*0.15);
+    this->backSprite = Sprite::create(IMG_CIRCLE_BTN);
+    this->backSprite->setScale(Util::getScreenRatio(backSprite)*0.22);
+    this->foreSprite->setScale(Util::getScreenRatio(backSprite)*0.12);
     this->backSprite->setColor(color);
     this->lblText->setColor(RGB_COLOR5);
     
     _originalScale = this->getScale();
+    _originalPosition = this->getPosition();
     
     auto sizeMenuItem = this->backSprite->getBoundingBox().size;
     this->setContentSize(sizeMenuItem);
@@ -35,9 +36,10 @@ Button::Button(std::string text,std::string image,Color3B color)
     this->addChild(lblText);
     this->addChild(foreSprite);
     
+    auto shadowCorrection = 0;// 8 * backSprite->getScale();
+    
     backSprite->setAnchorPoint(Point(0,0));
-    foreSprite->setAnchorPoint(Point(0,0));
-    foreSprite->setPosition(Point(sizeMenuItem.width/8.0f,sizeMenuItem.height/8.0f));
+    foreSprite->setPosition(Point(sizeMenuItem.width/2.0f - shadowCorrection,sizeMenuItem.height/2.0f + shadowCorrection));
     this->lblText->setAnchorPoint(Point(0.0f, 1.0f));
     this->lblText->setPositionY(-1* sizeMenuItem.height*0.10);
     this->lblText->setPositionX(sizeMenuItem.width*0.50 - (lblText->getContentSize().width/2.0f));
@@ -77,10 +79,11 @@ void Button::selected()
         else
         {
             _originalScale = this->getScale();
+            _originalPosition = this->getPosition();
         }
         
-        auto slideDistance = this->getBoundingBox().size.height/8.0f;
-        Action *zoomAction = ScaleTo::create(0.2f, _originalScale * 0.8f);
+        auto slideDistance = this->getBoundingBox().size.height/16.0f;
+        Action *zoomAction = ScaleTo::create(0.2f, _originalScale * 0.95f);
         zoomAction->setTag(kZoomActionTag);
         Action *slideAction = MoveBy::create(0.1f, Point(0, -1*slideDistance));
         slideAction->setTag(kSlideActionTag);
@@ -101,9 +104,7 @@ void Button::unselected()
         zoomAction->setTag(kZoomActionTag);
         this->runAction(zoomAction);
         
-        
-        auto slideDistance = this->getBoundingBox().size.height/8.0f;
-        Action *slideActionReverse = MoveBy::create(0.05f, Point(0, slideDistance));
+        Action *slideActionReverse = MoveTo::create(0.05f, _originalPosition);
         this->runAction(slideActionReverse);
     }
 }

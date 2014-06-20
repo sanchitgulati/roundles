@@ -93,7 +93,7 @@
 		</data>
 	</level>
 </bundle>
-<bundle value="Violet Pill" gridX="5" gridY="5" rgb_inner="187,140,189" rgb_outer="138,68,171">
+<bundle value="Violet Pill" rgb_inner="187,140,189" rgb_outer="138,68,171">
 </bundle>
-<bundle value="Green Pill" gridX="5" gridY="5" rgb_inner="137,199,178" rgb_outer="94,181,151">
+<bundle value="Green Pill" rgb_inner="137,199,178" rgb_outer="94,181,151">
 </bundle>
