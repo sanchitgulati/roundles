@@ -62,6 +62,11 @@ bool GameScene::init()
     lbackground = LayerColor::create(RGBA_COLOR1, visibleSize.width, visibleSize.height);
     this->addChild(lbackground,zBg);
     
+    
+    auto emitter = ParticleSystemQuad::create("particleTexture.plist");
+    Util::loadParticleDefaults(emitter);
+    this->addChild(emitter,zBg);
+    
     auto btnBack = Button::create("Back",IMG_BUTTON_BACK,RGB_COLOR2);
     btnBack->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*0.85 ));
     btnBack->setCallback(CC_CALLBACK_1(GameScene::menuCallback, this));
@@ -84,7 +89,7 @@ bool GameScene::init()
     
     
     //That Circle in the backgroud
-    auto backgroundCircle = Sprite::create(IMG_CIRCLE_WHITE);
+    auto backgroundCircle = Sprite::create(IMG_CIRCLE_MM);
     backgroundCircle->setScale(Util::getScreenRatioWidth(backgroundCircle)*1.2);
     backgroundCircle->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
     backgroundCircle->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.35 ));
@@ -141,7 +146,7 @@ bool GameScene::init()
                 player->x = it->x;
                 player->y = it->y;
                 player->setPosition(getScreenCoordinates(it->x, it->y));
-                player->setScale(scale);
+                player->setScale(scaleSprite->getScale());
                 player->setTotalElements(static_cast<int>(level.size())); // to be changed with diffrent element types
                 player->setLocalZOrder(zPlayer);
                 levelNode->addChild(player);
@@ -151,7 +156,7 @@ bool GameScene::init()
             case eSingle:
             {
                 auto element = Single::create(IMG_CIRCLE_WHITE);
-                element->setScale(scale);
+                element->setScale(scaleSprite->getScale());
                 element->setPosition(getScreenCoordinates(it->x, it->y));
                 element->setLocalZOrder(zSingle);
                 it->ccElement = element;

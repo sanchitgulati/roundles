@@ -39,10 +39,11 @@ bool MainMenu::init()
     }
     
     /*Making Varibles Zero */
-    selectedBundle = 0;
+    selectedBundle = LevelXML::curBundleNumber;
+    LevelXML::setCurrentBundleId(LevelXML::curBundleNumber);
+    
     
     /* Touch Dispatcher */
-    
     auto listener = EventListenerTouchOneByOne::create();
     listener->onTouchBegan = CC_CALLBACK_2(MainMenu::onTouchBegan, this);
     listener->onTouchEnded = CC_CALLBACK_2(MainMenu::onTouchEnded, this);
@@ -70,7 +71,7 @@ bool MainMenu::init()
     
     
     emitter = ParticleSystemQuad::create("particleTexture.plist");
-    emitter->setBlendAdditive(false);
+    Util::loadParticleDefaults(emitter);
     this->addChild(emitter,zBg);
     
     auto btnSetting = Button::create("Setting",IMG_BUTTON_MENU,RGB_COLOR2);
@@ -115,10 +116,6 @@ bool MainMenu::init()
             auto sequence = Sequence::create(delay,seq,seq, NULL);
             lblGameName->getLetter(i)->runAction(RepeatForever::create(sequence));
             lblGameName->getLetter(i)->setColor(LevelXML::getBundleColorInnerAt(selectedBundle));
-            Color4F colorInner = Color4F(LevelXML::getBundleColorInnerAt(selectedBundle));
-            Color4F colorOuter = Color4F(LevelXML::getBundleColorOuterAt(selectedBundle));
-            emitter->setStartColor(colorInner);
-            emitter->setEndColor(colorOuter);
         }
     }
     
@@ -148,7 +145,9 @@ bool MainMenu::init()
     //End
     
     bundleNode->setPosition(Point(origin.x + visibleSize.width*(0.50),origin.y + visibleSize.height*0.30 ));
+    bundleNode->setRotation(selectedBundle*step*(180.0/PI));
     this->addChild(bundleNode,zReloader);
+    
     
     // create menu, it's an autorelease object
     auto menu = Menu::create(btnPlay, btnSetting,btnTutorial,gameTitle, NULL);
@@ -183,7 +182,7 @@ void MainMenu::menuCallback(Ref* pSender)
     switch (obj->getTag()) {
         case bPlay:
         {
-            LevelXML::setCurrentBundleId(selectedBundle);
+            UserDefault::getInstance()->flush();
             auto s = (Scene*)LevelMenu::create();
             Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
         }
@@ -286,13 +285,20 @@ void MainMenu::swipeDown(Point location)
 
 void MainMenu::changeGameNameLetterColor()
 {
+    LevelXML::setCurrentBundleId(selectedBundle);
+    UserDefault::getInstance()->setIntegerForKey("curBundleNumber", selectedBundle);
+    
     auto c = LevelXML::getBundleColorInnerAt(selectedBundle);
     lblGameName->getLetter(1)->runAction(TintTo::create(0.3f, c.r, c.g, c.b));
-    emitter->runAction(TintTo::create(0.3f, c.r, c.g, c.b));
+    
+    Color4F colorInner = Color4F(LevelXML::getBundleColorInnerAt(selectedBundle));
+    colorInner.a = 0.3;
+    emitter->setStartColor(colorInner);
 }
 
 void MainMenu::changePlayRecttonText()
 {
+    
 }
 
 

@@ -43,6 +43,10 @@ bool AppDelegate::applicationDidFinishLaunching() {
     //Play Playholder Music
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic(SFX_MUSIC,true);
 
+    
+    //Loading default from static file
+    LevelXML::curBundleNumber = UserDefault::getInstance()->getIntegerForKey("curBundleNumber", 0);
+    
     // create a scene. it's an autorelease object
     auto scene = MainMenu::createScene();
 

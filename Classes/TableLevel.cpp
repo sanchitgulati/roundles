@@ -25,10 +25,10 @@ bool TableLevel::init()
     winSize = Director::getInstance()->getWinSize();
     tableSize = this->getContentSize();
     
-    auto calcTemp = (winSize.height*0.70)/5.5f;
     
+    tableSize = Size(winSize.width,winSize.height*0.75);
+    auto calcTemp = (winSize.height*0.75)/5.0f;
     cellSize = Size(tableSize.width - 2*Constants::vEdgeMargin,calcTemp);
-    tableSize = Size(winSize.width,winSize.height*0.70);
     
     
 	TableView* tableView = TableView::create(this,Size(tableSize.width,tableSize.height));
@@ -39,6 +39,19 @@ bool TableLevel::init()
 	tableView->setVerticalFillOrder(TableView::VerticalFillOrder::TOP_DOWN);
 	this->addChild(tableView);
 	tableView->reloadData();
+    
+    auto blur = Sprite::create(IMG_BLUR);
+    blur->setPosition(Point(tableSize.width, tableSize.height));
+    blur->setAnchorPoint(Point(1,1));
+    blur->setScaleX(Util::getScreenRatioWidth(blur));
+    this->addChild(blur);
+    
+    auto blur2 = Sprite::create(IMG_BLUR);
+    blur2->setPosition(Point(0, 0));
+    blur2->setAnchorPoint(Point(0,0));
+    blur2->setFlippedY(true);
+    blur2->setScaleX(Util::getScreenRatioWidth(blur2));
+    this->addChild(blur2);
     
     return true;
 }
@@ -52,7 +65,10 @@ void TableLevel::tableCellTouched(TableView* table, TableViewCell* cell)
         auto s = (Scene*)GameScene::create();
         Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
     });
-    cell->runAction(Sequence::create(RotateBy::create(0.1f, Vertex3F(0, 10, 0)),callFunc,NULL));
+    auto action = MoveBy::create(0.1f, Point(0,-5));
+    auto rotate = RotateBy::create(0.1f, Vertex3F(-10, 0, 0));
+    cell->runAction(Sequence::create(rotate,callFunc,NULL));
+    cell->runAction(action);
 }
 
 Size TableLevel::tableCellSizeForIndex(TableView *table, ssize_t idx)
@@ -62,7 +78,14 @@ Size TableLevel::tableCellSizeForIndex(TableView *table, ssize_t idx)
 
 TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
 {
-    auto string = String::createWithFormat("%s", LevelXML::getLevelNameAt(static_cast<int>(idx)).c_str());
+    auto string = String::createWithFormat("%s : %s",Util::to_roman(idx+1).c_str(), LevelXML::getLevelNameAt(static_cast<int>(idx)).c_str());
+    
+    std::string stringMore = "Tap To Play";
+    if(LevelXML::getDidCompleteLevelAt(idx));
+    {
+        stringMore = "Level Completed";
+    }
+    
     
     TableViewCell *cell = table->dequeueCell();
     if (!cell) {
@@ -70,7 +93,7 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
         cell->autorelease();
         Sprite* sprite = Sprite::create(IMG_BUTTON_LEVEL);
         Size temp = sprite->getBoundingBox().size;
-        sprite->setScale((cellSize.width/temp.width),1);
+        sprite->setScale((cellSize.width/temp.width));
         
         switch (idx%2) {
             case 0:
@@ -82,7 +105,7 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
             default:
                 break;
         }
-        
+        cell->setAnchorPoint(Point(0.5, 0.5));
         
         sprite->setAnchorPoint(Point::ZERO);
         sprite->setPosition(Point(0, 0));
@@ -90,11 +113,20 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
         cell->addChild(sprite);
         
         auto label = LabelTTF::create(string->getCString(), Constants::fontName, Constants::defaultFontSize);
-        label->setPosition(Point(Constants::vEdgeMargin, cellSize.height - Constants::vEdgeMargin));
-        label->setColor(Color3B::WHITE);
+        label->setPosition(Point(Constants::vEdgeMargin, cellSize.height - 2*Constants::vEdgeMargin));
+        label->setColor(RGB_COLOR6);
 		label->setAnchorPoint(Point(0,1));
         label->setTag(123);
         cell->addChild(label);
+        
+        auto labelMore = Label::create(stringMore.c_str(),Constants::fontName, Constants::defaultFontSize*0.5);
+        auto labelSize = label->getBoundingBox().size;
+        labelMore->setPosition(Point(Constants::vEdgeMargin, cellSize.height - 2*Constants::vEdgeMargin - labelSize.height));
+        labelMore->setColor(RGB_COLOR6);
+		labelMore->setAnchorPoint(Point(0,1));
+        labelMore->setTag(124);
+        cell->addChild(labelMore);
+        
     }
     else
     {
@@ -112,6 +144,8 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
         
         auto label = (LabelTTF*)cell->getChildByTag(123);
         label->setString(string->getCString());
+        auto labelMore = (LabelTTF*)cell->getChildByTag(124);
+        labelMore->setString(stringMore.c_str());
     }
 
     

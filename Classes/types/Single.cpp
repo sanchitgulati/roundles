@@ -8,6 +8,7 @@
 
 #include "Single.h"
 #include "Constants.h"
+#include "LevelXML.h"
 
 using namespace cocos2d;
 
@@ -22,11 +23,17 @@ Single::Single(const char* image)
     sprite->setAnchorPoint(Point(0, 0));
     sprite->setColor(RGB_COLOR7);
     this->addChild(sprite);
+    
+    light = Sprite::create(IMG_CIRCLE_LIGHT);
+    light->setAnchorPoint(Point(0, 0));
+    light->setColor(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber));
+    this->addChild(light);
 }
 
 void Single::setScale(float scale)
 {
     sprite->setScale(scale);
+    light->setScale(scale);
 }
 
 Single* Single::create(const char * image)

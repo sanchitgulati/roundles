@@ -44,12 +44,15 @@
 #define SWIPE_THRESHOLD 100.0
 
 
+#define IMG_BLUR "images/blur.png"
+
 #define IMG_CIRCLE_BTN "images/circleBtn2.png"
 #define IMG_CIRCLE_OBJECT "images/circleBtn.png"
 #define IMG_CIRCLE_MM "images/circleMM.png"
 #define IMG_CIRCLE_SHADOW "images/circleShadow.png"
+#define IMG_CIRCLE_LIGHT "images/circleGameOuter.png"
 
-#define IMG_CIRCLE_WHITE "images/whiteCircle.png"
+#define IMG_CIRCLE_WHITE "images/circleWhite.png"
 #define IMG_RECT_WHITE "images/whiteRect.png"
 #define IMG_BUTTON_WHITE "images/whiteButton.png"
 
