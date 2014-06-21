@@ -20,6 +20,7 @@ public:
     Player(const char* image);
     cocos2d::Sprite* sprite;
     cocos2d::Sprite* innerSprite;
+    cocos2d::Sprite* light;
     int totalElements;
     int capturedElements;
     

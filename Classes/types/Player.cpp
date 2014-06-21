@@ -26,6 +26,15 @@ Player::Player(const char* image)
     sprite->setAnchorPoint(Point(0, 0));
     this->addChild(sprite);
     
+    light = Sprite::create(IMG_CIRCLE_LIGHT);
+    light->setAnchorPoint(Point(0, 0));
+    light->setOpacity(100);
+    light->setAnchorPoint(Point(0.0, 0.0));
+    light->setColor(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber));
+    light->runAction(RepeatForever::create(Sequence::create(FadeTo::create(1.5f,200),FadeTo::create(0.5f,100),NULL)));
+    sprite->addChild(light);
+    
+    
     innerSprite = Sprite::create(image);
     innerSprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
     innerSprite->setScale(0.5);
@@ -37,6 +46,7 @@ Player::Player(const char* image)
 void Player::setScale(float scale)
 {
     sprite->setScale(scale);
+//    light->setScale(1.0);
 }
 
 Player* Player::create(const char * image)

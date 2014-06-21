@@ -36,7 +36,7 @@ Rect Rotator::getBoundingBox()
 
 Rotator::Rotator(Color3B outerColor,Color3B innerColor)
 {
-    outer = Sprite::create(IMG_CIRCLE_MM);
+    outer = Sprite::create(IMG_CIRCLE_WHITE);
     inner = Sprite::create(IMG_CIRCLE_SHADOW);
     
     outer->setAnchorPoint(Point(0.5,0.5));

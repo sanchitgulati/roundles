@@ -66,7 +66,7 @@ void Util::loadParticleDefaults(cocos2d::ParticleSystemQuad *emitter)
     try
     {
         Color4F colorInner = Color4F(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber));
-        colorInner.a = 0.3;
+        colorInner.a = 0.5;
         emitter->setStartColor(colorInner);
     }
     catch(std::exception e)

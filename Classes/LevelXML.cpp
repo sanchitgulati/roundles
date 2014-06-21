@@ -266,6 +266,21 @@ std::vector<LevelElement> LevelXML::getCurrentLevel()
     return vec;
 }
 
+std::vector<int> LevelXML::getSolutionLevel()
+{
+    auto vec = std::vector<int>();
+    pugi::xml_node solutionNode = curLevel.child("solution");
+    if(std::atoi(solutionNode.attribute("isValid").value())== 0)
+        return vec;
+    pugi::xml_object_range<pugi::xml_named_node_iterator> itElement = curLevel.child("solution").children("element");
+    for(pugi::xml_named_node_iterator it=itElement.begin(); it!=itElement.end(); it++)
+    {
+        auto value = std::atoi(it->attribute("direction").value());
+        vec.push_back(value);
+    }
+    return vec;
+}
+
 int LevelXML::getGridSizeX()
 {
     return std::atoi(curLevel.attribute("gridX").value());

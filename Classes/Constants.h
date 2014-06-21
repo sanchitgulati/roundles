@@ -46,21 +46,24 @@
 
 #define IMG_BLUR "images/blur.png"
 
-#define IMG_CIRCLE_BTN "images/circleBtn2.png"
+#define IMG_CIRCLE_BTN "images/circleBtn.png"
 #define IMG_CIRCLE_OBJECT "images/circleBtn.png"
 #define IMG_CIRCLE_MM "images/circleMM.png"
 #define IMG_CIRCLE_SHADOW "images/circleShadow.png"
 #define IMG_CIRCLE_LIGHT "images/circleGameOuter.png"
 
-#define IMG_CIRCLE_WHITE "images/circleWhite.png"
-#define IMG_RECT_WHITE "images/whiteRect.png"
-#define IMG_BUTTON_WHITE "images/whiteButton.png"
+
+#define IMG_CIRCLE_WHITE "images/circleWhiteHiRes.png"
+#define IMG_CIRCLE_WHITE_BORDER "images/circleWhiteBorder.png"
+#define IMG_RECT_WHITE "images/rectWhite.png"
+#define IMG_BUTTON_WHITE "images/btnWhiteFlat.png"
 
 
 #define IMG_BUTTON_MENU "images/btnMenu.png"
-#define IMG_BUTTON_LEVEL "images/btnLevel.png"
+#define IMG_BUTTON_LEVEL "images/btnWhiteFlat.png"
 #define IMG_BUTTON_HINT "images/btnHint.png"
 #define IMG_BUTTON_RESTART "images/btnRestart.png"
+#define IMG_BUTTON_UNDO "images/btnUndo.png"
 
 #define IMG_BUTTON_TUTORIAL "images/btnTut.png"
 #define IMG_BUTTON_ACHIEVE "images/btnAchieve.png"
@@ -75,6 +78,8 @@ enum zindex
     zReloader,
     zMenu,
     zLogo,
+    zGame,
+    zGameFront,
     zPrimatives
     
 };

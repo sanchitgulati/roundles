@@ -41,10 +41,17 @@ bool TableLevel::init()
 	tableView->reloadData();
     
     auto blur = Sprite::create(IMG_BLUR);
-    blur->setPosition(Point(tableSize.width, tableSize.height));
-    blur->setAnchorPoint(Point(1,1));
+    blur->setPosition(Point(0, tableSize.height));
+    blur->setAnchorPoint(Point(0,1));
     blur->setScaleX(Util::getScreenRatioWidth(blur));
     this->addChild(blur);
+    
+    auto blur1 = Sprite::create(IMG_BLUR);
+    blur1->setPosition(Point(0, tableSize.height));
+    blur1->setAnchorPoint(Point(0,0));
+    blur1->setFlippedY(true);
+    blur1->setScaleX(Util::getScreenRatioWidth(blur1));
+    this->addChild(blur1);
     
     auto blur2 = Sprite::create(IMG_BLUR);
     blur2->setPosition(Point(0, 0));

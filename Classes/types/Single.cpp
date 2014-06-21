@@ -26,7 +26,9 @@ Single::Single(const char* image)
     
     light = Sprite::create(IMG_CIRCLE_LIGHT);
     light->setAnchorPoint(Point(0, 0));
+    light->setOpacity(50);
     light->setColor(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber));
+    light->runAction(RepeatForever::create(Sequence::create(FadeTo::create(3.0f,150),FadeTo::create(2.0f,50),NULL)));
     this->addChild(light);
 }
 

@@ -39,6 +39,13 @@ struct LevelElement
     }
 };
 
+enum {
+    dTop,
+    dBottom,
+    dLeft,
+    dRight
+};
+
 class LevelXML
 {
 public:
@@ -68,6 +75,9 @@ public:
     static int getGridSizeX();
     static int getGridSizeY();
     static int getLevelId();
+    
+    
+    static std::vector<int> getSolutionLevel();
     
     static std::vector<LevelElement> getCurrentLevel();
 };

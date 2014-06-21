@@ -12,7 +12,7 @@
 #include "MainMenuScene.h"
 #include "SimpleAudioEngine.h"
 
-enum{bBack,bHint,bRestart};
+enum{bMenu,bBack,bHint,bRestart,bUndo};
 
 enum{zSingle,zPlayer}; //zPlayer to be last
 
@@ -84,16 +84,46 @@ bool GameScene::init()
     btnRestart->setTag(bRestart);
     
     
+    
+    auto btnUndo = Sideton::create("Undo",IMG_BUTTON_UNDO,RGB_COLOR2);
+    btnUndo->setPosition(Point(origin.x + visibleSize.width*.50, origin.y + visibleSize.height*.10 ));
+    btnUndo->setCallback(CC_CALLBACK_1(GameScene::menuCallback, this));
+    btnUndo->setTag(bUndo);
+    
     // create menu, it's an autorelease object
-    auto menu = Menu::create(btnBack, btnHint,btnRestart, NULL);
+    auto menu = Menu::create(btnBack, btnHint,btnRestart,btnUndo, NULL);
+    menu->setTag(bMenu);
     
     
     //That Circle in the backgroud
-    auto backgroundCircle = Sprite::create(IMG_CIRCLE_MM);
+    auto backgroundCircle = Sprite::create(IMG_CIRCLE_WHITE);
     backgroundCircle->setScale(Util::getScreenRatioWidth(backgroundCircle)*1.2);
     backgroundCircle->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
     backgroundCircle->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.35 ));
+    _topCircle = backgroundCircle->getPosition().y + backgroundCircle->getBoundingBox().size.height/2.0;
     this->addChild(backgroundCircle);
+    
+    
+    auto ret = loadLevel();
+    if(!ret)
+        return false;
+    
+    log("level size with %d height %d into %f",LevelXML::getGridSizeX(),LevelXML::getGridSizeY(),_size);
+    levelNode->setContentSize(Size(Point(LevelXML::getGridSizeX()*_size,LevelXML::getGridSizeY()*_size)));
+    levelNode->setAnchorPoint(Point(0.5, 0.5));
+    levelNode->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.35 ));
+    this->addChild(levelNode);
+    
+    menu->setPosition(Point::ZERO);
+    this->addChild(menu, zMenu);
+ 
+    //schedule update
+    this->scheduleUpdate();
+    return true;
+}
+
+bool GameScene::loadLevel(bool reset)
+{
     
     /*Getting Scale For Future Use */
     auto scaleSprite = Sprite::create(IMG_CIRCLE_WHITE);
@@ -132,9 +162,15 @@ bool GameScene::init()
     scaleSprite->setScale(Util::getScreenRatio(scaleSprite)*scale);
     _size = scaleSprite->getBoundingBox().size.width*1.4f;
     
-    levelNode = Node::create();
+    if(levelNode)
+        levelNode->removeAllChildrenWithCleanup(true);
+    else
+        levelNode = Node::create();
+    
     /* Load Up Level */
     level = LevelXML::getCurrentLevel();
+    solution = LevelXML::getSolutionLevel();
+    
     std::vector<LevelElement>::iterator toDel;
     for (std::vector<LevelElement>::iterator it = level.begin() ; it != level.end(); ++it)
     {
@@ -168,23 +204,12 @@ bool GameScene::init()
         }
     }
     level.erase(toDel); //Delete Player from Level Vector
-    
-    log("level size with %d height %d into %f",LevelXML::getGridSizeX(),LevelXML::getGridSizeY(),_size);
-    levelNode->setContentSize(Size(Point(LevelXML::getGridSizeX()*_size,LevelXML::getGridSizeY()*_size)));
-    levelNode->setAnchorPoint(Point(0.5, 0.5));
-    levelNode->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.35 ));
-    this->addChild(levelNode);
-    
-    menu->setPosition(Point::ZERO);
-    this->addChild(menu, zMenu);
- 
-    //schedule update
-    this->scheduleUpdate();
     return true;
 }
 
 void GameScene::update(float dt)
 {
+    
 }
 
 
@@ -203,12 +228,54 @@ void GameScene::menuCallback(Ref* pSender)
         }
         case bRestart:
         {
-            auto s = (Scene*)GameScene::create();
-            Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
+//            auto s = (Scene*)GameScene::create();
+//            Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
+            loadLevel(true);
             break;
         }
         case bHint:
         {
+            int i = 0;
+            for (std::vector<int>::iterator it = solution.begin() ; it != solution.end(); ++it)
+            {
+                auto element = Label::create("", Constants::fontName, Constants::fontSize);
+                switch ((int)*it) {
+                    case dTop:
+                        element->setString("Up");
+                        break;
+                    case dBottom:
+                        element->setString("Down");
+                        break;
+                    case dLeft:
+                        element->setString("Left");
+                        break;
+                    case dRight:
+                        element->setString("Right");
+                        break;
+                    default:
+                        element->setString("i dont know , lol");
+                        break;
+                }
+                this->addChild(element,zGameFront);
+                element->setOpacity(0);
+                element->setAnchorPoint(Point(0.5f, 0.0));
+                element->setColor(Color3B(RGB_COLOR7));
+                element->setPosition(Point(origin.x + visibleSize.width*0.5, _topCircle));
+                auto callFunc = CallFuncN::create(CC_CALLBACK_1(GameScene::delCocos,this));
+                auto delay = DelayTime::create(i*0.5f);
+                auto fadein = FadeIn::create(0.2f);
+                auto delaySmall = DelayTime::create(0.3f);
+                element->runAction(Sequence::create(delay,fadein,delaySmall,callFunc, NULL));
+                i++;
+            }
+            
+            break;
+        }
+        case bUndo:
+        {
+//            auto lastElement = move.back();
+//            move.pop_back();
+            
             break;
         }
         default:
@@ -220,6 +287,10 @@ void GameScene::menuCallback(Ref* pSender)
     }
 }
 
+void GameScene::delCocos(cocos2d::Node *node)
+{
+    node->removeFromParentAndCleanup(true);
+}
 
 bool GameScene::onTouchBegan(cocos2d::Touch *touch,cocos2d::Event *event)
 {
@@ -234,14 +305,14 @@ void GameScene::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event)
     {
         //right left
         if( touchStart.x - location.x  > SWIPE_THRESHOLD)
-        {swipeLeft();touchStart = Point::ZERO;}
+        {swipeLeft();updateGame();touchStart = Point::ZERO;}
         else if(location.x - touchStart.x > SWIPE_THRESHOLD)
-        {swipeRight();touchStart = Point::ZERO;}
+        {swipeRight();updateGame();touchStart = Point::ZERO;}
         //up down
         else if(touchStart.y - location.y > SWIPE_THRESHOLD)
-        {swipeDown();touchStart = Point::ZERO;}
+        {swipeDown();updateGame();touchStart = Point::ZERO;}
         else if (location.y - touchStart.y > SWIPE_THRESHOLD)
-        {swipeUp();touchStart = Point::ZERO;}
+        {swipeUp();updateGame();touchStart = Point::ZERO;}
     }
 }
 
@@ -292,7 +363,28 @@ void GameScene::swipeDown()
     }
 }
 
-
+void GameScene::updateGame()
+{
+    //Disable/Enable Undo Button
+    if(move.size() == 0lu )
+    {
+        auto obj = static_cast<Sideton *>(this->getChildByTag(bMenu)->getChildByTag(bUndo));
+        obj->setEnabled(false);
+    }
+    
+    log("Total Elements Left Are %lu",level.size());
+    if(level.size() == 0lu)
+    {
+        log("You Win");
+    }
+    else
+    {
+        auto ret = checkMoves();
+        if(!ret)
+            log("You Lose");
+    }
+    
+}
 
 /* ---------------------- Util -----------------------*/
 
@@ -312,6 +404,7 @@ LevelElement GameScene::getLevelElementAt(int x, int y,bool del)
             element = static_cast<LevelElement>(*it);
             if(del == true)
             {
+                move.push_back((LevelElement)*it);
                 it = level.erase(it);
                 break;
             }
@@ -320,10 +413,42 @@ LevelElement GameScene::getLevelElementAt(int x, int y,bool del)
     return element;
 }
 
-void GameScene::checkMoves(int x,int y)
+bool GameScene::checkMove(int x, int y)
 {
-    auto element = getLevelElementAt(x,y,true);
-    if(element.type != eNull);
+    auto element = getLevelElementAt(x,y,false);
+    if(element.type != eNull)
+        return false;
+    else
+        return true;
+}
+
+bool GameScene::checkMoves()
+{
+    for(int i = player->x - 1; i >= 0; i--)
+    {
+        auto ret = checkMove(i, player->y);
+        if(ret)
+            return true;
+    }
+    for(int i = player->x + 1; i <= LevelXML::getGridSizeX(); i++)
+    {
+        auto ret = checkMove(i,player->y);
+        if(ret)
+            return true;
+    }
+    for(int i = player->y + 1; i <= LevelXML::getGridSizeY(); i++)
+    {
+        auto ret = checkMove(player->x,i);
+        if(ret)
+            return true;
+    }
+    for(int i = player->y - 1; i >= 0; i--)
+    {
+        auto ret = checkMove(player->x,i);
+        if(ret)
+            return true;
+    }
+    return false;
 }
 
 bool GameScene::captureElementAndAnimate(int x,int y)

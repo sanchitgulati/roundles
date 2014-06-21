@@ -250,13 +250,13 @@ void MainMenu::swipeLeft(Point location)
     
     int multipler = (location.y > bundleNode->getPositionY() ? 1 : -1);
     if(bundleNode->getNumberOfRunningActions() == 0 )
+    {
+        selectedBundle--;
+        if(selectedBundle == -1)
+            selectedBundle = LevelXML::getTotalBundlesSize()-1;
+        changeGameNameLetterColor();
         bundleNode->runAction(RotateBy::create(0.5, -1*multipler*step*(180.0/PI)));
-    
-    selectedBundle--;
-    if(selectedBundle == -1)
-        selectedBundle = LevelXML::getTotalBundlesSize()-1;
-    changeGameNameLetterColor();
-    
+    }
     log("left");
 }
 void MainMenu::swipeRight(Point location)
@@ -267,12 +267,13 @@ void MainMenu::swipeRight(Point location)
     
     int multipler = (location.y > bundleNode->getPositionY() ? 1 : -1);
     if(bundleNode->getNumberOfRunningActions() == 0 )
+    {
+        selectedBundle++;
+        if(selectedBundle == LevelXML::getTotalBundlesSize())
+            selectedBundle = 0;
+        changeGameNameLetterColor();
         bundleNode->runAction(RotateBy::create(0.5, multipler*step*(180.0/PI)));
-    
-    selectedBundle++;
-    if(selectedBundle == LevelXML::getTotalBundlesSize())
-        selectedBundle = 0;
-    changeGameNameLetterColor();
+    }
     
     
     log("right");

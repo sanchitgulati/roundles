@@ -45,13 +45,15 @@ public:
     Point origin;
     float fontSize;
     LayerColor* lbackground;
+    int _topCircle;
     
     //Player
     Player* player;
     
     //Level
     std::vector<LevelElement> level;
-    
+    std::vector<LevelElement> move;
+    std::vector<int> solution;
     
     //touch delegated
     bool onTouchBegan(Touch* touch, Event  *event);
@@ -68,9 +70,16 @@ public:
     
     LevelElement getLevelElementAt(int x,int y,bool del = false);
     bool captureElementAndAnimate(int x,int y);
-    void checkMoves(int x,int y);
+    bool checkMoves();
+    bool checkMove(int x,int y);
     void deleteCCElementFromLevelNode(Node * sender,bool cleanup);
     Point getScreenCoordinates(int x,int y);
+    
+    bool loadLevel(bool reset = false);
+    
+    void updateGame();
+    
+    void delCocos(Node* node);
     
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);

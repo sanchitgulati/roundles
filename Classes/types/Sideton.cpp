@@ -1,29 +1,27 @@
 //
-//  Button.cpp
+//  Sideton.cpp
 //  roundels
 //
-//  Created by Sanchit Gulati on 08/06/14.
+//  Created by Sanchit Gulati on 21/06/14.
 //
 //
 
-#include "Button.h"
+#include "Sideton.h"
 
 USING_NS_CC;
 
 enum {kZoomActionTag,kSlideActionTag};
 
-Button::Button(std::string text,std::string image,Color3B color)
+Sideton::Sideton(std::string text,std::string image,Color3B color)
 {
     this->setEnabled(true);
     this->setAnchorPoint(Point(0.5f, 0.5f));
-
-    this->lblText = Label::create(text, Constants::fontName, Constants::fontSize/2.0);
+    
     this->foreSprite = Sprite::create(image);
     this->backSprite = Sprite::create(IMG_CIRCLE_BTN);
-    this->backSprite->setScale(Util::getScreenRatio(backSprite)*0.22);
-    this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*0.12);
+    this->backSprite->setScale(Util::getScreenRatio(backSprite)*0.10);
+    this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*0.08);
     this->backSprite->setColor(color);
-    this->lblText->setColor(RGB_COLOR5);
     
     _originalScale = this->getScale();
     _originalPosition = this->getPosition();
@@ -33,24 +31,20 @@ Button::Button(std::string text,std::string image,Color3B color)
     this->getBoundingBox().setRect(0, 0, sizeMenuItem.width, sizeMenuItem.height);
     
     this->addChild(backSprite);
-    this->addChild(lblText);
     this->addChild(foreSprite);
     
     auto shadowCorrection = 0;// 8 * backSprite->getScale();
     
     backSprite->setAnchorPoint(Point(0,0));
     foreSprite->setPosition(Point(sizeMenuItem.width/2.0f - shadowCorrection,sizeMenuItem.height/2.0f + shadowCorrection));
-    this->lblText->setAnchorPoint(Point(0.0f, 1.0f));
-    this->lblText->setPositionY(-1* sizeMenuItem.height*0.10);
-    this->lblText->setPositionX(sizeMenuItem.width*0.50 - (lblText->getContentSize().width/2.0f));
     
     setCascadeColorEnabled(true);
     setCascadeOpacityEnabled(true);
 }
 
-Button* Button::create(std::string text,std::string image,Color3B color)
+Sideton* Sideton::create(std::string text,std::string image,Color3B color)
 {
-    Button *pRet = new Button(text,image,color);
+    Sideton *pRet = new Sideton(text,image,color);
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -64,7 +58,7 @@ Button* Button::create(std::string text,std::string image,Color3B color)
     }
 }
 
-void Button::selected()
+void Sideton::selected()
 {
     // subclass to change the default action
     if(_enabled)
@@ -92,7 +86,7 @@ void Button::selected()
     }
 }
 
-void Button::unselected()
+void Sideton::unselected()
 {
     // subclass to change the default action
     if(_enabled)
@@ -109,3 +103,8 @@ void Button::unselected()
     }
 }
 
+void Sideton::setEnabled(bool value)
+{
+    MenuItem::setEnabled(value);
+//    this->backSprite->setColor(Color3B::GRAY); //TODO
+}
