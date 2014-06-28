@@ -30,20 +30,22 @@ struct LevelElement
     int type;
     int x;
     int y;
+    int otherData;
     cocos2d::Node* ccElement;
     LevelElement()
     {
         type = eNull;
         x = 0;
         y = 0;
+        otherData = -1;
     }
 };
 
 enum {
     dTop,
+    dRight,
     dBottom,
-    dLeft,
-    dRight
+    dLeft
 };
 
 class LevelXML

@@ -69,7 +69,7 @@ public:
     void swipeDown();
     
     LevelElement getLevelElementAt(int x,int y,bool del = false);
-    bool captureElementAndAnimate(int x,int y);
+    bool captureElementAndAnimate(int x,int y,int direction);
     bool checkMoves();
     bool checkMove(int x,int y);
     void deleteCCElementFromLevelNode(Node * sender,bool cleanup);

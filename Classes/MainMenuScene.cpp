@@ -144,7 +144,7 @@ bool MainMenu::init()
     }
     //End
     
-    bundleNode->setPosition(Point(origin.x + visibleSize.width*(0.50),origin.y + visibleSize.height*0.30 ));
+    bundleNode->setPosition(Point(origin.x + visibleSize.width*(0.50),origin.y + visibleSize.height*0.20 ));
     bundleNode->setRotation(selectedBundle*step*(180.0/PI));
     this->addChild(bundleNode,zReloader);
     

@@ -71,6 +71,7 @@
 #define IMG_BUTTON_BACK "images/btnBack.png"
 #define IMG_BUTTON_OPTION "images/btnOption.png"
 #define IMG_TICK_GREEN "images/btnTick.png"
+#define IMG_ARROW "images/arrowPlayer.png"
 
 enum zindex
 {

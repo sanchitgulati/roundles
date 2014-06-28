@@ -261,6 +261,11 @@ std::vector<LevelElement> LevelXML::getCurrentLevel()
         temp.type = std::atoi(it->attribute("type").value());
         temp.x = std::atoi(it->attribute("positionX").value());
         temp.y = std::atoi(it->attribute("positionY").value());
+        temp.otherData = -1;
+        if(temp.type == eStart)
+        {
+            temp.otherData = std::atoi(it->attribute("head").value());
+        }
         vec.push_back(temp);
     }
     return vec;

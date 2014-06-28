@@ -181,6 +181,7 @@ bool GameScene::loadLevel(bool reset)
                 player = Player::create(IMG_CIRCLE_WHITE);
                 player->x = it->x;
                 player->y = it->y;
+                player->setHead(it->otherData);
                 player->setPosition(getScreenCoordinates(it->x, it->y));
                 player->setScale(scaleSprite->getScale());
                 player->setTotalElements(static_cast<int>(level.size())); // to be changed with diffrent element types
@@ -328,36 +329,56 @@ void GameScene::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event)
 
 void GameScene::swipeLeft()
 {
+    if(player->head == dRight)
+    {
+        log("invalid move");
+        return;
+    }
     for(int i = player->x - 1; i >= 0; i--)
     {
-        auto ret = captureElementAndAnimate(i,player->y);
+        auto ret = captureElementAndAnimate(i,player->y,dLeft);
         if(ret)
             return;
     }
 }
 void GameScene::swipeRight()
 {
+    if(player->head == dLeft)
+    {
+        log("invalid move");
+        return;
+    }
     for(int i = player->x + 1; i <= LevelXML::getGridSizeX(); i++)
     {
-        auto ret = captureElementAndAnimate(i,player->y);
+        auto ret = captureElementAndAnimate(i,player->y,dRight);
         if(ret)
             return;
     }
 }
 void GameScene::swipeUp()
 {
+    if(player->head == dBottom)
+    {
+        log("invalid move");
+        return;
+    }
     for(int i = player->y + 1; i <= LevelXML::getGridSizeY(); i++)
     {
-        auto ret = captureElementAndAnimate(player->x,i);
+        auto ret = captureElementAndAnimate(player->x,i,dTop);
         if(ret)
             return;
     }
 }
 void GameScene::swipeDown()
 {
+    if(player->head == dTop)
+    {
+        log("invalid move");
+        return;
+    }
     for(int i = player->y - 1; i >= 0; i--)
     {
-        auto ret = captureElementAndAnimate(player->x,i);
+        auto ret = captureElementAndAnimate(player->x,i,dBottom);
         if(ret)
             return;
     }
@@ -451,7 +472,7 @@ bool GameScene::checkMoves()
     return false;
 }
 
-bool GameScene::captureElementAndAnimate(int x,int y)
+bool GameScene::captureElementAndAnimate(int x,int y,int direction)
 {
     auto element = getLevelElementAt(x,y,true);
     if(element.type != eNull)
@@ -465,8 +486,7 @@ bool GameScene::captureElementAndAnimate(int x,int y)
         player->x = x;
         player->y = y;
         
-        
-        player->capture(element.type,animationDelta);
+        player->capture(element.type,direction,animationDelta);
         
         auto move = MoveTo::create(animationDelta, getScreenCoordinates(x,y));
         auto move_ease_in = EaseBounceInOut::create(move->clone() );

@@ -21,6 +21,16 @@ bool Player::init()
 
 Player::Player(const char* image)
 {
+    
+    arrow = Sprite::create(IMG_ARROW);
+    arrow->setOpacity(100);
+    arrow->setAnchorPoint(Point(0.5, 0.5));
+    arrow->setColor(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber));
+
+    this->addChild(arrow);
+    
+    
+    
     sprite = Sprite::create(image);
     sprite->setColor(RGB_COLOR7);
     sprite->setAnchorPoint(Point(0, 0));
@@ -29,10 +39,12 @@ Player::Player(const char* image)
     light = Sprite::create(IMG_CIRCLE_LIGHT);
     light->setAnchorPoint(Point(0, 0));
     light->setOpacity(100);
-    light->setAnchorPoint(Point(0.0, 0.0));
     light->setColor(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber));
     light->runAction(RepeatForever::create(Sequence::create(FadeTo::create(1.5f,200),FadeTo::create(0.5f,100),NULL)));
     sprite->addChild(light);
+    
+
+
     
     
     innerSprite = Sprite::create(image);
@@ -46,7 +58,9 @@ Player::Player(const char* image)
 void Player::setScale(float scale)
 {
     sprite->setScale(scale);
-//    light->setScale(1.0);
+    auto tempCalc = sprite->getBoundingBox().size.width / arrow->getBoundingBox().size.width;
+    arrow->setScale(1.5*tempCalc);
+    arrow->setPosition(Point(sprite->getBoundingBox().size.width/2.0,sprite->getBoundingBox().size.height/2.0));
 }
 
 Player* Player::create(const char * image)
@@ -71,7 +85,7 @@ void Player::setTotalElements(int value)
     innerSprite->setScale((1.0/totalElements));
 }
 
-bool Player::capture(int type,float animationDelta)
+bool Player::capture(int type,int direction,float animationDelta)
 {
     switch (type) {
         case eNull:
@@ -83,6 +97,10 @@ bool Player::capture(int type,float animationDelta)
             capturedElements ++;
             float val = (1.0 / (totalElements-capturedElements == 0 ? 1.01 : totalElements-capturedElements));
             innerSprite->runAction(ScaleTo::create(animationDelta, val));
+            
+            
+            arrow->runAction(RotateTo::create(animationDelta,(direction + 1)*90));
+            
             return true;
             break;
         }
@@ -90,5 +108,11 @@ bool Player::capture(int type,float animationDelta)
             return false;
             break;
     }
+}
+
+bool Player::setHead(int direction)
+{
+    arrow->setRotation((direction + 1)*90);
+    return true;
 }
 
