@@ -46,13 +46,16 @@ public:
     float fontSize;
     LayerColor* lbackground;
     int _topCircle;
-    
+    bool isAnimation;
     //Player
     Player* player;
     
+    //Buttons
+    Sideton* btnUndo;
+    
     //Level
     std::vector<LevelElement> level;
-    std::vector<LevelElement> move;
+    std::vector<LevelElement> moves;
     std::vector<int> solution;
     
     //touch delegated

@@ -22,6 +22,7 @@ class Sideton : public cocos2d::MenuItem
     cocos2d::Sprite* foreSprite;
     float _originalScale;
     Point _originalPosition;
+    Color3B _originalColor;
 public:
     Sideton(std::string text,std::string image,Color3B color);
     static Sideton* create(std::string text,std::string image,Color3B color);

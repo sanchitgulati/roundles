@@ -97,10 +97,8 @@ bool Player::capture(int type,int direction,float animationDelta)
             capturedElements ++;
             float val = (1.0 / (totalElements-capturedElements == 0 ? 1.01 : totalElements-capturedElements));
             innerSprite->runAction(ScaleTo::create(animationDelta, val));
-            
-            
             arrow->runAction(RotateTo::create(animationDelta,(direction + 1)*90));
-            
+            this->head = direction;
             return true;
             break;
         }
@@ -112,6 +110,7 @@ bool Player::capture(int type,int direction,float animationDelta)
 
 bool Player::setHead(int direction)
 {
+    this->head = direction;
     arrow->setRotation((direction + 1)*90);
     return true;
 }

@@ -71,8 +71,11 @@ public:
     static bool setCurrentLevelId(int);
     
     static std::string getLevelNameAt(int);
-    static float getDidCompleteLevelAt(int);
+    
+    
+    static bool getDidCompleteLevelAt(int);
     static bool setLevelCompletedAt(int);
+    
     
     static int getGridSizeX();
     static int getGridSizeY();

@@ -29,7 +29,7 @@
     <level id="2" gridX="4" gridY="4" >
 		<title>Lets Try Again</title>
 		<data>
-			<element type="1" positionX="3" positionY="3"></element>
+			<element type="1" positionX="3" positionY="3" head="3"></element>
 			<element type="2" positionX="0" positionY="0"></element>
 			<element type="2" positionX="0" positionY="1"></element>
 			<element type="2" positionX="0" positionY="3"></element>
@@ -43,7 +43,7 @@
     <level id="3" gridX="5" gridY="4" >
 		<title>As Simple As That</title>
 		<data>
-			<element type="1" positionX="0" positionY="2"></element>
+			<element type="1" positionX="0" positionY="2" head="1"></element>
 			<element type="2" positionX="0" positionY="1"></element>
 			<element type="2" positionX="1" positionY="0"></element>
 			<element type="2" positionX="1" positionY="2"></element>
@@ -59,7 +59,7 @@
     <level id="4" gridX="4" gridY="5" >
 		<title>Deja vu</title>
 		<data>
-			<element type="1" positionX="0" positionY="2"></element>
+			<element type="1" positionX="0" positionY="2" head="1"></element>
 			<element type="2" positionX="1" positionY="0"></element>
 			<element type="2" positionX="1" positionY="1"></element>
 			<element type="2" positionX="1" positionY="2"></element>

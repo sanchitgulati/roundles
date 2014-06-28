@@ -57,6 +57,7 @@ bool GameScene::init()
     winSize = Director::getInstance()->getWinSize();
     origin = Director::getInstance()->getVisibleOrigin();
     fontSize = Constants::defaultFontSize*(winSize.width/480);
+    isAnimation = false;
     
     /* Initiation Of Variables */
     lbackground = LayerColor::create(RGBA_COLOR1, visibleSize.width, visibleSize.height);
@@ -85,7 +86,7 @@ bool GameScene::init()
     
     
     
-    auto btnUndo = Sideton::create("Undo",IMG_BUTTON_UNDO,RGB_COLOR2);
+    btnUndo = Sideton::create("Undo",IMG_BUTTON_UNDO,RGB_COLOR2);
     btnUndo->setPosition(Point(origin.x + visibleSize.width*.50, origin.y + visibleSize.height*.10 ));
     btnUndo->setCallback(CC_CALLBACK_1(GameScene::menuCallback, this));
     btnUndo->setTag(bUndo);
@@ -155,7 +156,7 @@ bool GameScene::loadLevel(bool reset)
             scale = 0.9f;
             break;
         default:
-            log("Invalid Grid Size, using default 0.5f");
+            log("Invalid Grid Size, raising exception!");
             return false;
             break;
     }
@@ -205,6 +206,10 @@ bool GameScene::loadLevel(bool reset)
         }
     }
     level.erase(toDel); //Delete Player from Level Vector
+    
+    //Start Load
+    updateGame();
+    
     return true;
 }
 
@@ -274,9 +279,13 @@ void GameScene::menuCallback(Ref* pSender)
         }
         case bUndo:
         {
-//            auto lastElement = move.back();
-//            move.pop_back();
-            
+            auto lastElement = moves.back();
+            moves.pop_back();
+            //TODO:
+            //Create Single Sprite
+            //Animate player to last position
+            //make it center smaller
+            log("Undo Pressed");
             break;
         }
         default:
@@ -331,7 +340,7 @@ void GameScene::swipeLeft()
 {
     if(player->head == dRight)
     {
-        log("invalid move");
+        log("Head is at Right,can't go Left");
         return;
     }
     for(int i = player->x - 1; i >= 0; i--)
@@ -345,7 +354,7 @@ void GameScene::swipeRight()
 {
     if(player->head == dLeft)
     {
-        log("invalid move");
+        log("Head is at Left, can't go Right");
         return;
     }
     for(int i = player->x + 1; i <= LevelXML::getGridSizeX(); i++)
@@ -359,7 +368,7 @@ void GameScene::swipeUp()
 {
     if(player->head == dBottom)
     {
-        log("invalid move");
+        log("Head is at bottom, can't go Up");
         return;
     }
     for(int i = player->y + 1; i <= LevelXML::getGridSizeY(); i++)
@@ -373,7 +382,7 @@ void GameScene::swipeDown()
 {
     if(player->head == dTop)
     {
-        log("invalid move");
+        log("Head is at Top, can't go Down");
         return;
     }
     for(int i = player->y - 1; i >= 0; i--)
@@ -387,16 +396,18 @@ void GameScene::swipeDown()
 void GameScene::updateGame()
 {
     //Disable/Enable Undo Button
-    if(move.size() == 0lu )
+    if(moves.size() == 0lu )
     {
-        auto obj = static_cast<Sideton *>(this->getChildByTag(bMenu)->getChildByTag(bUndo));
-        obj->setEnabled(false);
+        btnUndo->setEnabled(false);
     }
-    
-    log("Total Elements Left Are %lu",level.size());
+    else
+    {
+        btnUndo->setEnabled(true);
+    }
     if(level.size() == 0lu)
     {
         log("You Win");
+        LevelXML::setLevelCompletedAt(LevelXML::curLevelNumber);
     }
     else
     {
@@ -425,7 +436,9 @@ LevelElement GameScene::getLevelElementAt(int x, int y,bool del)
             element = static_cast<LevelElement>(*it);
             if(del == true)
             {
-                move.push_back((LevelElement)*it);
+                
+                //Storing Moves for Undo
+                moves.push_back((LevelElement)*it);
                 it = level.erase(it);
                 break;
             }
@@ -437,7 +450,7 @@ LevelElement GameScene::getLevelElementAt(int x, int y,bool del)
 bool GameScene::checkMove(int x, int y)
 {
     auto element = getLevelElementAt(x,y,false);
-    if(element.type != eNull)
+    if(element.type == eNull)
         return false;
     else
         return true;
@@ -474,33 +487,39 @@ bool GameScene::checkMoves()
 
 bool GameScene::captureElementAndAnimate(int x,int y,int direction)
 {
+    if(isAnimation)
+        return false;
+    
     auto element = getLevelElementAt(x,y,true);
-    if(element.type != eNull)
-    {
-        auto deltaX = abs(player->x - x) ;
-        auto deltaY = abs(player->y - y) ;
-        
-        float animationDelta = (deltaX > deltaY ? deltaX : deltaY) * 0.10; // 0.10 is constant
-     
-        
-        player->x = x;
-        player->y = y;
-        
-        player->capture(element.type,direction,animationDelta);
-        
-        auto move = MoveTo::create(animationDelta, getScreenCoordinates(x,y));
-        auto move_ease_in = EaseBounceInOut::create(move->clone() );
-        player->runAction(Sequence::create(move_ease_in, NULL));
-        
-        auto callFunc = CallFuncN::create(CC_CALLBACK_1(GameScene::deleteCCElementFromLevelNode,this, true));
-        auto delay = DelayTime::create(animationDelta); //relative to move to of player
-        element.ccElement->runAction(Sequence::create(delay,callFunc,NULL));
-        return true;
-    }
-    return false;
+    if(element.type == eNull)
+        return false;
+    
+    isAnimation = true;
+    
+    auto deltaX = abs(player->x - x) ;
+    auto deltaY = abs(player->y - y) ;
+    
+    float animationDelta = (deltaX > deltaY ? deltaX : deltaY) * 0.10; // 0.10 is constant
+    
+    
+    player->x = x;
+    player->y = y;
+    
+    
+    player->capture(element.type,direction,animationDelta);
+    
+    auto move = MoveTo::create(animationDelta, getScreenCoordinates(x,y));
+    auto move_ease_in = EaseBounceInOut::create(move->clone() );
+    player->runAction(Sequence::create(move_ease_in, NULL));
+    
+    auto callFunc = CallFuncN::create(CC_CALLBACK_1(GameScene::deleteCCElementFromLevelNode,this, true));
+    auto delay = DelayTime::create(animationDelta); //relative to move to of player
+    element.ccElement->runAction(Sequence::create(delay,callFunc,NULL));
+    return true;
 }
 
 void GameScene::deleteCCElementFromLevelNode(Node * sender,bool cleanup)
 {
     sender->removeAllChildrenWithCleanup(cleanup);
+    isAnimation = false;
 }

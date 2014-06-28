@@ -196,21 +196,18 @@ bool LevelXML::setCurrentBundleId(int index)
 
 bool LevelXML::setCurrentLevelId(int index)
 {
-    if(index <= getTotalBundlesSize())
+    LevelXML::curLevelNumber = index;
+    int localIndex = 0;
+    pugi::xml_object_range<pugi::xml_named_node_iterator> itBundle = curBundle.children("level");
+    for(pugi::xml_named_node_iterator it=itBundle.begin(); it!=itBundle.end(); it++)
     {
-        LevelXML::curLevelNumber = index;
-        int localIndex = 0;
-        pugi::xml_object_range<pugi::xml_named_node_iterator> itBundle = curBundle.children("level");
-        for(pugi::xml_named_node_iterator it=itBundle.begin(); it!=itBundle.end(); it++)
+        if(localIndex == index)
         {
-            if(localIndex == index)
-            {
-                curLevel = static_cast<pugi::xml_node>(*it);
-                LevelXML::curLevelNumber = index;
-                return true;
-            }
-            localIndex++;
+            curLevel = static_cast<pugi::xml_node>(*it);
+            LevelXML::curLevelNumber = index;
+            return true;
         }
+        localIndex++;
     }
     return false;
 }
@@ -236,10 +233,11 @@ std::string LevelXML::getLevelNameAt(int index)
     return returnVal;
 }
 
-float LevelXML::getDidCompleteLevelAt(int index)
+bool LevelXML::getDidCompleteLevelAt(int index)
 {
     char key[10];
     sprintf(key, "%d-%d",curBundleNumber,index);
+    log("retrieving for key %s value : %d",key,cocos2d::UserDefault::getInstance()->getBoolForKey(key, false));
     return cocos2d::UserDefault::getInstance()->getBoolForKey(key, false);
 }
 

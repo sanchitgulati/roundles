@@ -14,13 +14,13 @@ enum {kZoomActionTag,kSlideActionTag};
 
 Sideton::Sideton(std::string text,std::string image,Color3B color)
 {
-    this->setEnabled(true);
     this->setAnchorPoint(Point(0.5f, 0.5f));
     
     this->foreSprite = Sprite::create(image);
     this->backSprite = Sprite::create(IMG_CIRCLE_BTN);
     this->backSprite->setScale(Util::getScreenRatio(backSprite)*0.10);
     this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*0.08);
+    _originalColor = color;
     this->backSprite->setColor(color);
     
     _originalScale = this->getScale();
@@ -106,5 +106,10 @@ void Sideton::unselected()
 void Sideton::setEnabled(bool value)
 {
     MenuItem::setEnabled(value);
-//    this->backSprite->setColor(Color3B::GRAY); //TODO
+    if(this->backSprite == nullptr)
+        return;
+    if(value == false)
+        this->backSprite->setColor(Color3B::GRAY);
+    else
+        this->backSprite->setColor(_originalColor);
 }

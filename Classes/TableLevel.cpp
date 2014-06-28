@@ -65,7 +65,6 @@ bool TableLevel::init()
 
 void TableLevel::tableCellTouched(TableView* table, TableViewCell* cell)
 {
-    log("cell touched at index: %ld", cell->getIdx());
     LevelXML::setCurrentLevelId(static_cast<int>(cell->getIdx()));
     auto callFunc = CallFunc::create([this]()
     {
@@ -85,17 +84,19 @@ Size TableLevel::tableCellSizeForIndex(TableView *table, ssize_t idx)
 
 TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
 {
-    auto string = String::createWithFormat("%s : %s",Util::to_roman(idx+1).c_str(), LevelXML::getLevelNameAt(static_cast<int>(idx)).c_str());
+    int id = static_cast<int>(idx);
+    auto string = String::createWithFormat("%s : %s",Util::to_roman(id+1).c_str(), LevelXML::getLevelNameAt(static_cast<int>(idx)).c_str());
     
     std::string stringMore = "Tap To Play";
-    if(LevelXML::getDidCompleteLevelAt(idx));
+    if(LevelXML::getDidCompleteLevelAt(id) == true)
     {
-        stringMore = "Level Completed";
+        stringMore = std::string("Level Completed");
     }
     
     
     TableViewCell *cell = table->dequeueCell();
-    if (!cell) {
+    if (!cell)
+    {
         cell = new TableViewCell(); //Can Be Customized, refer to TestCpp
         cell->autorelease();
         Sprite* sprite = Sprite::create(IMG_BUTTON_LEVEL);
