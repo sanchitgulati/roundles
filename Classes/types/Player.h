@@ -32,6 +32,7 @@ public:
     void setScale(float);
     void setTotalElements(int);
     bool capture(int type,int direction,float animationDelta);
+    bool undo();
     bool setHead(int direction);
 };
 #endif /* defined(__roundels__Player__) */

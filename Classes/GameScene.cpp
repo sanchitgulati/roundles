@@ -127,7 +127,8 @@ bool GameScene::loadLevel(bool reset)
 {
     
     /*Getting Scale For Future Use */
-    auto scaleSprite = Sprite::create(IMG_CIRCLE_WHITE);
+    scaleSprite = Sprite::create(IMG_CIRCLE_WHITE);
+    scaleSprite->retain(); //TODO: del on ~GameScene
     float scale = 0.5f;
     int gridSize = (LevelXML::getGridSizeX() > LevelXML::getGridSizeY() ? LevelXML::getGridSizeX() : LevelXML::getGridSizeY());
     switch (gridSize) {
@@ -188,6 +189,7 @@ bool GameScene::loadLevel(bool reset)
                 player->setTotalElements(static_cast<int>(level.size())); // to be changed with diffrent element types
                 player->setLocalZOrder(zPlayer);
                 levelNode->addChild(player);
+                moves.push_back(static_cast<LevelElement>(*it));
                 toDel = it;
                 break;
             }
@@ -281,10 +283,25 @@ void GameScene::menuCallback(Ref* pSender)
         {
             auto lastElement = moves.back();
             moves.pop_back();
+            level.push_back(lastElement);
+            auto playerElement = moves.back();
+            
+            
+            createElement(lastElement);
+            
+            player->x = playerElement.x;
+            player->y = playerElement.y;
+            
+            
+            player->capture(playerElement.type,dTop,0.1f);
+            
+            auto move = MoveTo::create(0.1f, getScreenCoordinates(playerElement.x,playerElement.y));
+            auto move_ease_in = EaseBounceInOut::create(move->clone() );
+            player->runAction(Sequence::create(move_ease_in, NULL));
+            
             //TODO:
-            //Create Single Sprite
-            //Animate player to last position
-            //make it center smaller
+            //Handle head
+            //make it's center smaller
             log("Undo Pressed");
             break;
         }
@@ -295,6 +312,28 @@ void GameScene::menuCallback(Ref* pSender)
             break;
 #endif
     }
+}
+
+void GameScene::createElement(LevelElement element)
+{
+    switch (element.type) {
+        case eStart:
+        {
+            break;
+        }
+        case eSingle:
+        {
+            auto CCElement = Single::create(IMG_CIRCLE_WHITE);
+            CCElement->setScale(scaleSprite->getScale());
+            CCElement->setPosition(getScreenCoordinates(element.x, element.y));
+            CCElement->setLocalZOrder(zSingle);
+            levelNode->addChild(CCElement);
+            break;
+        }
+        default:
+            break;
+    }
+
 }
 
 void GameScene::delCocos(cocos2d::Node *node)
@@ -396,7 +435,7 @@ void GameScene::swipeDown()
 void GameScene::updateGame()
 {
     //Disable/Enable Undo Button
-    if(moves.size() == 0lu )
+    if(moves.size() == 1lu )
     {
         btnUndo->setEnabled(false);
     }
@@ -438,7 +477,7 @@ LevelElement GameScene::getLevelElementAt(int x, int y,bool del)
             {
                 
                 //Storing Moves for Undo
-                moves.push_back((LevelElement)*it);
+                moves.push_back(element);
                 it = level.erase(it);
                 break;
             }

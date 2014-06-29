@@ -47,6 +47,7 @@ public:
     LayerColor* lbackground;
     int _topCircle;
     bool isAnimation;
+    Sprite* scaleSprite;
     //Player
     Player* player;
     
@@ -77,6 +78,7 @@ public:
     bool checkMove(int x,int y);
     void deleteCCElementFromLevelNode(Node * sender,bool cleanup);
     Point getScreenCoordinates(int x,int y);
+    void createElement(LevelElement element);
     
     bool loadLevel(bool reset = false);
     
