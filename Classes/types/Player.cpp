@@ -82,7 +82,7 @@ Player* Player::create(const char * image)
 void Player::setTotalElements(int value)
 {
     totalElements = value;
-    innerSprite->setScale((1.0/totalElements));
+    innerSprite->setScale(1.0/value);
 }
 
 bool Player::capture(int type,int direction,float animationDelta)
@@ -94,10 +94,9 @@ bool Player::capture(int type,int direction,float animationDelta)
             break;
         case eSingle:
         {
-            capturedElements ++;
-            float val = (1.0 / (totalElements-capturedElements == 0 ? 1.01 : totalElements-capturedElements));
-            innerSprite->runAction(ScaleTo::create(animationDelta, val));
+            capturedElements++;
             arrow->runAction(RotateTo::create(animationDelta,(direction + 1)*90));
+            animateCircle(animationDelta);
             this->head = direction;
             return true;
             break;
@@ -113,5 +112,17 @@ bool Player::setHead(int direction)
     this->head = direction;
     arrow->setRotation((direction + 1)*90);
     return true;
+}
+
+void Player::animateCircle(float animationDelta)
+{
+    float val = (1.0 / (totalElements-capturedElements == 0 ? 1.0 : totalElements-capturedElements));
+//    val = 0.5 + val;
+    innerSprite->runAction(ScaleTo::create(animationDelta, val));
+}
+
+void Player::undo(float animationDelta){
+    this->capturedElements--;
+    animateCircle(animationDelta);
 }
 

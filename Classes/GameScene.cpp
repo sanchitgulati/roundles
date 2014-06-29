@@ -281,23 +281,34 @@ void GameScene::menuCallback(Ref* pSender)
         }
         case bUndo:
         {
+            if(moves.size() == 1)
+                break;
+            
             auto lastElement = moves.back();
             moves.pop_back();
-            level.push_back(lastElement);
+            
+            
             auto playerElement = moves.back();
+            lastElement.ccElement = createElement(lastElement);
+            level.push_back(lastElement);
             
+            int direction = dTop;   //TODO: Implement direction logic.
+            auto deltaX = abs(playerElement.x - player->x) ;
+            auto deltaY = abs(playerElement.x - player->x) ;
             
-            createElement(lastElement);
+            float animationDelta = (deltaX > deltaY ? deltaX : deltaY) * 0.10; // 0.10 is constant
             
             player->x = playerElement.x;
             player->y = playerElement.y;
             
             
-            player->capture(playerElement.type,dTop,0.1f);
+            player->capture(playerElement.type,direction,animationDelta);
             
-            auto move = MoveTo::create(0.1f, getScreenCoordinates(playerElement.x,playerElement.y));
+            auto move = MoveTo::create(animationDelta, getScreenCoordinates(playerElement.x,playerElement.y));
             auto move_ease_in = EaseBounceInOut::create(move->clone() );
             player->runAction(Sequence::create(move_ease_in, NULL));
+            player->undo(animationDelta); //to make center small
+            
             
             //TODO:
             //Handle head
@@ -312,9 +323,10 @@ void GameScene::menuCallback(Ref* pSender)
             break;
 #endif
     }
+    updateGame();
 }
 
-void GameScene::createElement(LevelElement element)
+Node* GameScene::createElement(LevelElement element)
 {
     switch (element.type) {
         case eStart:
@@ -328,12 +340,13 @@ void GameScene::createElement(LevelElement element)
             CCElement->setPosition(getScreenCoordinates(element.x, element.y));
             CCElement->setLocalZOrder(zSingle);
             levelNode->addChild(CCElement);
+            return CCElement;
             break;
         }
         default:
             break;
     }
-
+    return Node::create();
 }
 
 void GameScene::delCocos(cocos2d::Node *node)
@@ -446,6 +459,8 @@ void GameScene::updateGame()
     if(level.size() == 0lu)
     {
         log("You Win");
+        //Animation
+        //TODO: Animations
         LevelXML::setLevelCompletedAt(LevelXML::curLevelNumber);
     }
     else
