@@ -81,11 +81,11 @@ Player* Player::create(const char * image)
 
 void Player::setTotalElements(int value)
 {
-    totalElements = value;
+    totalElements = value+1;
     innerSprite->setScale(1.0/value);
 }
 
-bool Player::capture(int type,int direction,float animationDelta)
+bool Player::capture(int type,int head,float animationDelta,bool isUndo)
 {
     switch (type) {
         case eNull:
@@ -94,10 +94,27 @@ bool Player::capture(int type,int direction,float animationDelta)
             break;
         case eSingle:
         {
-            capturedElements++;
-            arrow->runAction(RotateTo::create(animationDelta,(direction + 1)*90));
+            if(isUndo)
+                capturedElements--;
+            else
+                capturedElements++;
+            
+            arrow->runAction(RotateTo::create(animationDelta,(head + 1)*90));
             animateCircle(animationDelta);
-            this->head = direction;
+            this->head = head;
+            return true;
+            break;
+        }
+        case eDingle:
+        {
+            if(isUndo)
+                capturedElements--;
+            else
+                capturedElements++;
+            
+            arrow->runAction(RotateTo::create(animationDelta,(head + 1)*90));
+            animateCircle(animationDelta);
+            this->head = head;
             return true;
             break;
         }
@@ -117,7 +134,6 @@ bool Player::setHead(int direction)
 void Player::animateCircle(float animationDelta)
 {
     float val = (1.0 / (totalElements-capturedElements == 0 ? 1.0 : totalElements-capturedElements));
-//    val = 0.5 + val;
     innerSprite->runAction(ScaleTo::create(animationDelta, val));
 }
 

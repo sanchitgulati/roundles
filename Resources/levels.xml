@@ -1,4 +1,4 @@
-<!-- 0 : Start 1 : Single -->
+<!-- 0: Null 1 : Start 2 : Single 3 : Double -->
 <!-- 0 : Top 1 : Right 2: Bottom 3: Left -->
 <?xml version="1.0" encoding="UTF-8"?>
 <bundle value="Red Pill" rgb_inner="245,154,157" rgb_outer="235,21,85">
@@ -6,7 +6,7 @@
 		<title>The Start</title>
 		<data>
 			<element type="1" positionX="3" positionY="2" head="3"></element>
-			<element type="2" positionX="0" positionY="0"></element>
+			<element type="3" positionX="0" positionY="0"></element>
 			<element type="2" positionX="0" positionY="1"></element>
 			<element type="2" positionX="0" positionY="2"></element>
 			<element type="2" positionX="0" positionY="3"></element>
@@ -109,7 +109,7 @@
 			<element type="2" positionX="2" positionY="1" />
 			<element type="2" positionX="0" positionY="3" />
 			<element type="2" positionX="3" positionY="2" />
-			<element type="1" positionX="3" positionY="1" />
+			<element type="1" positionX="3" positionY="1" head="2"  />
 		</data>
 		<solution isValid="0" />
 	</level>
@@ -124,7 +124,7 @@
 			<element type="2" positionX="1" positionY="2" />
 			<element type="2" positionX="2" positionY="3" />
 			<element type="2" positionX="1" positionY="3" />
-			<element type="1" positionX="0" positionY="3" />
+			<element type="1" positionX="0" positionY="3" head="2" />
 		</data>
 		<solution isValid="0" />
 	</level>

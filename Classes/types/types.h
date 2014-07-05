@@ -17,6 +17,7 @@
 #include "Message.h"
 #include "Credits.h"
 #include "Single.h"
+#include "Dingle.h"
 #include "Player.h"
 #include "Sideton.h"
 

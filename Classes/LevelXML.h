@@ -18,7 +18,8 @@ USING_NS_CC;
 enum {
     eNull,
     eStart,
-    eSingle
+    eSingle,
+    eDingle,
 };
 
 typedef struct {
@@ -30,14 +31,14 @@ struct LevelElement
     int type;
     int x;
     int y;
-    int otherData;
+    int head;
     cocos2d::Node* ccElement;
     LevelElement()
     {
         type = eNull;
         x = 0;
         y = 0;
-        otherData = -1;
+        head = -1; //-1 means NA
     }
 };
 

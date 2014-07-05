@@ -31,7 +31,7 @@ public:
     static Player* create(const char* image);
     void setScale(float);
     void setTotalElements(int);
-    bool capture(int type,int direction,float animationDelta);
+    bool capture(int type,int direction,float animationDelta,bool isUndo = false);
     void undo(float animateDelta);
     void animateCircle(float animationDelta);
     bool setHead(int direction);

@@ -172,6 +172,7 @@ bool GameScene::loadLevel(bool reset)
     /* Load Up Level */
     level = LevelXML::getCurrentLevel();
     solution = LevelXML::getSolutionLevel();
+    int totalElements = 0;
     
     std::vector<LevelElement>::iterator toDel;
     for (std::vector<LevelElement>::iterator it = level.begin() ; it != level.end(); ++it)
@@ -183,10 +184,9 @@ bool GameScene::loadLevel(bool reset)
                 player = Player::create(IMG_CIRCLE_WHITE);
                 player->x = it->x;
                 player->y = it->y;
-                player->setHead(it->otherData);
+                player->setHead(it->head);
                 player->setPosition(getScreenCoordinates(it->x, it->y));
                 player->setScale(scaleSprite->getScale());
-                player->setTotalElements(static_cast<int>(level.size())); // to be changed with diffrent element types
                 player->setLocalZOrder(zPlayer);
                 levelNode->addChild(player);
                 moves.push_back(static_cast<LevelElement>(*it));
@@ -195,19 +195,22 @@ bool GameScene::loadLevel(bool reset)
             }
             case eSingle:
             {
-                auto element = Single::create(IMG_CIRCLE_WHITE);
-                element->setScale(scaleSprite->getScale());
-                element->setPosition(getScreenCoordinates(it->x, it->y));
-                element->setLocalZOrder(zSingle);
-                it->ccElement = element;
-                levelNode->addChild(element);
+                auto temp = static_cast<LevelElement>(*it);
+                it->ccElement = createElement(temp);
+                totalElements+=1;
                 break;
             }
-            default:
+            case eDingle:
+            {
+                auto temp = static_cast<LevelElement>(*it);
+                it->ccElement = createElement(temp);
+                totalElements+=2; // Because use have move over it twice
                 break;
+            }
         }
     }
     level.erase(toDel); //Delete Player from Level Vector
+    player->setTotalElements(totalElements); // to be changed with diffrent element types
     
     //Start Load
     updateGame();
@@ -292,7 +295,7 @@ void GameScene::menuCallback(Ref* pSender)
             lastElement.ccElement = createElement(lastElement);
             level.push_back(lastElement);
             
-            int direction = dTop;   //TODO: Implement direction logic.
+            int head = playerElement.head;   //TODO: Implement direction logic.
             auto deltaX = abs(playerElement.x - player->x) ;
             auto deltaY = abs(playerElement.x - player->x) ;
             
@@ -302,7 +305,7 @@ void GameScene::menuCallback(Ref* pSender)
             player->y = playerElement.y;
             
             
-            player->capture(playerElement.type,direction,animationDelta);
+            player->capture(playerElement.type,head,animationDelta,true);
             
             auto move = MoveTo::create(animationDelta, getScreenCoordinates(playerElement.x,playerElement.y));
             auto move_ease_in = EaseBounceInOut::create(move->clone() );
@@ -311,8 +314,9 @@ void GameScene::menuCallback(Ref* pSender)
             
             
             //TODO:
-            //Handle head
             //make it's center smaller
+            
+            
             log("Undo Pressed");
             break;
         }
@@ -336,6 +340,16 @@ Node* GameScene::createElement(LevelElement element)
         case eSingle:
         {
             auto CCElement = Single::create(IMG_CIRCLE_WHITE);
+            CCElement->setScale(scaleSprite->getScale());
+            CCElement->setPosition(getScreenCoordinates(element.x, element.y));
+            CCElement->setLocalZOrder(zSingle);
+            levelNode->addChild(CCElement);
+            return CCElement;
+            break;
+        }
+        case eDingle:
+        {
+            auto CCElement = Dingle::create(IMG_CIRCLE_WHITE);
             CCElement->setScale(scaleSprite->getScale());
             CCElement->setPosition(getScreenCoordinates(element.x, element.y));
             CCElement->setLocalZOrder(zSingle);
@@ -479,7 +493,7 @@ Point GameScene::getScreenCoordinates(int x, int y)
     return Point(x*_size,y*_size);
 }
 
-LevelElement GameScene::getLevelElementAt(int x, int y,bool del)
+LevelElement GameScene::getLevelElementAt(int x, int y,bool del,int head)
 {
     LevelElement element = LevelElement();
     element.type = eNull;
@@ -488,10 +502,9 @@ LevelElement GameScene::getLevelElementAt(int x, int y,bool del)
         if(it->x == x && it->y == y)
         {
             element = static_cast<LevelElement>(*it);
-            if(del == true)
+            if(del == true && head != -1)
             {
-                
-                //Storing Moves for Undo
+                element.head = head; // changing the head so we can so undo correctly
                 moves.push_back(element);
                 it = level.erase(it);
                 break;
@@ -544,7 +557,7 @@ bool GameScene::captureElementAndAnimate(int x,int y,int direction)
     if(isAnimation)
         return false;
     
-    auto element = getLevelElementAt(x,y,true);
+    auto element = getLevelElementAt(x,y,true,direction);
     if(element.type == eNull)
         return false;
     
@@ -559,6 +572,25 @@ bool GameScene::captureElementAndAnimate(int x,int y,int direction)
     player->x = x;
     player->y = y;
     
+    //TODO: move below code to getLevelElementAt
+    
+    auto toDel = true;
+//
+//    switch (element.type) {
+//        case eNull:
+//            break;
+//        case eStart:
+//            break;
+//        case eSingle:
+//            break;
+//        case eDingle:
+//            if(element.ccElement->getHP() == 0)
+//                toDel = true;
+//            toDel = false;
+//            break;
+//        default:
+//            break;
+//    }
     
     player->capture(element.type,direction,animationDelta);
     
@@ -566,9 +598,12 @@ bool GameScene::captureElementAndAnimate(int x,int y,int direction)
     auto move_ease_in = EaseBounceInOut::create(move->clone() );
     player->runAction(Sequence::create(move_ease_in, NULL));
     
-    auto callFunc = CallFuncN::create(CC_CALLBACK_1(GameScene::deleteCCElementFromLevelNode,this, true));
-    auto delay = DelayTime::create(animationDelta); //relative to move to of player
-    element.ccElement->runAction(Sequence::create(delay,callFunc,NULL));
+    if(toDel)
+    {
+        auto callFunc = CallFuncN::create(CC_CALLBACK_1(GameScene::deleteCCElementFromLevelNode,this, true));
+        auto delay = DelayTime::create(animationDelta); //relative to move to of player
+        element.ccElement->runAction(Sequence::create(delay,callFunc,NULL));
+    }
     return true;
 }
 

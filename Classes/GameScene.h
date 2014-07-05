@@ -21,6 +21,7 @@
 
 USING_NS_CC;
 
+
 class GameScene: public cocos2d::Layer
 {
 public:
@@ -72,7 +73,7 @@ public:
     void swipeUp();
     void swipeDown();
     
-    LevelElement getLevelElementAt(int x,int y,bool del = false);
+    LevelElement getLevelElementAt(int x,int y,bool del = false,int head = -1);
     bool captureElementAndAnimate(int x,int y,int direction);
     bool checkMoves();
     bool checkMove(int x,int y);

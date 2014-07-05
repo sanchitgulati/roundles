@@ -1,24 +1,25 @@
 //
-//  Single.cpp
+//  Dingle.cpp
 //  roundels
 //
-//  Created by Sanchit Gulati on 15/06/14.
+//  Created by Sanchit Gulati on 05/07/14.
 //
 //
 
-#include "Single.h"
+#include "Dingle.h"
 #include "Constants.h"
 #include "LevelXML.h"
 
 using namespace cocos2d;
 
-bool Single::init()
+bool Dingle::init()
 {
     Node::init();
+    _hp = 2;
     return true;
 }
 
-Single::Single(const char* image)
+Dingle::Dingle(const char* image)
 {
     sprite = Sprite::create(image);
     sprite->setAnchorPoint(Point(0, 0));
@@ -31,17 +32,27 @@ Single::Single(const char* image)
     light->setColor(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber));
     light->runAction(RepeatForever::create(Sequence::create(FadeTo::create(3.0f,150),FadeTo::create(2.0f,50),NULL)));
     this->addChild(light);
+    
+    
+    dot = Sprite::create(IMG_CIRCLE_LIGHT);
+    dot->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
+    sprite->addChild(dot);
 }
 
-void Single::setScale(float scale)
+void Dingle::setScale(float scale)
 {
     sprite->setScale(scale);
     light->setScale(scale);
+    
+    
+    auto size = sprite->getBoundingBox().size;
+    dot->setScale(0.5);
+    dot->setPosition(Point(size.width/2.0f,size.height/2.0f));
 }
 
-Single* Single::create(const char * image)
+Dingle* Dingle::create(const char * image)
 {
-    Single *pRet = new Single(image);
+    Dingle *pRet = new Dingle(image);
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -55,3 +66,7 @@ Single* Single::create(const char * image)
     }
 }
 
+int Dingle::getHP()
+{
+    return --_hp;
+}
