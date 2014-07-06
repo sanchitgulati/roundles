@@ -6,8 +6,8 @@
 		<title>The Start</title>
 		<data>
 			<element type="1" positionX="3" positionY="2" head="3"></element>
-			<element type="3" positionX="0" positionY="0"></element>
-			<element type="2" positionX="0" positionY="1"></element>
+			<element type="2" positionX="0" positionY="0"></element>
+			<element type="3" positionX="0" positionY="1"></element>
 			<element type="2" positionX="0" positionY="2"></element>
 			<element type="2" positionX="0" positionY="3"></element>
 			<element type="2" positionX="1" positionY="0"></element>

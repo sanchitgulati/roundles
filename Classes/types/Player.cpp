@@ -15,39 +15,34 @@ using namespace cocos2d;
 
 bool Player::init()
 {
-    capturedElements = 0;
-    return true;
+    return Node::init();
 }
 
-Player::Player(const char* image)
+Player::Player()
+: capturedElements(0),
+_animationsRunning(0)
 {
+    setAnchorPoint(Point(0.5f, 0.5f));
+    //Init the element with z-index smallest
+    _started = CallFuncN::create(CC_CALLBACK_1(Player::animationStarted,this));
+    _started->retain();
+    _done = CallFuncN::create(CC_CALLBACK_1(Player::animationDone,this));
+    _done->retain();
     
     arrow = Sprite::create(IMG_ARROW);
-    arrow->setOpacity(100);
+    arrow->setOpacity(220);
     arrow->setAnchorPoint(Point(0.5, 0.5));
     arrow->setColor(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber));
-
     this->addChild(arrow);
     
     
-    
-    sprite = Sprite::create(image);
+    sprite = Sprite::create(IMG_CIRCLE_WHITE);
     sprite->setColor(RGB_COLOR7);
     sprite->setAnchorPoint(Point(0, 0));
     this->addChild(sprite);
-    
-    light = Sprite::create(IMG_CIRCLE_LIGHT);
-    light->setAnchorPoint(Point(0, 0));
-    light->setOpacity(100);
-    light->setColor(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber));
-    light->runAction(RepeatForever::create(Sequence::create(FadeTo::create(1.5f,200),FadeTo::create(0.5f,100),NULL)));
-    sprite->addChild(light);
-    
-
 
     
-    
-    innerSprite = Sprite::create(image);
+    innerSprite = Sprite::create(IMG_CIRCLE_WHITE);
     innerSprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
     innerSprite->setScale(0.5);
     auto size = sprite->getBoundingBox().size;
@@ -58,14 +53,17 @@ Player::Player(const char* image)
 void Player::setScale(float scale)
 {
     sprite->setScale(scale);
-    auto tempCalc = sprite->getBoundingBox().size.width / arrow->getBoundingBox().size.width;
-    arrow->setScale(1.5*tempCalc);
+    
+    auto temp = sprite->getBoundingBox().size.width / arrow->getBoundingBox().size.width;
+    arrow->setScale(1.5*temp);
+    
+    //Re-Positioning the Arrow
     arrow->setPosition(Point(sprite->getBoundingBox().size.width/2.0,sprite->getBoundingBox().size.height/2.0));
 }
 
-Player* Player::create(const char * image)
+Player* Player::create()
 {
-    Player *pRet = new Player(image);
+    Player *pRet = new Player();
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -79,66 +77,106 @@ Player* Player::create(const char * image)
     }
 }
 
+
+
+void Player::setHead(int direction)
+{
+    this->head = direction;
+    arrow->setRotation((direction + 1)*90);
+}
+
 void Player::setTotalElements(int value)
 {
     totalElements = value+1;
     innerSprite->setScale(1.0/value);
 }
 
-bool Player::capture(int type,int head,float animationDelta,bool isUndo)
+void Player::setCapturedElements(int delta)
 {
-    switch (type) {
-        case eNull:
-            log("Cannot capture NULL");
-            return false;
-            break;
-        case eSingle:
-        {
-            if(isUndo)
-                capturedElements--;
+    capturedElements += delta;
+}
+
+void Player::setGridPosition(int x,int y)
+{
+    this->x = x;
+    this->y = y;
+}
+
+int Player::getX()
+{
+    return x;
+}
+
+int Player::getY()
+{
+    return y;
+}
+
+bool Player::canMove(int direction)
+{
+    if(_animationsRunning != 0)
+    {
+        log("Animation Still Playing Can't Move");
+    }
+    switch (direction) {
+        case dLeft:
+            if(this->head == dRight)
+                return false;
             else
-                capturedElements++;
-            
-            arrow->runAction(RotateTo::create(animationDelta,(head + 1)*90));
-            animateCircle(animationDelta);
-            this->head = head;
-            return true;
+                return true;
             break;
-        }
-        case eDingle:
-        {
-            if(isUndo)
-                capturedElements--;
+        case dRight:
+            if(this->head == dLeft)
+                return false;
             else
-                capturedElements++;
-            
-            arrow->runAction(RotateTo::create(animationDelta,(head + 1)*90));
-            animateCircle(animationDelta);
-            this->head = head;
-            return true;
+                return true;
+        case dBottom:
+            if(this->head == dTop)
+                return false;
+            else
+                return true;
             break;
-        }
+        case dTop:
+            if(this->head == dBottom)
+                return false;
+            else
+                return true;
         default:
             return false;
             break;
     }
 }
 
-bool Player::setHead(int direction)
+void Player::moveAnimation(int screen_x, int screen_y,float deltaTime)
 {
-    this->head = direction;
-    arrow->setRotation((direction + 1)*90);
-    return true;
+    auto move = MoveTo::create(deltaTime, Point(screen_x,screen_y));
+    auto move_ease_in = EaseBounceInOut::create(move->clone());
+    this->runAction(Sequence::create(_started,move_ease_in,_done, NULL));
 }
 
-void Player::animateCircle(float animationDelta)
+void Player::rotateHead(int head,float deltaTime)
+{
+    arrow->runAction(Sequence::create(_started,RotateTo::create(deltaTime,(head + 1)*90),_done,NULL));
+}
+
+void Player::expandSoul(float deltaTime)
 {
     float val = (1.0 / (totalElements-capturedElements == 0 ? 1.0 : totalElements-capturedElements));
-    innerSprite->runAction(ScaleTo::create(animationDelta, val));
+    innerSprite->runAction(Sequence::create(_started,ScaleTo::create(deltaTime, val),_done,NULL));
 }
 
-void Player::undo(float animationDelta){
-    this->capturedElements--;
-    animateCircle(animationDelta);
+void Player::contractSoul(float deltaTime)
+{
+    float val = (1.0 / (totalElements-capturedElements == 0 ? 1.0 : totalElements-capturedElements));
+    innerSprite->runAction(Sequence::create(_started,ScaleTo::create(deltaTime, val),_done,NULL));
 }
 
+void Player::animationStarted(Node * sender)
+{
+    _animationsRunning ++;
+}
+
+void Player::animationDone(Node * sender)
+{
+    _animationsRunning --;
+}

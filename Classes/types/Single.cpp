@@ -18,30 +18,34 @@ bool Single::init()
     return true;
 }
 
-Single::Single(const char* image)
+Single::Single()
 {
-    sprite = Sprite::create(image);
+    setAnchorPoint(Point(0.5f, 0.5f));
+    sprite = Sprite::create(IMG_CIRCLE_WHITE);
     sprite->setAnchorPoint(Point(0, 0));
     sprite->setColor(RGB_COLOR7);
     this->addChild(sprite);
     
-    light = Sprite::create(IMG_CIRCLE_LIGHT);
-    light->setAnchorPoint(Point(0, 0));
-    light->setOpacity(50);
-    light->setColor(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber));
-    light->runAction(RepeatForever::create(Sequence::create(FadeTo::create(3.0f,150),FadeTo::create(2.0f,50),NULL)));
-    this->addChild(light);
+    
+    dot = Sprite::create(IMG_CIRCLE_WHITE);
+    dot->setAnchorPoint(Point(0.5, 0.5));
+    dot->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
+    auto size = sprite->getBoundingBox().size;
+    dot->setScale(0.25);
+    dot->setPosition(Point(size.width/2.0,size.height/2.0));
+    sprite->addChild(dot);
+    
 }
 
 void Single::setScale(float scale)
 {
     sprite->setScale(scale);
-    light->setScale(scale);
+    
 }
 
-Single* Single::create(const char * image)
+Single* Single::create()
 {
-    Single *pRet = new Single(image);
+    Single *pRet = new Single();
     if (pRet && pRet->init())
     {
         pRet->autorelease();

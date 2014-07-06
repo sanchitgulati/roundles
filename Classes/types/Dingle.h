@@ -15,16 +15,16 @@
 
 class Dingle : public cocos2d::Node
 {
-    int _hp;
+    int _dots;
 public:
-    Dingle(const char* image);
+    Dingle();
     cocos2d::Sprite* sprite;
-    cocos2d::Sprite* light;
     cocos2d::Sprite* dot;
     virtual bool init();
-    static Dingle* create(const char* image);
+    static Dingle* create();
     void setScale(float);
-    int getHP();
+    
+    void updateDots(int value);
 };
 
 

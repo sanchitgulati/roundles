@@ -14,12 +14,12 @@
 
 class Single : public cocos2d::Node
 {
-public:
-    Single(const char* image);
     cocos2d::Sprite* sprite;
-    cocos2d::Sprite* light;
+    cocos2d::Sprite* dot;
+public:
+    Single();
     virtual bool init();
-    static Single* create(const char* image);
+    static Single* create();
     void setScale(float);
 };
 

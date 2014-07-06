@@ -42,15 +42,15 @@ public:
     Size visibleSize;
     Size winSize;
     float _size;
+    Point _levelScale;
     Node* levelNode;
     Point origin;
     float fontSize;
     LayerColor* lbackground;
     int _topCircle;
-    bool isAnimation;
-    Sprite* scaleSprite;
+    
     //Player
-    Player* player;
+    Player* _player;
     
     //Buttons
     Sideton* btnUndo;
@@ -73,19 +73,30 @@ public:
     void swipeUp();
     void swipeDown();
     
-    LevelElement getLevelElementAt(int x,int y,bool del = false,int head = -1);
-    bool captureElementAndAnimate(int x,int y,int direction);
-    bool checkMoves();
-    bool checkMove(int x,int y);
-    void deleteCCElementFromLevelNode(Node * sender,bool cleanup);
-    Point getScreenCoordinates(int x,int y);
-    cocos2d::Node* createElement(LevelElement element);
+    
+    cocos2d::Node* createCCElement(LevelElement element);
+    bool hasMoves();
+    LevelElement getLevelElementAt(int x,int y);
+    bool validMove(int x,int y);
+    void storeMoveForUndo(LevelElement element, int head);
+    
+    void handleMove(int grid_x,int grid_y,int head);
+    
+    std::vector<LevelElement>::iterator captureElement(int x,int y);
+    void updatePlayer(int x,int y,int head,float deltaTime);
     
     bool loadLevel(bool reset = false);
+    void updateGame(); //For Regular Checks
     
-    void updateGame();
-    
+    //Util
+    void deleteCCElementFromLevelNode(Node * sender,bool cleanup);
+    Point getScreenCoordinates(int x,int y);
     void delCocos(Node* node);
+    float calculateDeltaTime(int x,int y);
+    //End
+    
+    
+    
     
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);

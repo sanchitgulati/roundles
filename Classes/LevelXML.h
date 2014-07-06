@@ -32,12 +32,15 @@ struct LevelElement
     int x;
     int y;
     int head;
+    int dots;
     cocos2d::Node* ccElement;
     LevelElement()
     {
         type = eNull;
         x = 0;
         y = 0;
+        ccElement = nullptr;
+        dots = 1;
         head = -1; //-1 means NA
     }
 };

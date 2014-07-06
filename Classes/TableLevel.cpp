@@ -44,21 +44,21 @@ bool TableLevel::init()
     blur->setPosition(Point(0, tableSize.height));
     blur->setAnchorPoint(Point(0,1));
     blur->setScaleX(Util::getScreenRatioWidth(blur));
-    this->addChild(blur);
+//    this->addChild(blur);
     
     auto blur1 = Sprite::create(IMG_BLUR);
     blur1->setPosition(Point(0, tableSize.height));
     blur1->setAnchorPoint(Point(0,0));
     blur1->setFlippedY(true);
     blur1->setScaleX(Util::getScreenRatioWidth(blur1));
-    this->addChild(blur1);
+//    this->addChild(blur1);
     
     auto blur2 = Sprite::create(IMG_BLUR);
     blur2->setPosition(Point(0, 0));
     blur2->setAnchorPoint(Point(0,0));
     blur2->setFlippedY(true);
     blur2->setScaleX(Util::getScreenRatioWidth(blur2));
-    this->addChild(blur2);
+//    this->addChild(blur2);
     
     return true;
 }

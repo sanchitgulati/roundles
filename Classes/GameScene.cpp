@@ -14,7 +14,7 @@
 
 enum{bMenu,bBack,bHint,bRestart,bUndo};
 
-enum{zSingle,zPlayer}; //zPlayer to be last
+enum{zSingle,zDingle,zPlayer}; //z_player to be last
 
 USING_NS_CC;
 
@@ -57,7 +57,6 @@ bool GameScene::init()
     winSize = Director::getInstance()->getWinSize();
     origin = Director::getInstance()->getVisibleOrigin();
     fontSize = Constants::defaultFontSize*(winSize.width/480);
-    isAnimation = false;
     
     /* Initiation Of Variables */
     lbackground = LayerColor::create(RGBA_COLOR1, visibleSize.width, visibleSize.height);
@@ -104,15 +103,16 @@ bool GameScene::init()
     _topCircle = backgroundCircle->getPosition().y + backgroundCircle->getBoundingBox().size.height/2.0;
     this->addChild(backgroundCircle);
     
+    levelNode = nullptr; //CrossPlatform Shit
     
     auto ret = loadLevel();
     if(!ret)
         return false;
     
-    log("level size with %d height %d into %f",LevelXML::getGridSizeX(),LevelXML::getGridSizeY(),_size);
+    auto temp = ((origin.x + visibleSize.width) - LevelXML::getGridSizeX()*_size)/2.0f;
     levelNode->setContentSize(Size(Point(LevelXML::getGridSizeX()*_size,LevelXML::getGridSizeY()*_size)));
-    levelNode->setAnchorPoint(Point(0.5, 0.5));
-    levelNode->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.35 ));
+    levelNode->setAnchorPoint(Point(0, 0));
+    levelNode->setPosition(Point(temp,Constants::vEdgeMargin*1.5)); //hack
     this->addChild(levelNode);
     
     menu->setPosition(Point::ZERO);
@@ -127,8 +127,8 @@ bool GameScene::loadLevel(bool reset)
 {
     
     /*Getting Scale For Future Use */
-    scaleSprite = Sprite::create(IMG_CIRCLE_WHITE);
-    scaleSprite->retain(); //TODO: del on ~GameScene
+    auto scaleSprite = Sprite::create(IMG_CIRCLE_WHITE);
+    // IMG_CIRCLE_WHITE should be same as circle used inside Single,PLayer,Dingle
     float scale = 0.5f;
     int gridSize = (LevelXML::getGridSizeX() > LevelXML::getGridSizeY() ? LevelXML::getGridSizeX() : LevelXML::getGridSizeY());
     switch (gridSize) {
@@ -154,7 +154,7 @@ bool GameScene::loadLevel(bool reset)
             scale = 0.10f;
             break;
         case 10:
-            scale = 0.9f;
+            scale = 0.09f;
             break;
         default:
             log("Invalid Grid Size, raising exception!");
@@ -163,17 +163,18 @@ bool GameScene::loadLevel(bool reset)
     }
     scaleSprite->setScale(Util::getScreenRatio(scaleSprite)*scale);
     _size = scaleSprite->getBoundingBox().size.width*1.4f;
+    _levelScale = Point(scaleSprite->getScaleX(),scaleSprite->getScaleY());
     
-    if(levelNode)
+    if(levelNode != nullptr || reset == true)
         levelNode->removeAllChildrenWithCleanup(true);
     else
         levelNode = Node::create();
     
     /* Load Up Level */
     level = LevelXML::getCurrentLevel();
-    solution = LevelXML::getSolutionLevel();
-    int totalElements = 0;
+    solution = LevelXML::getSolutionLevel(); //TODO: make it like grid numbers
     
+    int totalElements = 0;
     std::vector<LevelElement>::iterator toDel;
     for (std::vector<LevelElement>::iterator it = level.begin() ; it != level.end(); ++it)
     {
@@ -181,14 +182,13 @@ bool GameScene::loadLevel(bool reset)
             case eStart:
             {
                 
-                player = Player::create(IMG_CIRCLE_WHITE);
-                player->x = it->x;
-                player->y = it->y;
-                player->setHead(it->head);
-                player->setPosition(getScreenCoordinates(it->x, it->y));
-                player->setScale(scaleSprite->getScale());
-                player->setLocalZOrder(zPlayer);
-                levelNode->addChild(player);
+                _player = Player::create();
+                _player->setGridPosition(it->x, it->y);
+                _player->setHead(it->head);
+                _player->setPosition(getScreenCoordinates(it->x, it->y));
+                _player->setScale(_levelScale.x);
+                _player->setLocalZOrder(zPlayer);
+                levelNode->addChild(_player);
                 moves.push_back(static_cast<LevelElement>(*it));
                 toDel = it;
                 break;
@@ -196,21 +196,23 @@ bool GameScene::loadLevel(bool reset)
             case eSingle:
             {
                 auto temp = static_cast<LevelElement>(*it);
-                it->ccElement = createElement(temp);
-                totalElements+=1;
+                it->ccElement = createCCElement(temp);
+                it->dots = 1;
+                totalElements+=it->dots;
                 break;
             }
             case eDingle:
             {
                 auto temp = static_cast<LevelElement>(*it);
-                it->ccElement = createElement(temp);
-                totalElements+=2; // Because use have move over it twice
+                it->ccElement = createCCElement(temp);
+                it->dots = 2;
+                totalElements += it->dots; // Because use have move over it twice
                 break;
             }
         }
     }
-    level.erase(toDel); //Delete Player from Level Vector
-    player->setTotalElements(totalElements); // to be changed with diffrent element types
+    level.erase(toDel); //Delete _player from Level Vector
+    _player->setTotalElements(totalElements); // to be changed with diffrent element types
     
     //Start Load
     updateGame();
@@ -239,9 +241,7 @@ void GameScene::menuCallback(Ref* pSender)
         }
         case bRestart:
         {
-//            auto s = (Scene*)GameScene::create();
-//            Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
-            loadLevel(true);
+            loadLevel(true); //with reset flag
             break;
         }
         case bHint:
@@ -291,33 +291,52 @@ void GameScene::menuCallback(Ref* pSender)
             moves.pop_back();
             
             
-            auto playerElement = moves.back();
-            lastElement.ccElement = createElement(lastElement);
-            level.push_back(lastElement);
+            auto _playerElement = moves.back();
             
-            int head = playerElement.head;   //TODO: Implement direction logic.
-            auto deltaX = abs(playerElement.x - player->x) ;
-            auto deltaY = abs(playerElement.x - player->x) ;
+            _player->setGridPosition(_playerElement.x, _playerElement.y);
+            _player->setHead(_playerElement.head);
+            _player->setCapturedElements(-1);
             
-            float animationDelta = (deltaX > deltaY ? deltaX : deltaY) * 0.10; // 0.10 is constant
-            
-            player->x = playerElement.x;
-            player->y = playerElement.y;
-            
-            
-            player->capture(playerElement.type,head,animationDelta,true);
-            
-            auto move = MoveTo::create(animationDelta, getScreenCoordinates(playerElement.x,playerElement.y));
-            auto move_ease_in = EaseBounceInOut::create(move->clone() );
-            player->runAction(Sequence::create(move_ease_in, NULL));
-            player->undo(animationDelta); //to make center small
+            auto deltaTime = calculateDeltaTime(_playerElement.x, _playerElement.y);
+            auto screen_coor = getScreenCoordinates(_playerElement.x, _playerElement.y);
+            _player->moveAnimation(screen_coor.x, screen_coor.y, deltaTime);
+            _player->contractSoul(deltaTime);
+            _player->rotateHead(_playerElement.head, deltaTime);
             
             
-            //TODO:
-            //make it's center smaller
-            
-            
-            log("Undo Pressed");
+            switch (lastElement.type)
+            {
+                case eSingle:
+                {
+                    lastElement.ccElement = createCCElement(lastElement);
+                    level.push_back(lastElement);
+                    break;
+                }
+                case eDingle:
+                {
+                    auto flag = false;
+                    for (std::vector<LevelElement>::iterator it = level.begin() ; it != level.end(); ++it)
+                    {
+                        if(it->x == lastElement.x && it->y == lastElement.y)
+                        {
+                            it->dots++;
+                            auto cast = static_cast<Dingle*>(it->ccElement);
+                            cast->updateDots(it->dots);
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if(!flag)
+                    {
+                        lastElement.ccElement = createCCElement(lastElement);
+                        lastElement.dots = 1;
+                        static_cast<Dingle *>(lastElement.ccElement)->updateDots(0+1);
+                        level.push_back(lastElement);
+                    }
+                }
+            }
+           
+
             break;
         }
         default:
@@ -330,17 +349,13 @@ void GameScene::menuCallback(Ref* pSender)
     updateGame();
 }
 
-Node* GameScene::createElement(LevelElement element)
+Node* GameScene::createCCElement(LevelElement element)
 {
     switch (element.type) {
-        case eStart:
-        {
-            break;
-        }
         case eSingle:
         {
-            auto CCElement = Single::create(IMG_CIRCLE_WHITE);
-            CCElement->setScale(scaleSprite->getScale());
+            auto CCElement = Single::create();
+            CCElement->setScale(_levelScale.x);
             CCElement->setPosition(getScreenCoordinates(element.x, element.y));
             CCElement->setLocalZOrder(zSingle);
             levelNode->addChild(CCElement);
@@ -349,10 +364,10 @@ Node* GameScene::createElement(LevelElement element)
         }
         case eDingle:
         {
-            auto CCElement = Dingle::create(IMG_CIRCLE_WHITE);
-            CCElement->setScale(scaleSprite->getScale());
+            auto CCElement = Dingle::create();
+            CCElement->setScale(_levelScale.x);
             CCElement->setPosition(getScreenCoordinates(element.x, element.y));
-            CCElement->setLocalZOrder(zSingle);
+            CCElement->setLocalZOrder(zDingle);
             levelNode->addChild(CCElement);
             return CCElement;
             break;
@@ -360,7 +375,7 @@ Node* GameScene::createElement(LevelElement element)
         default:
             break;
     }
-    return Node::create();
+    return nullptr;
 }
 
 void GameScene::delCocos(cocos2d::Node *node)
@@ -404,58 +419,75 @@ void GameScene::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event)
 
 void GameScene::swipeLeft()
 {
-    if(player->head == dRight)
+    if(_player->canMove(dLeft) && hasMoves())
     {
-        log("Head is at Right,can't go Left");
-        return;
+        for(int i = _player->getX() - 1; i >= 0; i--)
+        {
+            if(validMove(i, _player->getY()))
+            {
+                handleMove(i, _player->getY(),dLeft);
+                break;
+            }
+        }
     }
-    for(int i = player->x - 1; i >= 0; i--)
+    else
     {
-        auto ret = captureElementAndAnimate(i,player->y,dLeft);
-        if(ret)
-            return;
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(SFX_NEGATIVE);
     }
 }
 void GameScene::swipeRight()
 {
-    if(player->head == dLeft)
+    if(_player->canMove(dRight) && hasMoves())
     {
-        log("Head is at Left, can't go Right");
-        return;
+        for(int i = _player->getX() + 1; i < LevelXML::getGridSizeX(); i++)
+        {
+            if(validMove(i, _player->getY()))
+            {
+                handleMove(i, _player->getY(),dRight);
+                break;
+            }
+        }
     }
-    for(int i = player->x + 1; i <= LevelXML::getGridSizeX(); i++)
+    else
     {
-        auto ret = captureElementAndAnimate(i,player->y,dRight);
-        if(ret)
-            return;
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(SFX_NEGATIVE);
     }
 }
+
 void GameScene::swipeUp()
 {
-    if(player->head == dBottom)
+    if(_player->canMove(dTop) && hasMoves())
     {
-        log("Head is at bottom, can't go Up");
-        return;
+        for(int i = _player->getY() + 1; i < LevelXML::getGridSizeY(); i++)
+        {
+            if(validMove(_player->getX(),i))
+            {
+                handleMove(_player->getX(),i,dTop);
+                break;
+            }
+        }
     }
-    for(int i = player->y + 1; i <= LevelXML::getGridSizeY(); i++)
+    else
     {
-        auto ret = captureElementAndAnimate(player->x,i,dTop);
-        if(ret)
-            return;
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(SFX_NEGATIVE);
     }
 }
 void GameScene::swipeDown()
 {
-    if(player->head == dTop)
+    if(_player->canMove(dBottom) && hasMoves())
     {
-        log("Head is at Top, can't go Down");
-        return;
+        for(int i = _player->getY() - 1; i >=  0; i--)
+        {
+            if(validMove(_player->getX(),i))
+            {
+                handleMove(_player->getX(),i,dBottom);
+                break;
+            }
+        }
     }
-    for(int i = player->y - 1; i >= 0; i--)
+    else
     {
-        auto ret = captureElementAndAnimate(player->x,i,dBottom);
-        if(ret)
-            return;
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(SFX_NEGATIVE);
     }
 }
 
@@ -470,20 +502,96 @@ void GameScene::updateGame()
     {
         btnUndo->setEnabled(true);
     }
+    
+    
     if(level.size() == 0lu)
     {
         log("You Win");
-        //Animation
         //TODO: Animations
-        LevelXML::setLevelCompletedAt(LevelXML::curLevelNumber);
+        LevelXML::setLevelCompletedAt(LevelXML::curLevelNumber); //TODO: Collect More Data
     }
     else
     {
-        auto ret = checkMoves();
+        auto ret = hasMoves();
         if(!ret)
             log("You Lose");
     }
     
+}
+
+
+std::vector<LevelElement>::iterator GameScene::captureElement(int x, int y)
+{
+    std::vector<LevelElement>::iterator it;
+    for (it = level.begin() ; it != level.end(); ++it)
+    {
+        if(it->x == x && it->y == y)
+        {
+            switch (it->type) {
+                case eSingle:
+                {
+                    it->dots = 0;
+                    return it;
+                    break;
+                }
+                case eDingle:
+                {
+                    it->dots--;
+                    auto casting = static_cast<Dingle *>(it->ccElement);
+                    casting->updateDots(it->dots);
+                    return it;
+                    break;
+                }
+                default:
+                    return it;
+                    break;
+            }
+        }
+    }
+    CCASSERT(false, "SOMETHING WENT WRONG in GameScene::captureElement");
+    return it;
+}
+
+void GameScene::updatePlayer(int x,int y,int head,float deltaTime)
+{
+    //Move _player to new location, but Animation Happens Later
+    _player->setGridPosition(x, y);
+    _player->setHead(head);
+    _player->setCapturedElements(1); //delta +1
+    //End
+    
+    
+    auto screen_coor = getScreenCoordinates(x, y);
+    _player->moveAnimation(screen_coor.x, screen_coor.y, deltaTime);
+    _player->rotateHead(head,deltaTime);
+    _player->expandSoul(deltaTime);
+    
+    
+}
+
+void GameScene::handleMove(int grid_x,int grid_y,int head)
+{
+    auto it = captureElement(grid_x,grid_y);
+    auto elementCaptured = static_cast<LevelElement>(*it);
+    storeMoveForUndo(elementCaptured, dLeft);
+    float deltaTime = calculateDeltaTime(elementCaptured.x,elementCaptured.y);
+    updatePlayer(elementCaptured.x,elementCaptured.y, head, deltaTime);
+    
+    if(it->dots == 0)
+    {
+        auto callFunc = CallFuncN::create(CC_CALLBACK_1(GameScene::deleteCCElementFromLevelNode,this, true));
+        auto delay = DelayTime::create(deltaTime);
+        it->ccElement->runAction(Sequence::create(delay,callFunc,NULL));
+        level.erase(it);
+        
+    }
+}
+
+
+void GameScene::storeMoveForUndo(LevelElement element, int head)
+{
+    element.head = head;
+    moves.push_back(element);
 }
 
 /* ---------------------- Util -----------------------*/
@@ -493,7 +601,7 @@ Point GameScene::getScreenCoordinates(int x, int y)
     return Point(x*_size,y*_size);
 }
 
-LevelElement GameScene::getLevelElementAt(int x, int y,bool del,int head)
+LevelElement GameScene::getLevelElementAt(int x, int y)
 {
     LevelElement element = LevelElement();
     element.type = eNull;
@@ -502,113 +610,67 @@ LevelElement GameScene::getLevelElementAt(int x, int y,bool del,int head)
         if(it->x == x && it->y == y)
         {
             element = static_cast<LevelElement>(*it);
-            if(del == true && head != -1)
-            {
-                element.head = head; // changing the head so we can so undo correctly
-                moves.push_back(element);
-                it = level.erase(it);
-                break;
-            }
+            return element;
         }
     }
     return element;
 }
 
-bool GameScene::checkMove(int x, int y)
+bool GameScene::validMove(int x, int y)
 {
-    auto element = getLevelElementAt(x,y,false);
-    if(element.type == eNull)
-        return false;
-    else
+    //local copy, doesn't disturb the level vector
+    auto element = getLevelElementAt(x,y);
+    if(element.type != eNull)
         return true;
+    return false;
 }
 
-bool GameScene::checkMoves()
+bool GameScene::hasMoves()
 {
-    for(int i = player->x - 1; i >= 0; i--)
+    auto x = _player->getX();
+    auto y = _player->getY();
+    
+    for(int i = x - 1; i >= 0; i--)
     {
-        auto ret = checkMove(i, player->y);
+        auto ret = validMove(i, y);
         if(ret)
             return true;
     }
-    for(int i = player->x + 1; i <= LevelXML::getGridSizeX(); i++)
+    for(int i = x + 1; i < LevelXML::getGridSizeX(); i++)
     {
-        auto ret = checkMove(i,player->y);
+        auto ret = validMove(i,y);
         if(ret)
             return true;
     }
-    for(int i = player->y + 1; i <= LevelXML::getGridSizeY(); i++)
+    for(int i = y + 1; i < LevelXML::getGridSizeY(); i++)
     {
-        auto ret = checkMove(player->x,i);
+        auto ret = validMove(x,i);
         if(ret)
             return true;
     }
-    for(int i = player->y - 1; i >= 0; i--)
+    for(int i = y - 1; i >= 0; i--)
     {
-        auto ret = checkMove(player->x,i);
+        auto ret = validMove(x,i);
         if(ret)
             return true;
     }
     return false;
 }
 
-bool GameScene::captureElementAndAnimate(int x,int y,int direction)
+float GameScene::calculateDeltaTime(int x,int y)
 {
-    if(isAnimation)
-        return false;
+    auto px = _player->getX();
+    auto py = _player->getY();
     
-    auto element = getLevelElementAt(x,y,true,direction);
-    if(element.type == eNull)
-        return false;
+    auto deltaX = abs(px - x) ;
+    auto deltaY = abs(py - y) ;
     
-    isAnimation = true;
+    float deltaTime = (deltaX > deltaY ? deltaX : deltaY) * ANIMATION_CONSTANT; // 0.10 is constant
+    return deltaTime;
     
-    auto deltaX = abs(player->x - x) ;
-    auto deltaY = abs(player->y - y) ;
-    
-    float animationDelta = (deltaX > deltaY ? deltaX : deltaY) * 0.10; // 0.10 is constant
-    
-    
-    player->x = x;
-    player->y = y;
-    
-    //TODO: move below code to getLevelElementAt
-    
-    auto toDel = true;
-//
-//    switch (element.type) {
-//        case eNull:
-//            break;
-//        case eStart:
-//            break;
-//        case eSingle:
-//            break;
-//        case eDingle:
-//            if(element.ccElement->getHP() == 0)
-//                toDel = true;
-//            toDel = false;
-//            break;
-//        default:
-//            break;
-//    }
-    
-    player->capture(element.type,direction,animationDelta);
-    
-    auto move = MoveTo::create(animationDelta, getScreenCoordinates(x,y));
-    auto move_ease_in = EaseBounceInOut::create(move->clone() );
-    player->runAction(Sequence::create(move_ease_in, NULL));
-    
-    if(toDel)
-    {
-        auto callFunc = CallFuncN::create(CC_CALLBACK_1(GameScene::deleteCCElementFromLevelNode,this, true));
-        auto delay = DelayTime::create(animationDelta); //relative to move to of player
-        element.ccElement->runAction(Sequence::create(delay,callFunc,NULL));
-    }
-    return true;
 }
 
 void GameScene::deleteCCElementFromLevelNode(Node * sender,bool cleanup)
 {
     sender->removeAllChildrenWithCleanup(cleanup);
-    isAnimation = false;
 }

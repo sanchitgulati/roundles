@@ -37,11 +37,15 @@
 #define RGBA_COLOR7 Color4B(83,101,121,255)  // is black
 
 #define SFX_BTN_CLICKED "sfx/btn_Clicked.wav"
+#define SFX_POSITIVE "sfx/btn_Postive.wav"
+#define SFX_NEGATIVE "sfx/btn_Negation.wav"
 #define SFX_MUSIC "sfx/caribbean_lobby-rick_dickert.mp3"
 
 #define GAME_OPACITY 220.0
 
 #define SWIPE_THRESHOLD 100.0
+
+#define ANIMATION_CONSTANT 0.10
 
 
 #define IMG_BLUR "images/blur.png"
@@ -102,7 +106,6 @@ public:
     static std::string bitmapFontName;
     static int defaultFontSize;
     static int fontSize;
-    
     //Variables
     static float vEdgeMargin;
 };

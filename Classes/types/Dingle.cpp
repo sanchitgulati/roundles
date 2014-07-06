@@ -15,44 +15,36 @@ using namespace cocos2d;
 bool Dingle::init()
 {
     Node::init();
-    _hp = 2;
     return true;
 }
 
-Dingle::Dingle(const char* image)
+Dingle::Dingle()
+: _dots(2)
 {
-    sprite = Sprite::create(image);
+    setAnchorPoint(Point(0.5f, 0.5f));
+    sprite = Sprite::create(IMG_CIRCLE_WHITE);
     sprite->setAnchorPoint(Point(0, 0));
     sprite->setColor(RGB_COLOR7);
     this->addChild(sprite);
     
-    light = Sprite::create(IMG_CIRCLE_LIGHT);
-    light->setAnchorPoint(Point(0, 0));
-    light->setOpacity(50);
-    light->setColor(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber));
-    light->runAction(RepeatForever::create(Sequence::create(FadeTo::create(3.0f,150),FadeTo::create(2.0f,50),NULL)));
-    this->addChild(light);
-    
-    
-    dot = Sprite::create(IMG_CIRCLE_LIGHT);
+    dot = Sprite::create(IMG_CIRCLE_WHITE);
+    dot->setAnchorPoint(Point(0.5, 0.5));
     dot->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
+    auto size = sprite->getBoundingBox().size;
+    dot->setScale(0.5);
+    dot->setPosition(Point(size.width/2.0f,size.height/2.0f));
     sprite->addChild(dot);
 }
 
 void Dingle::setScale(float scale)
 {
     sprite->setScale(scale);
-    light->setScale(scale);
     
-    
-    auto size = sprite->getBoundingBox().size;
-    dot->setScale(0.5);
-    dot->setPosition(Point(size.width/2.0f,size.height/2.0f));
 }
 
-Dingle* Dingle::create(const char * image)
+Dingle* Dingle::create()
 {
-    Dingle *pRet = new Dingle(image);
+    Dingle *pRet = new Dingle();
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -66,7 +58,16 @@ Dingle* Dingle::create(const char * image)
     }
 }
 
-int Dingle::getHP()
+void Dingle::updateDots(int value)
 {
-    return --_hp;
+    _dots = value;
+    switch (_dots) {
+        case 1:
+            dot->setVisible(false);
+            break;
+        case 2:
+            dot->setVisible(true);
+        default:
+            break;
+    }
 }
