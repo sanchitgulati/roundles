@@ -75,14 +75,14 @@ bool MainMenu::init()
     this->addChild(emitter,zBg);
     
     auto btnSetting = Button::create("Setting",IMG_BUTTON_MENU,RGB_COLOR2);
-    btnSetting->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*0.85 ));
+    btnSetting->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*MENU_HEIGHT ));
     btnSetting->setCallback(CC_CALLBACK_1(MainMenu::menuCallback, this));
     btnSetting->setTag(bSetting);
     
     
     auto btnTutorial = Button::create("Achievements",IMG_BUTTON_ACHIEVE,RGB_COLOR2);
     btnTutorial->setCallback(CC_CALLBACK_1(MainMenu::menuCallback, this));
-    btnTutorial->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*0.85 ));
+    btnTutorial->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*MENU_HEIGHT ));
     btnTutorial->setTag(bTutorial);
     
     /* Object Placement and other settings */
@@ -100,7 +100,7 @@ bool MainMenu::init()
     gameTitle->setEnabled(false);
     gameTitle->setColor(RGB_COLOR6);
     gameTitle->setScale(Util::getScreenRatio(gameTitle)*0.4);
-    gameTitle->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.85 ));
+    gameTitle->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*MENU_HEIGHT ));
     for(int i = 0; i < lblGameName->getStringLength(); i++)
     {
         lblGameName->getLetter(i)->setColor(RGB_COLOR5);

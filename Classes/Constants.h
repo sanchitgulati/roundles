@@ -47,6 +47,8 @@
 
 #define ANIMATION_CONSTANT 0.10
 
+#define MENU_HEIGHT 0.90
+
 
 #define IMG_BLUR "images/blur.png"
 

@@ -68,18 +68,18 @@ bool GameScene::init()
     this->addChild(emitter,zBg);
     
     auto btnBack = Button::create("Back",IMG_BUTTON_BACK,RGB_COLOR2);
-    btnBack->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*0.85 ));
+    btnBack->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*MENU_HEIGHT ));
     btnBack->setCallback(CC_CALLBACK_1(GameScene::menuCallback, this));
     btnBack->setTag(bBack);
     
     auto btnHint = Button::create("Hint",IMG_BUTTON_HINT,RGB_COLOR2);
-    btnHint->setPosition(Point(origin.x + visibleSize.width*0.50, origin.y + visibleSize.height*0.85 ));
+    btnHint->setPosition(Point(origin.x + visibleSize.width*0.50, origin.y + visibleSize.height*MENU_HEIGHT ));
     btnHint->setCallback(CC_CALLBACK_1(GameScene::menuCallback, this));
     btnHint->setTag(bHint);
     
     
     auto btnRestart = Button::create("Restart",IMG_BUTTON_RESTART,RGB_COLOR2);
-    btnRestart->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*0.85 ));
+    btnRestart->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*MENU_HEIGHT ));
     btnRestart->setCallback(CC_CALLBACK_1(GameScene::menuCallback, this));
     btnRestart->setTag(bRestart);
     
@@ -110,7 +110,7 @@ bool GameScene::init()
         return false;
     
     auto temp = ((origin.x + visibleSize.width) - LevelXML::getGridSizeX()*_size)/2.0f;
-    levelNode->setContentSize(Size(Point(LevelXML::getGridSizeX()*_size,LevelXML::getGridSizeY()*_size)));
+    levelNode->setContentSize(Size(Point(LevelXML::getGridSizeX()*_size + _size/2.0,LevelXML::getGridSizeY()*_size + _size/2.0)));
     levelNode->setAnchorPoint(Point(0, 0));
     levelNode->setPosition(Point(temp,Constants::vEdgeMargin*1.5)); //hack
     this->addChild(levelNode);
@@ -206,6 +206,22 @@ bool GameScene::loadLevel(bool reset)
                 auto temp = static_cast<LevelElement>(*it);
                 it->ccElement = createCCElement(temp);
                 it->dots = 2;
+                totalElements += it->dots; // Because use have move over it twice
+                break;
+            }
+            case eTurner:
+            {
+                auto temp = static_cast<LevelElement>(*it);
+                it->ccElement = createCCElement(temp);
+                it->dots = 1;
+                totalElements += it->dots; // Because use have move over it twice
+                break;
+            }
+            case eIce:
+            {
+                auto temp = static_cast<LevelElement>(*it);
+                it->ccElement = createCCElement(temp);
+                it->dots = 1;
                 totalElements += it->dots; // Because use have move over it twice
                 break;
             }
@@ -365,6 +381,26 @@ Node* GameScene::createCCElement(LevelElement element)
         case eDingle:
         {
             auto CCElement = Dingle::create();
+            CCElement->setScale(_levelScale.x);
+            CCElement->setPosition(getScreenCoordinates(element.x, element.y));
+            CCElement->setLocalZOrder(zDingle);
+            levelNode->addChild(CCElement);
+            return CCElement;
+            break;
+        }
+        case eTurner:
+        {
+            auto CCElement = Turner::create();
+            CCElement->setScale(_levelScale.x);
+            CCElement->setPosition(getScreenCoordinates(element.x, element.y));
+            CCElement->setLocalZOrder(zDingle);
+            levelNode->addChild(CCElement);
+            return CCElement;
+            break;
+        }
+        case eIce:
+        {
+            auto CCElement = Ice::create();
             CCElement->setScale(_levelScale.x);
             CCElement->setPosition(getScreenCoordinates(element.x, element.y));
             CCElement->setLocalZOrder(zDingle);

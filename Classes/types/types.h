@@ -20,5 +20,7 @@
 #include "Dingle.h"
 #include "Player.h"
 #include "Sideton.h"
+#include "Turner.h"
+#include "Ice.h"
 
 #endif

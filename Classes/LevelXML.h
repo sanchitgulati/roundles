@@ -20,6 +20,8 @@ enum {
     eStart,
     eSingle,
     eDingle,
+    eTurner,
+    eIce
 };
 
 typedef struct {
@@ -33,6 +35,7 @@ struct LevelElement
     int y;
     int head;
     int dots;
+    int metaType;
     cocos2d::Node* ccElement;
     LevelElement()
     {

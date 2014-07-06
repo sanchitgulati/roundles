@@ -1,4 +1,4 @@
-<!-- 0: Null 1 : Start 2 : Single 3 : Double -->
+<!-- 0: Null 1 : Start 2 : Single 3 : Double 4 : Head Turner 5 : Ice -->
 <!-- 0 : Top 1 : Right 2: Bottom 3: Left -->
 <?xml version="1.0" encoding="UTF-8"?>
 <bundle value="Red Pill" rgb_inner="245,154,157" rgb_outer="235,21,85">
@@ -48,7 +48,7 @@
 			<element type="2" positionX="1" positionY="0"></element>
 			<element type="2" positionX="1" positionY="2"></element>
 			<element type="2" positionX="1" positionY="3"></element>
-			<element type="2" positionX="2" positionY="1"></element>
+			<element type="4" positionX="2" positionY="1" headed="1"></element>
 			<element type="2" positionX="2" positionY="3"></element>
 			<element type="2" positionX="4" positionY="0"></element>
 			<element type="2" positionX="4" positionY="1"></element>
@@ -67,7 +67,7 @@
 			<element type="2" positionX="2" positionY="0"></element>
 			<element type="2" positionX="2" positionY="1"></element>
 			<element type="2" positionX="2" positionY="2"></element>
-			<element type="2" positionX="2" positionY="3"></element>
+			<element type="5" positionX="2" positionY="3" moves="3"></element>
 			<element type="2" positionX="3" positionY="0"></element>
 			<element type="2" positionX="3" positionY="1"></element>
 			<element type="2" positionX="3" positionY="2"></element>

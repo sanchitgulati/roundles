@@ -58,11 +58,7 @@ void Util::loadParticleDefaults(cocos2d::ParticleSystemQuad *emitter)
     emitter->setBlendAdditive(false);
     emitter->setSourcePosition(Point(winSize.width/2, winSize.height/2.0f));
     emitter->setPosVar(Point(winSize.width/2.0f, winSize.height/2.0f));
-//    emitter->setOpacity(0);
-//    auto fadeIn = FadeIn::create(1.0f);
-//    auto delay = DelayTime::create(1.0f);
-//    emitter->runAction(Sequence::create(delay,fadeIn,NULL));
-    
+    emitter->setEmissionRate(2.0f);
     try
     {
         Color4F colorInner = Color4F(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber));

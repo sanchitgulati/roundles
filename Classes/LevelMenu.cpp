@@ -68,7 +68,7 @@ bool LevelMenu::init()
     auto btnBack = Button::create("Back", IMG_BUTTON_BACK, RGB_COLOR2);
     btnBack->setCallback(CC_CALLBACK_1(LevelMenu::menuCallback, this));
     btnBack->setTag(bBack);
-    btnBack->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*0.85 ));
+    btnBack->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*MENU_HEIGHT ));
     
     auto tblLevel = TableLevel::create();
     tblLevel->setPosition(Point(0,0));

@@ -260,9 +260,18 @@ std::vector<LevelElement> LevelXML::getCurrentLevel()
         temp.x = std::atoi(it->attribute("positionX").value());
         temp.y = std::atoi(it->attribute("positionY").value());
         temp.head = -1;
-        if(temp.type == eStart)
-        {
-            temp.head = std::atoi(it->attribute("head").value());
+        
+        switch (temp.type) {
+            case eStart:
+                temp.head = std::atoi(it->attribute("head").value());
+                break;
+            case eTurner:
+                temp.metaType = std::atoi(it->attribute("headed").value());
+                break;
+            case eIce:
+                temp.metaType = std::atoi(it->attribute("moves").value());
+            default:
+                break;
         }
         vec.push_back(temp);
     }
