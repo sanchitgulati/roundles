@@ -21,6 +21,7 @@ public:
     virtual bool init();
     static Ice* create();
     void setScale(float);
+    void setActive(bool);
 };
 
 #endif /* defined(__roundels__Ice__) */

@@ -214,7 +214,7 @@ bool GameScene::loadLevel(bool reset)
                 auto temp = static_cast<LevelElement>(*it);
                 it->ccElement = createCCElement(temp);
                 it->dots = 1;
-                totalElements += it->dots; // Because use have move over it twice
+                totalElements += it->dots;
                 break;
             }
             case eIce:
@@ -222,7 +222,7 @@ bool GameScene::loadLevel(bool reset)
                 auto temp = static_cast<LevelElement>(*it);
                 it->ccElement = createCCElement(temp);
                 it->dots = 1;
-                totalElements += it->dots; // Because use have move over it twice
+                totalElements += it->dots;
                 break;
             }
         }
@@ -231,7 +231,7 @@ bool GameScene::loadLevel(bool reset)
     _player->setTotalElements(totalElements); // to be changed with diffrent element types
     
     //Start Load
-    updateGame();
+    updateGame(true);
     
     return true;
 }
@@ -350,6 +350,18 @@ void GameScene::menuCallback(Ref* pSender)
                         level.push_back(lastElement);
                     }
                 }
+                case eIce:
+                {
+                    lastElement.ccElement = createCCElement(lastElement);
+                    level.push_back(lastElement);
+                    break;
+                }
+                case eTurner:
+                {
+                    lastElement.ccElement = createCCElement(lastElement);
+                    level.push_back(lastElement);
+                    break;
+                }
             }
            
 
@@ -459,9 +471,11 @@ void GameScene::swipeLeft()
     {
         for(int i = _player->getX() - 1; i >= 0; i--)
         {
-            if(validMove(i, _player->getY()))
+            auto type = validMove(i, _player->getY());
+            if(type != eNull)
             {
-                handleMove(i, _player->getY(),dLeft);
+                auto head = dLeft;
+                handleMove(i, _player->getY(),head);
                 break;
             }
         }
@@ -477,9 +491,11 @@ void GameScene::swipeRight()
     {
         for(int i = _player->getX() + 1; i < LevelXML::getGridSizeX(); i++)
         {
-            if(validMove(i, _player->getY()))
+            auto type = validMove(i, _player->getY());
+            if(type != eNull)
             {
-                handleMove(i, _player->getY(),dRight);
+                auto head = dRight;
+                handleMove(i, _player->getY(),head);
                 break;
             }
         }
@@ -496,9 +512,12 @@ void GameScene::swipeUp()
     {
         for(int i = _player->getY() + 1; i < LevelXML::getGridSizeY(); i++)
         {
-            if(validMove(_player->getX(),i))
+            auto type = validMove(_player->getX(),i);
+            if(type != eNull)
             {
-                handleMove(_player->getX(),i,dTop);
+                
+                auto head = dTop;
+                handleMove(_player->getX(),i,head);
                 break;
             }
         }
@@ -514,9 +533,11 @@ void GameScene::swipeDown()
     {
         for(int i = _player->getY() - 1; i >=  0; i--)
         {
-            if(validMove(_player->getX(),i))
+            auto type = validMove(_player->getX(),i);
+            if(type != eNull)
             {
-                handleMove(_player->getX(),i,dBottom);
+                auto head = dBottom;
+                handleMove(_player->getX(),i,head);
                 break;
             }
         }
@@ -527,8 +548,28 @@ void GameScene::swipeDown()
     }
 }
 
-void GameScene::updateGame()
+void GameScene::updateGame(bool init)
 {
+    if(!init)
+    {
+        std::vector<LevelElement>::iterator it;
+        for (it = level.begin() ; it != level.end(); ++it)
+        {
+            switch (it->type) {
+                case eIce:
+                    it->metaType --;
+                    if(it->metaType <= 0)
+                    {
+                        auto temp = static_cast<Ice *>(it->ccElement);
+                        temp->setActive(true);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    
     //Disable/Enable Undo Button
     if(moves.size() == 1lu )
     {
@@ -611,6 +652,15 @@ void GameScene::handleMove(int grid_x,int grid_y,int head)
     auto elementCaptured = static_cast<LevelElement>(*it);
     storeMoveForUndo(elementCaptured, dLeft);
     float deltaTime = calculateDeltaTime(elementCaptured.x,elementCaptured.y);
+    
+    //Exceptions for turner
+    switch (elementCaptured.type) {
+        case eTurner:
+            head = elementCaptured.metaType;
+            break;
+        default:
+            break;
+    }
     updatePlayer(elementCaptured.x,elementCaptured.y, head, deltaTime);
     
     if(it->dots == 0)
@@ -652,13 +702,24 @@ LevelElement GameScene::getLevelElementAt(int x, int y)
     return element;
 }
 
-bool GameScene::validMove(int x, int y)
+eType GameScene::validMove(int x, int y)
 {
     //local copy, doesn't disturb the level vector
     auto element = getLevelElementAt(x,y);
     if(element.type != eNull)
-        return true;
-    return false;
+    {
+        switch (element.type) {
+            case eIce:
+                if(element.metaType > 0)
+                    return eNull;
+                break;
+                
+            default:
+                return element.type;
+                break;
+        }
+    }
+    return eNull;
 }
 
 bool GameScene::hasMoves()

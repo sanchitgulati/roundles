@@ -29,7 +29,7 @@ Ice::Ice()
     
     dot = Sprite::create(IMG_CIRCLE_WHITE);
     dot->setAnchorPoint(Point(0.5, 0.5));
-    dot->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
+    dot->setColor(Color3B::WHITE);
     auto size = sprite->getBoundingBox().size;
     dot->setScale(0.25);
     dot->setPosition(Point(size.width/2.0,size.height/2.0));
@@ -59,4 +59,12 @@ Ice* Ice::create()
     }
 }
 
+
+void Ice::setActive(bool value)
+{
+    if(value)
+        dot->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
+    else
+        dot->setColor(Color3B::WHITE);
+}
 

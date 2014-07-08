@@ -15,7 +15,7 @@
 
 USING_NS_CC;
 
-enum {
+enum eType{
     eNull,
     eStart,
     eSingle,
@@ -30,7 +30,7 @@ typedef struct {
 
 struct LevelElement
 {
-    int type;
+    eType type;
     int x;
     int y;
     int head;

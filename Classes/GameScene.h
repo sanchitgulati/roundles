@@ -77,7 +77,7 @@ public:
     cocos2d::Node* createCCElement(LevelElement element);
     bool hasMoves();
     LevelElement getLevelElementAt(int x,int y);
-    bool validMove(int x,int y);
+    eType validMove(int x,int y);
     void storeMoveForUndo(LevelElement element, int head);
     
     void handleMove(int grid_x,int grid_y,int head);
@@ -86,7 +86,7 @@ public:
     void updatePlayer(int x,int y,int head,float deltaTime);
     
     bool loadLevel(bool reset = false);
-    void updateGame(); //For Regular Checks
+    void updateGame(bool init = false); //For Regular Checks
     
     //Util
     void deleteCCElementFromLevelNode(Node * sender,bool cleanup);
