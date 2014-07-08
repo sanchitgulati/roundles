@@ -256,7 +256,7 @@ std::vector<LevelElement> LevelXML::getCurrentLevel()
     for(pugi::xml_named_node_iterator it=itElement.begin(); it!=itElement.end(); it++)
     {
         LevelElement temp = LevelElement();
-        temp.type = std::atoi(it->attribute("type").value());
+        temp.type = static_cast<eType>(std::atoi(it->attribute("type").value()));
         temp.x = std::atoi(it->attribute("positionX").value());
         temp.y = std::atoi(it->attribute("positionY").value());
         temp.head = -1;
