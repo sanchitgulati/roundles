@@ -564,8 +564,7 @@ void GameScene::updateGame(bool init)
         {
             switch (it->type) {
                 case eIce:
-                    it->metaType --;
-                    if( (_player->getMoves() - it->metaType) <= 0)
+                    if( (it->metaType - _player->getMoves()) <= 0)
                     {
                         auto temp = static_cast<Ice *>(it->ccElement);
                         temp->setActive(true);
@@ -713,10 +712,10 @@ eType GameScene::validMove(int x, int y)
     {
         switch (element.type) {
             case eIce:
-                if(element.metaType > 0)
-                    return eNull;
-                else
+                if( (element.metaType - _player->getMoves()) <= 0)
                     return element.type;
+                else
+                    return eNull;
                 break;
                 
             default:
