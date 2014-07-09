@@ -125,6 +125,10 @@ bool GameScene::init()
 
 bool GameScene::loadLevel(bool reset)
 {
+    if(reset)
+    {
+        moves.clear();
+    }
     
     /*Getting Scale For Future Use */
     auto scaleSprite = Sprite::create(IMG_CIRCLE_WHITE);
@@ -312,6 +316,7 @@ void GameScene::menuCallback(Ref* pSender)
             _player->setGridPosition(_playerElement.x, _playerElement.y);
             _player->setHead(_playerElement.head);
             _player->setCapturedElements(-1);
+            _player->setMoves(_player->getMoves()-1);
             
             auto deltaTime = calculateDeltaTime(_playerElement.x, _playerElement.y);
             auto screen_coor = getScreenCoordinates(_playerElement.x, _playerElement.y);
@@ -362,6 +367,8 @@ void GameScene::menuCallback(Ref* pSender)
                     level.push_back(lastElement);
                     break;
                 }
+                default:
+                    break;
             }
            
 
@@ -558,7 +565,7 @@ void GameScene::updateGame(bool init)
             switch (it->type) {
                 case eIce:
                     it->metaType --;
-                    if(it->metaType <= 0)
+                    if( (_player->getMoves() - it->metaType) <= 0)
                     {
                         auto temp = static_cast<Ice *>(it->ccElement);
                         temp->setActive(true);
@@ -605,12 +612,6 @@ std::vector<LevelElement>::iterator GameScene::captureElement(int x, int y)
         if(it->x == x && it->y == y)
         {
             switch (it->type) {
-                case eSingle:
-                {
-                    it->dots = 0;
-                    return it;
-                    break;
-                }
                 case eDingle:
                 {
                     it->dots--;
@@ -620,6 +621,7 @@ std::vector<LevelElement>::iterator GameScene::captureElement(int x, int y)
                     break;
                 }
                 default:
+                    it->dots = 0;
                     return it;
                     break;
             }
@@ -635,6 +637,7 @@ void GameScene::updatePlayer(int x,int y,int head,float deltaTime)
     _player->setGridPosition(x, y);
     _player->setHead(head);
     _player->setCapturedElements(1); //delta +1
+    _player->setMoves(_player->getMoves()+1);
     //End
     
     
@@ -712,6 +715,8 @@ eType GameScene::validMove(int x, int y)
             case eIce:
                 if(element.metaType > 0)
                     return eNull;
+                else
+                    return element.type;
                 break;
                 
             default:

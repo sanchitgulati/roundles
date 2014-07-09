@@ -24,6 +24,7 @@ protected:
     int totalElements;
     int capturedElements;
     int _animationsRunning;
+    int _moves;
     
     cocos2d::CallFunc* _started;
     cocos2d::CallFunc* _done;
@@ -37,6 +38,8 @@ public:
     //Getter's and Setter's
     int getX();
     int getY();
+    int getMoves();
+    void setMoves(int val);
     void setGridPosition(int x,int y);
     void setHead(int direction);
     void setScale(float value);

@@ -20,6 +20,7 @@ bool Player::init()
 
 Player::Player()
 : capturedElements(0),
+_moves(0),
 _animationsRunning(0)
 {
     setAnchorPoint(Point(0.5f, 0.5f));
@@ -179,4 +180,14 @@ void Player::animationStarted(Node * sender)
 void Player::animationDone(Node * sender)
 {
     _animationsRunning --;
+}
+
+int Player::getMoves()
+{
+    return _moves;
+}
+
+void Player::setMoves(int val)
+{
+    _moves = val;
 }
