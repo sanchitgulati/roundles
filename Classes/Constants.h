@@ -32,7 +32,6 @@
 #define RGBA_COLOR6 Color4B(255,255,255,255)
 #define RGB_COLOR6 Color3B(255,255,255) //is text against Menu Item
 
-
 #define RGB_COLOR7 Color3B(83,101,121)
 #define RGBA_COLOR7 Color4B(83,101,121,255)  // is black
 
@@ -58,7 +57,7 @@
 #define IMG_CIRCLE_SHADOW "images/circleShadow.png"
 #define IMG_CIRCLE_LIGHT "images/circleGameOuter.png"
 
-
+#define IMG_CIRCLE_TWITTER "images/twitter.png"
 #define IMG_CIRCLE_WHITE "images/circleWhiteHiRes.png"
 #define IMG_CIRCLE_WHITE_BORDER "images/circleWhiteBorder.png"
 #define IMG_RECT_WHITE "images/rectWhite.png"
@@ -78,6 +77,15 @@
 #define IMG_BUTTON_OPTION "images/btnOption.png"
 #define IMG_TICK_GREEN "images/btnTick.png"
 #define IMG_ARROW "images/arrowPlayer.png"
+
+#define IMG_SANCHIT "images/sanchit.png"
+#define IMG_RADHIKA "images/radhika.png"
+
+
+#define MUSIC_MAX 0.50
+#define SOUND_MAX 1.00
+
+#define VFX_CONSTANT 0.50
 
 enum zindex
 {

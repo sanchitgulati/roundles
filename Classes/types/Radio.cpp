@@ -14,7 +14,6 @@ USING_NS_CC;
 
 Radio::Radio(std::string text)
 {
-    this->setEnabled(true);
     lblText = Label::create(text, Constants::fontName, Constants::fontSize*0.70);
     lblText->setAnchorPoint(Point(0.0f,0.5f));
     lblText->setColor(RGB_COLOR5);
@@ -29,6 +28,8 @@ Radio::Radio(std::string text)
     
     on = MenuItemImage::create(IMG_CIRCLE_WHITE, IMG_CIRCLE_WHITE);
     off = MenuItemImage::create(IMG_CIRCLE_WHITE, IMG_CIRCLE_WHITE);
+    
+    
     on->setScale(Util::getScreenRatio(on)*0.125);
     off->setScale(Util::getScreenRatio(off)*0.125);
     
@@ -36,25 +37,42 @@ Radio::Radio(std::string text)
     tick->setScale(Util::getScreenRatio(tick)*0.125);
     
     auto barSize = bar->getBoundingBox().size;
+    auto onoffsize = on->getBoundingBox().size;
     
-    circle->setPositionX(-1*(barSize.width/2.0f));
-    lblText->setPositionX(-1*(barSize.width/2.0f));
-    on->setPositionX(1*(barSize.width/2.0f));
-    off->setPositionX(1*(barSize.width/2.0f));
+    bar->setPositionX(-1*(barSize.width/2.0f) + (onoffsize.width/2.0));
+    circle->setPositionX(-1*(barSize.width/1.0f)+ onoffsize.width/2.0);
+    lblText->setPositionX(-1*(barSize.width/1.0f)+ (onoffsize.width/2.0));
+    
+    
+    on->setPositionX(1*(barSize.width/1.0f));
+    off->setPositionX(1*(barSize.width/1.0f));
+    
+    
+    circle->setPositionY(onoffsize.height/2.0);
+    bar->setPositionY(onoffsize.height/2.0);
+    lblText->setPositionY(onoffsize.height/2.0);
+    
+
     
     circle->setColor(RGB_COLOR4);
     bar->setColor(RGB_COLOR4);
     
     
+    
     on->setColor(RGB_COLOR2);
-    off->setColor(RGB_COLOR2);
+    off->setColor(Color3B::GRAY);
     
     this->addChild(circle);
     this->addChild(bar);
-    this->addChild(on);
-    this->addChild(off);
     this->addChild(lblText);
+    
+    
+    setCascadeColorEnabled(true);
+    setCascadeOpacityEnabled(true);
+
 }
+
+
 
 Radio* Radio::create(std::string text)
 {
@@ -72,4 +90,49 @@ Radio* Radio::create(std::string text)
     }
 }
 
+bool Radio::init()
+{
+    MenuItem::initWithCallback((const ccMenuCallback&)nullptr);
+    
+    _subItems.pushBack(on);
+    _subItems.pushBack(off);
+    _selectedIndex = UINT_MAX;
+    this->setSelectedIndex(0);
+    
+    setCascadeColorEnabled(true);
+    setCascadeOpacityEnabled(true);
+    this->setEnabled(true);
+    activate();
+    
+    return true;
+}
+
+
+/*
+ Changing in cocos2dx
+*/
+
+/*
+ 
+ void MenuItemToggle::setSelectedIndex(unsigned int index)
+ {
+ if( index != _selectedIndex && _subItems.size() > 0 )
+ {
+ _selectedIndex = index;
+ MenuItem *currentItem = (MenuItem*)getChildByTag(kCurrentItem);
+ if( currentItem )
+ {
+ currentItem->removeFromParentAndCleanup(false);
+ }
+ 
+ MenuItem* item = _subItems.at(_selectedIndex);
+ this->addChild(item, 0, kCurrentItem);
+ Size s = item->getBoundingBox().size;
+ this->setContentSize(s);
+ item->setPosition( Point( s.width/2, s.height/2 ) );
+ }
+ }
+ 
+ 
+ */
 

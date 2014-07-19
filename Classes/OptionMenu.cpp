@@ -44,7 +44,8 @@ bool OptionMenu::init()
     
     /* Variable Initialization */
     selectedMenu = 0;
-    
+    _total = 0;
+    container = Node::create();
     
     /* Touch Dispatcher */
     
@@ -83,42 +84,67 @@ bool OptionMenu::init()
     menu->setPosition(Point(0,0));
     this->addChild(menu);
     
-    auto header = Header::create("Options",IMG_BUTTON_OPTION, RGB_COLOR3);
-    header->setEnabled(false);
-    header->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*MENU_HEIGHT ));
-    this->addChild(header);
+    
+
     
     auto radioSound = Radio::create("Sound Effects");
-    radioSound->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.60));
+    radioSound->setPosition(Point(origin.x + visibleSize.width*(0.85), origin.y + visibleSize.height*0.60));
+    radioSound->setCallback(CC_CALLBACK_1(OptionMenu::soundCallback, this));
+    auto valS = UserDefault::getInstance()->getBoolForKey("sound", true);
+    radioSound->setSelectedIndex(valS);
     
     auto radioMusic = Radio::create("Music");
-    radioMusic->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.50));
+    radioMusic->setPosition(Point(origin.x + visibleSize.width*(0.85), origin.y + visibleSize.height*0.50));
+    radioMusic->setCallback(CC_CALLBACK_1(OptionMenu::musicCallback, this));
+    auto valM = UserDefault::getInstance()->getBoolForKey("music", true);
+    radioMusic->setSelectedIndex(valM);
+
+    auto radioIAP = Radio::create("Remove Ads");
+    radioIAP->setPosition(Point(origin.x + visibleSize.width*(0.85), origin.y + visibleSize.height*0.40));
     
-    auto radioIAP = Radio::create("Manage Purchases");
-    radioIAP->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.40));
-    
-    auto radioLevels = Radio::create("Reset Levels");
-    radioLevels->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.30));
+    auto radioLevels = Radio::create("Reset Game Progress");
+    radioLevels->setPosition(Point(origin.x + visibleSize.width*(0.85), origin.y + visibleSize.height*0.30));
 
     
     auto menuSetting = Menu::create(radioMusic,radioIAP,radioLevels,radioSound, NULL);
     menuSetting->setPosition(Point(0,0));
-    this->addChild(menuSetting);
+    container->addChild(menuSetting);
+    menuNames.push_back("Options");
 
     
-    auto radioSanchit = Radio::create("SG");
-    radioSanchit->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.60));
+    auto lblText = Label::create("We took a shot at a puzzle, let us now if you liked it!", Constants::fontName, Constants::fontSize*0.70);
+    lblText->setColor(RGB_COLOR5);
+    lblText->setMaxLineWidth(visibleSize.width*0.80);
+    lblText->setHorizontalAlignment(TextHAlignment::CENTER);
+    auto itemText = MenuItemLabel::create(lblText, nullptr);
+    itemText->setEnabled(false);
+    itemText->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.70));
     
-    auto radioRadhika = Radio::create("RD");
-    radioRadhika->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.50));
+    auto itemSanchitPhoto = MenuItemImage::create(IMG_SANCHIT, IMG_SANCHIT);
+    itemSanchitPhoto->setScale(Util::getScreenRatio(itemSanchitPhoto)*0.2);
+    itemSanchitPhoto->setPosition(Point(origin.x + visibleSize.width*(0.2), origin.y + visibleSize.height*0.50));
     
+    auto textSanchit = Roundles::create("Game By","Sanchit Gulati");
+    textSanchit->setPosition(Point(origin.x + visibleSize.width*(0.6), origin.y + visibleSize.height*0.50));
+    textSanchit->setCallback(CC_CALLBACK_1(OptionMenu::menuCallback, this));
+    textSanchit->setTag(666);
     
-    auto menuCredits = Menu::create(radioSanchit,radioRadhika,NULL);
+    auto itemRadhikaPhoto = MenuItemImage::create(IMG_RADHIKA, IMG_RADHIKA);
+    itemRadhikaPhoto->setScale(Util::getScreenRatio(itemRadhikaPhoto)*0.2);
+    itemRadhikaPhoto->setPosition(Point(origin.x + visibleSize.width*(0.2), origin.y + visibleSize.height*0.30));
+    
+    auto textRadhika = Roundles::create("UI/UX By","Radhika Dutt");
+    textRadhika->setPosition(Point(origin.x + visibleSize.width*(0.6), origin.y + visibleSize.height*0.30));
+    textRadhika->setCallback(CC_CALLBACK_1(OptionMenu::menuCallback, this));
+    textRadhika->setTag(696);
+    
+    auto menuCredits = Menu::create(itemText,itemSanchitPhoto,itemRadhikaPhoto,textSanchit,textRadhika,NULL);
     menuCredits->setPosition(Point(0,0));
-    this->addChild(menuCredits);
+    container->addChild(menuCredits);
+    menuNames.push_back("Credits");
     
     
-    menuCredits->setVisible(false);
+    menuCredits->setPositionX(visibleSize.width);
     
     
     
@@ -130,14 +156,21 @@ bool OptionMenu::init()
     swipeMessage->setPosition(Point(origin.x + visibleSize.width*(0.5), origin.y + visibleSize.height*0.15));
     this->addChild(swipeMessage);
     
+    _total = static_cast<int>(container->getChildrenCount());
+    
+    
+    refreshHeader();
+    
+    
     //schedule update
+    this->addChild(container);
     this->scheduleUpdate();
     return true;
 }
 
 void OptionMenu::update(float dt)
 {
-    
+    log("container pos %f %f",container->getPositionX(),container->getPositionY());
 }
 
 
@@ -165,6 +198,60 @@ void OptionMenu::menuCallback(Ref* pSender)
 }
 
 
+
+
+void OptionMenu::soundCallback(cocos2d::Ref *pSender)
+{
+    auto item = dynamic_cast<Radio *>(pSender);
+    switch (item->getSelectedIndex()) {
+        case 0: //on
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(SOUND_MAX);
+            UserDefault::getInstance()->setBoolForKey("sound", true);
+            break;
+        case 1: //off
+            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.0f);
+            UserDefault::getInstance()->setBoolForKey("sound", false);
+            break;
+        default:
+            break;
+    }
+}
+
+void OptionMenu::musicCallback(cocos2d::Ref *pSender)
+{
+    auto item = dynamic_cast<Radio *>(pSender);
+    switch (item->getSelectedIndex()) {
+        case 0: //on
+            CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(MUSIC_MAX);
+            UserDefault::getInstance()->setBoolForKey("music", true);
+            break;
+        case 1: //off
+            CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.0f);
+            UserDefault::getInstance()->setBoolForKey("music", false);
+            break;
+        default:
+            break;
+    }
+}
+
+
+
+void OptionMenu::refreshHeader()
+{
+    if(_header)
+        _header->removeFromParentAndCleanup(true);
+    
+    
+    _header = Header::create(menuNames.at(selectedMenu),IMG_BUTTON_OPTION, RGB_COLOR3);
+    _header->setEnabled(false);
+    _header->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*MENU_HEIGHT ));
+    _header->setOpacity(0);
+    _header->runAction(FadeIn::create(VFX_CONSTANT));
+    this->addChild(_header);
+}
+
+
+
 bool OptionMenu::onTouchBegan(cocos2d::Touch *touch,cocos2d::Event *event)
 {
     touchStart = touch->getLocation();
@@ -189,6 +276,7 @@ void OptionMenu::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event)
     }
 }
 
+
 void OptionMenu::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
 {
     touchStart = Point::ZERO;
@@ -201,27 +289,45 @@ void OptionMenu::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event)
 
 void OptionMenu::swipeLeft()
 {
-    log("left");
-    auto g1 = this->getChildByTag(101);
-    auto g2 = this->getChildByTag(102);
-    if(g1->getUserData())
+    if(container->getNumberOfRunningActions() != 0)
+    return;
+    
+    bool noMore = false;
+    if(selectedMenu == _total-1)
     {
-        g1->setUserData((bool*)false);
-        g1->setVisible(false);
-        g2->setVisible(true);
+        noMore = true;
+        selectedMenu = 0;
     }
     else
-    {
-        g1->setUserData((bool*)true);
-        g2->setVisible(false);
-        g1->setVisible(true);
-    }
+    selectedMenu++;
     
+    auto moveOne = MoveTo::create(VFX_CONSTANT, Point(-1*selectedMenu*visibleSize.width,0));
+    auto moveFailed = MoveBy::create(VFX_CONSTANT*noMore*0.50, Point(-1*noMore*visibleSize.width*0.50, 0));
+    container->runAction(Sequence::create(moveFailed,moveOne, NULL));
+    
+    refreshHeader();
     
 }
 void OptionMenu::swipeRight()
 {
-    swipeLeft();
+    if(container->getNumberOfRunningActions() != 0)
+    return;
+    
+    bool noMore = false;
+    if(selectedMenu == 0)
+    {
+        selectedMenu = _total-1;
+        noMore = true;
+    }
+    else
+    selectedMenu--;
+    
+    
+    auto moveOne = MoveTo::create(VFX_CONSTANT, Point(-1*selectedMenu*visibleSize.width,0));
+    auto moveFailed = MoveBy::create(VFX_CONSTANT*noMore*0.50, Point(1*noMore*visibleSize.width*0.50, 0));
+    container->runAction(Sequence::create(moveFailed,moveOne, NULL));
+    
+    refreshHeader();
 }
 void OptionMenu::swipeUp()
 {log("up");}

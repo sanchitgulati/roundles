@@ -22,6 +22,19 @@ USING_NS_CC;
 
 class OptionMenu : public cocos2d::Layer
 {
+protected:
+    //Variables
+    Size visibleSize;
+    Size winSize;
+    Point origin;
+    float fontSize;
+    LayerColor* lbackground;
+    int selectedMenu;
+    cocos2d::Node* container;
+    int _total;
+    std::vector<std::string> menuNames;
+    Header* _header;
+    
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
@@ -33,19 +46,17 @@ public:
     void menuCallback(cocos2d::Ref* pSender);
     
     
+    //
+    void refreshHeader();
+    
     //A Scheduler
     void update(float dt);
     
-    //Variables
-    Size visibleSize;
-    Size winSize;
-    Point origin;
-    float fontSize;
-    LayerColor* lbackground;
-    int selectedMenu;
-    cocos2d::Vector<cocos2d::Menu *> menuList;
+    //callbacks
     
     
+    void soundCallback(Ref* pSender);
+    void musicCallback(Ref* pSender);
     
     //touch delegated
     bool onTouchBegan(Touch* touch, Event  *event);

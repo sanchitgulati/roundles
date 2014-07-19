@@ -25,6 +25,7 @@ class Radio : public cocos2d::MenuItemToggle
 public:
     Radio(std::string text);
     static Radio* create(std::string text);
+    bool init();
 };
 
 #endif /* defined(__roundels__Radio__) */
