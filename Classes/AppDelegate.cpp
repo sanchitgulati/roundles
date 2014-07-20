@@ -37,8 +37,13 @@ bool AppDelegate::applicationDidFinishLaunching() {
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect( SFX_BTN_CLICKED );
     
     // set default volume
-    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(SOUND_MAX);
-    CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(MUSIC_MAX);
+    
+    auto valM = UserDefault::getInstance()->getBoolForKey("music", true);
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(valM*SOUND_MAX);
+    
+    
+    auto valS = UserDefault::getInstance()->getBoolForKey("sound", true);
+    CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(valS*MUSIC_MAX);
     
     //Play Playholder Music
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic(SFX_MUSIC,true);

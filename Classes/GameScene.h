@@ -47,10 +47,12 @@ public:
     Point origin;
     float fontSize;
     LayerColor* lbackground;
-    int _topCircle;
     
     //Player
     Player* _player;
+    
+    //Class Variables
+    cocos2d::Sprite* _bgCircle;
     
     //Buttons
     Sideton* btnUndo;
@@ -92,6 +94,9 @@ public:
     void deleteCCElementFromLevelNode(Node * sender,bool cleanup);
     Point getScreenCoordinates(int x,int y);
     void delCocos(Node* node);
+    void toggleVisible(cocos2d::Node *node,bool value);
+    
+    
     float calculateDeltaTime(int x,int y);
     //End
     

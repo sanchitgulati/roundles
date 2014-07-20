@@ -12,6 +12,10 @@
 #include "MainMenuScene.h"
 #include "SimpleAudioEngine.h"
 
+
+#define BG_CIRCLE_SCALE 1.2
+#define BG_CIRCLE_INIT_SCALE 0.5
+
 enum{bMenu,bBack,bHint,bRestart,bUndo};
 
 enum{zSingle,zDingle,zPlayer}; //z_player to be last
@@ -95,13 +99,13 @@ bool GameScene::init()
     menu->setTag(bMenu);
     
     
+    //the next menu/ you win menu
+    
+    
     //That Circle in the backgroud
-    auto backgroundCircle = Sprite::create(IMG_CIRCLE_WHITE);
-    backgroundCircle->setScale(Util::getScreenRatioWidth(backgroundCircle)*1.2);
-    backgroundCircle->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
-    backgroundCircle->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.35 ));
-    _topCircle = backgroundCircle->getPosition().y + backgroundCircle->getBoundingBox().size.height/2.0;
-    this->addChild(backgroundCircle);
+    _bgCircle = Sprite::create(IMG_CIRCLE_WHITE);
+    this->addChild(_bgCircle);
+    
     
     levelNode = nullptr; //CrossPlatform Shit
     
@@ -114,6 +118,7 @@ bool GameScene::init()
     levelNode->setAnchorPoint(Point(0, 0));
     levelNode->setPosition(Point(temp,Constants::vEdgeMargin*1.5)); //hack
     this->addChild(levelNode);
+    
     
     menu->setPosition(Point::ZERO);
     this->addChild(menu, zMenu);
@@ -153,12 +158,6 @@ bool GameScene::loadLevel(bool reset)
             break;
         case 8:
             scale = 0.11f;
-            break;
-        case 9:
-            scale = 0.10f;
-            break;
-        case 10:
-            scale = 0.09f;
             break;
         default:
             log("Invalid Grid Size, raising exception!");
@@ -229,10 +228,29 @@ bool GameScene::loadLevel(bool reset)
                 totalElements += it->dots;
                 break;
             }
+            case eNull:
+                break;
         }
     }
     level.erase(toDel); //Delete _player from Level Vector
     _player->setTotalElements(totalElements); // to be changed with diffrent element types
+    
+    //That Circle in the backgroud
+    _bgCircle->setScale(Util::getScreenRatioWidth(_bgCircle)*BG_CIRCLE_INIT_SCALE);
+    _bgCircle->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.35 ));
+    _bgCircle->setColor(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber));
+    
+    Color3B c = LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber);
+    auto scaleTo = (winSize.width/_bgCircle->getContentSize().width)*BG_CIRCLE_SCALE;
+    _bgCircle->runAction(ScaleTo::create(0.8,scaleTo));
+    //0.5, level fadein + 0.3 fx time
+    _bgCircle->runAction(TintTo::create(0.8, c.r, c.g, c.b));
+    
+    
+    levelNode->setVisible(false);
+    auto delayTime = DelayTime::create(0.9);
+    auto callFunc = CallFuncN::create(CC_CALLBACK_1(GameScene::toggleVisible,this,true));
+    levelNode->runAction(Sequence::create(delayTime,callFunc, NULL));
     
     //Start Load
     updateGame(true);
@@ -291,7 +309,7 @@ void GameScene::menuCallback(Ref* pSender)
                 element->setOpacity(0);
                 element->setAnchorPoint(Point(0.5f, 0.0));
                 element->setColor(Color3B(RGB_COLOR7));
-                element->setPosition(Point(origin.x + visibleSize.width*0.5, _topCircle));
+                element->setPosition(Point(origin.x + visibleSize.width*0.5, visibleSize.height*0.75));
                 auto callFunc = CallFuncN::create(CC_CALLBACK_1(GameScene::delCocos,this));
                 auto delay = DelayTime::create(i*0.5f);
                 auto fadein = FadeIn::create(0.2f);
@@ -381,7 +399,6 @@ void GameScene::menuCallback(Ref* pSender)
             break;
 #endif
     }
-    updateGame();
 }
 
 Node* GameScene::createCCElement(LevelElement element)
@@ -431,6 +448,11 @@ Node* GameScene::createCCElement(LevelElement element)
             break;
     }
     return nullptr;
+}
+
+void GameScene::toggleVisible(cocos2d::Node *node,bool value)
+{
+    node->setVisible(value);
 }
 
 void GameScene::delCocos(cocos2d::Node *node)
@@ -590,8 +612,21 @@ void GameScene::updateGame(bool init)
     if(level.size() == 0lu)
     {
         log("You Win");
-        //TODO: Animations
         LevelXML::setLevelCompletedAt(LevelXML::curLevelNumber); //TODO: Collect More Data
+        _player->setVisible(false); // make the ugly go away.
+        btnUndo->setEnabled(false);
+        btnUndo->setVisible(false);
+        //TODO: Animations
+        
+        Color3B c = LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber);
+        
+        auto expand = ScaleBy::create(0.3,1.2);
+        auto blackHole = ScaleTo::create(0.3,BG_CIRCLE_INIT_SCALE);
+        auto tintTo = TintTo::create(0.6, c.r, c.g, c.b);
+        
+        _bgCircle->runAction(Sequence::create(expand,blackHole, NULL));
+        _bgCircle->runAction(tintTo);
+        
     }
     else
     {
@@ -774,4 +809,5 @@ float GameScene::calculateDeltaTime(int x,int y)
 void GameScene::deleteCCElementFromLevelNode(Node * sender,bool cleanup)
 {
     sender->removeAllChildrenWithCleanup(cleanup);
+    updateGame(); //also update the game
 }
