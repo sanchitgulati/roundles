@@ -70,8 +70,13 @@ bool LevelMenu::init()
     btnBack->setTag(bBack);
     btnBack->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*MENU_HEIGHT ));
     
+    auto heading = Header::create("Levels");
+    heading->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*MENU_HEIGHT ));
+    this->addChild(heading);
+    
     auto tblLevel = TableLevel::create();
-    tblLevel->setPosition(Point(0,0));
+    auto val = tblLevel->getCellSize();
+    tblLevel->setPosition(Point(visibleSize.width/2  - val.width/2 ,0));
     this->addChild(tblLevel);
     
     

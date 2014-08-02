@@ -23,14 +23,13 @@ USING_NS_CC;
 
 class TableLevel :public cocos2d::Layer, public cocos2d::extension::TableViewDataSource, public cocos2d::extension::TableViewDelegate
 {
-    
-    
-public:
-    virtual bool init();
+protected:
     Size winSize;
     Size tableSize;
     Size cellSize;
-    
+public:
+    virtual bool init();
+    cocos2d::Size getCellSize();
     CREATE_FUNC(TableLevel);
     
     virtual void scrollViewDidScroll(cocos2d::extension::ScrollView* view) {};

@@ -20,8 +20,8 @@ Button::Button(std::string text,std::string image,Color3B color)
     this->lblText = Label::create(text, Constants::fontName, Constants::fontSize/2.0);
     this->foreSprite = Sprite::create(image);
     this->backSprite = Sprite::create(IMG_CIRCLE_BORDER);
-    this->backSprite->setScale(Util::getScreenRatio(backSprite)*0.22);
-    this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*0.12);
+    this->backSprite->setScale(Util::getScreenRatio(backSprite)*0.15);
+    this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*0.08);
 //    this->backSprite->setColor(color); //As per new UI
     this->lblText->setColor(RGB_COLOR5);
     
@@ -109,3 +109,9 @@ void Button::unselected()
     }
 }
 
+
+void Button::setScale(float val)
+{
+    this->backSprite->setScale(Util::getScreenRatio(backSprite)*val);
+    this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*val - 0.05);
+}

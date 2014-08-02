@@ -40,7 +40,7 @@
 		</data>
         <solution isValid="0"></solution>
     </level>
-    <level id="3" gridX="5" gridY="4" >
+    <level id="3" gridX="5" gridY="5" >
 		<title>As Simple As That</title>
 		<data>
 			<element type="1" positionX="0" positionY="2" head="1"></element>
@@ -56,7 +56,7 @@
 		</data>
         <solution isValid="0"></solution>
 	</level>
-    <level id="4" gridX="4" gridY="5" >
+    <level id="4" gridX="5" gridY="5" >
 		<title>Deja vu</title>
 		<data>
 			<element type="1" positionX="0" positionY="2" head="1"></element>
@@ -205,7 +205,7 @@
         </data>
         <solution isValid="0" />
     </level>
-    <level id="1" gridX="5" gridY="6">
+    <level id="1" gridX="6" gridY="6">
         <title>Medium 1</title>
         <data>
             <element type="1" positionX="4" positionY="5" />
@@ -267,7 +267,7 @@
         </data>
         <solution isValid="0" />
     </level>
-    <level id="1" gridX="6" gridY="5">
+    <level id="1" gridX="6" gridY="6">
         <title>Medium 4</title>
         <data>
             <element type="1" positionX="4" positionY="4" />
@@ -283,7 +283,7 @@
         </data>
         <solution isValid="0" />
     </level>
-    <level id="1" gridX="6" gridY="5">
+    <level id="1" gridX="6" gridY="6">
         <title>Medium 5</title>
         <data>
             <element type="1" positionX="5" positionY="4" />
@@ -304,7 +304,7 @@
         </data>
         <solution isValid="0" />
     </level>
-    <level id="1" gridX="5" gridY="6">
+    <level id="1" gridX="6" gridY="6">
         <title>Medium 6</title>
         <data>
             <element type="1" positionX="4" positionY="5" />
@@ -335,79 +335,6 @@
             <element type="2" positionX="5" positionY="0" />
             <element type="2" positionX="2" positionY="1" />
             <element type="2" positionX="5" positionY="4" />
-        </data>
-        <solution isValid="0" />
-    </level>
-    <level id="1" gridX="9" gridY="8">
-        <title>Hard 1</title>
-        <data>
-            <element type="1" positionX="8" positionY="7" />
-            <element type="2" positionX="5" positionY="1" />
-            <element type="2" positionX="2" positionY="4" />
-            <element type="2" positionX="7" positionY="5" />
-            <element type="2" positionX="6" positionY="2" />
-            <element type="2" positionX="7" positionY="4" />
-            <element type="2" positionX="3" positionY="7" />
-            <element type="2" positionX="1" positionY="5" />
-            <element type="2" positionX="0" positionY="5" />
-            <element type="2" positionX="7" positionY="0" />
-            <element type="2" positionX="2" positionY="6" />
-            <element type="2" positionX="5" positionY="4" />
-            <element type="2" positionX="7" positionY="2" />
-            <element type="2" positionX="0" positionY="2" />
-            <element type="2" positionX="5" positionY="0" />
-            <element type="2" positionX="7" positionY="7" />
-            <element type="2" positionX="3" positionY="0" />
-            <element type="2" positionX="1" positionY="4" />
-            <element type="2" positionX="7" positionY="6" />
-            <element type="2" positionX="7" positionY="1" />
-        </data>
-        <solution isValid="0" />
-    </level>
-    <level id="1" gridX="8" gridY="9">
-        <title>Hard 2</title>
-        <data>
-            <element type="1" positionX="7" positionY="8" />
-            <element type="2" positionX="5" positionY="0" />
-            <element type="2" positionX="4" positionY="6" />
-            <element type="2" positionX="1" positionY="4" />
-            <element type="2" positionX="7" positionY="7" />
-            <element type="2" positionX="3" positionY="6" />
-            <element type="2" positionX="5" positionY="3" />
-            <element type="2" positionX="0" positionY="8" />
-            <element type="2" positionX="4" positionY="7" />
-            <element type="2" positionX="5" positionY="6" />
-            <element type="2" positionX="6" positionY="7" />
-            <element type="2" positionX="0" positionY="4" />
-            <element type="2" positionX="6" positionY="8" />
-            <element type="2" positionX="0" positionY="7" />
-            <element type="2" positionX="5" positionY="1" />
-            <element type="2" positionX="6" positionY="6" />
-            <element type="2" positionX="5" positionY="4" />
-            <element type="2" positionX="0" positionY="3" />
-            <element type="2" positionX="2" positionY="0" />
-        </data>
-        <solution isValid="0" />
-    </level>
-    <level id="1" gridX="8" gridY="9">
-        <title>Hard 3</title>
-        <data>
-            <element type="1" positionX="7" positionY="8" />
-            <element type="2" positionX="3" positionY="8" />
-            <element type="2" positionX="4" positionY="7" />
-            <element type="2" positionX="6" positionY="7" />
-            <element type="2" positionX="0" positionY="8" />
-            <element type="2" positionX="7" positionY="4" />
-            <element type="2" positionX="3" positionY="3" />
-            <element type="2" positionX="2" positionY="7" />
-            <element type="2" positionX="7" positionY="5" />
-            <element type="2" positionX="5" positionY="1" />
-            <element type="2" positionX="7" positionY="1" />
-            <element type="2" positionX="5" positionY="7" />
-            <element type="2" positionX="3" positionY="1" />
-            <element type="2" positionX="7" positionY="7" />
-            <element type="2" positionX="6" positionY="5" />
-            <element type="2" positionX="7" positionY="3" />
         </data>
         <solution isValid="0" />
     </level>

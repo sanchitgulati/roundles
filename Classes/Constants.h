@@ -48,6 +48,11 @@
 #define RGB_COLOR7 Color3B(83,101,121)
 #define RGBA_COLOR7 Color4B(83,101,121,255)
 
+//GREY_LOCKED
+#define RGB_COLOR8 Color3B(66,66,66)
+#define RGBA_COLOR8 Color4B(66,66,66,255)
+
+
 #define SFX_BTN_CLICKED "sfx/btn_Clicked.wav"
 #define SFX_POSITIVE "sfx/btn_Postive.wav"
 #define SFX_NEGATIVE "sfx/btn_Negation.wav"

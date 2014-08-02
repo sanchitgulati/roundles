@@ -35,7 +35,6 @@ Rectton::Rectton(std::string text,Color3B color)
     
     this->lblText->setColor(RGB_COLOR6);
     
-    
     this->backSprite->setAnchorPoint(Point(0.0f,0.0f));
     
     this->lblText->setPosition(Point(sizeMenuItem.width/2.0f,sizeMenuItem.height/2.0f ));

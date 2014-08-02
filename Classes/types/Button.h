@@ -28,6 +28,7 @@ public:
     static Button* create(std::string text,std::string image,Color3B color);
     virtual void selected();
     virtual void unselected();
+    void setScale(float val);
     
 };
 

@@ -77,7 +77,7 @@ bool GameScene::init()
     btnBack->setTag(bBack);
     
     auto btnHint = Button::create("Hint",IMG_BUTTON_HINT,RGB_COLOR2);
-    btnHint->setPosition(Point(origin.x + visibleSize.width*0.50, origin.y + visibleSize.height*MENU_HEIGHT ));
+    btnHint->setPosition(Point(origin.x + visibleSize.width*0.50, origin.y + visibleSize.height*(1-MENU_HEIGHT) ));
     btnHint->setCallback(CC_CALLBACK_1(GameScene::menuCallback, this));
     btnHint->setTag(bHint);
     
@@ -90,7 +90,7 @@ bool GameScene::init()
     
     
     btnUndo = Sideton::create("Undo",IMG_BUTTON_UNDO,RGB_COLOR2);
-    btnUndo->setPosition(Point(origin.x + visibleSize.width*.50, origin.y + visibleSize.height*.10 ));
+    btnUndo->setPosition(Point(origin.x + visibleSize.width*.50, origin.y + visibleSize.height*0.10 ));
     btnUndo->setCallback(CC_CALLBACK_1(GameScene::menuCallback, this));
     btnUndo->setTag(bUndo);
     
@@ -113,10 +113,9 @@ bool GameScene::init()
     if(!ret)
         return false;
     
-    auto temp = ((origin.x + visibleSize.width) - LevelXML::getGridSizeX()*_size)/2.0f;
-    levelNode->setContentSize(Size(Point(LevelXML::getGridSizeX()*_size + _size/2.0,LevelXML::getGridSizeY()*_size + _size/2.0)));
-    levelNode->setAnchorPoint(Point(0, 0));
-    levelNode->setPosition(Point(temp,Constants::vEdgeMargin*1.5)); //hack
+    levelNode->setContentSize(Size(LevelXML::getGridSizeX()*_size,LevelXML::getGridSizeY()*_size));
+    levelNode->setAnchorPoint(Point(0.5, 0.5));
+    levelNode->setPosition(Point(visibleSize.width/2, visibleSize.height/2));
     this->addChild(levelNode);
     
     

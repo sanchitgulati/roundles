@@ -26,15 +26,16 @@ bool TableLevel::init()
     tableSize = this->getContentSize();
     
     
-    tableSize = Size(winSize.width,winSize.height*0.75);
-    auto calcTemp = (winSize.height*0.75)/5.0f;
-    cellSize = Size(tableSize.width - 2*Constants::vEdgeMargin,calcTemp);
+    tableSize = Size(winSize.width*0.75,winSize.height*0.85);
+    
+    
+    auto calcTemp = tableSize.height/4.0f;
+    cellSize = Size(tableSize.width*0.75,calcTemp); //for new UI, Overlapping
     
     
 	TableView* tableView = TableView::create(this,Size(tableSize.width,tableSize.height));
 	tableView->setDirection(ScrollView::Direction::VERTICAL);
-    tableView->setAnchorPoint(Point(0,0));
-    tableView->setPosition(Point(Constants::vEdgeMargin,0));
+    tableView->setPosition(Point(0,0));
 	tableView->setDelegate(this);
 	tableView->setVerticalFillOrder(TableView::VerticalFillOrder::TOP_DOWN);
 	this->addChild(tableView);
@@ -49,29 +50,37 @@ void TableLevel::tableCellTouched(TableView* table, TableViewCell* cell)
     auto callFunc = CallFunc::create([this]()
     {
         auto s = (Scene*)GameScene::create();
-        Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
+        Director::getInstance()->replaceScene(TransitionFade::create(VFX_CONSTANT, s,RGB_COLOR1));
     });
     auto action = MoveBy::create(0.1f, Point(0,-5));
     auto rotate = RotateBy::create(0.1f, Vertex3F(-10, 0, 0));
-    cell->runAction(Sequence::create(rotate,callFunc,NULL));
-    cell->runAction(action);
+    if(cell->getIdx() != LevelXML::getTotalLevelsInBundle(LevelXML::curBundleNumber))
+    {
+        cell->runAction(Sequence::create(rotate,callFunc,NULL));
+        cell->runAction(action);
+    }
 }
 
 Size TableLevel::tableCellSizeForIndex(TableView *table, ssize_t idx)
 {
-    return cellSize;
+    return Size(cellSize.width,cellSize.height *0.80);
 }
 
 TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
 {
     int id = static_cast<int>(idx);
-    auto string = String::createWithFormat("%s : %s",Util::to_roman(id+1).c_str(), LevelXML::getLevelNameAt(static_cast<int>(idx)).c_str());
     
-    std::string stringMore = "Tap To Play";
-    if(LevelXML::getDidCompleteLevelAt(id) == true)
+    cocos2d::__String *string;
+    if(idx == LevelXML::getTotalLevelsInBundle(LevelXML::curBundleNumber))//Empty Block
     {
-        stringMore = std::string("Level Completed");
+        string = String::createWithFormat("*_*\nCongrats");
     }
+    else
+    {
+        string = String::createWithFormat("%s\n%s",Util::to_roman(id+1).c_str(), LevelXML::getLevelNameAt(static_cast<int>(idx)).c_str());
+    }
+    
+
     
     
     TableViewCell *cell = table->dequeueCell();
@@ -79,61 +88,45 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
     {
         cell = new TableViewCell(); //Can Be Customized, refer to TestCpp
         cell->autorelease();
-        Sprite* sprite = Sprite::create(IMG_BUTTON_LEVEL);
+        Sprite* sprite = Sprite::create(IMG_CIRCLE_WHITE);
         Size temp = sprite->getBoundingBox().size;
-        sprite->setScale((cellSize.width/temp.width));
-        
-        switch (idx%2) {
-            case 0:
-                sprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber)) ;
-                break;
-            case 1:
-                sprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber)) ;
-                break;
-            default:
-                break;
-        }
-        cell->setAnchorPoint(Point(0.5, 0.5));
-        
-        sprite->setAnchorPoint(Point::ZERO);
-        sprite->setPosition(Point(0, 0));
+        sprite->setScale(cellSize.height/temp.height);//for new UI, Overlapping
+        cell->setAnchorPoint(Point(0.5,0.5));
         sprite->setTag(111);
         cell->addChild(sprite);
         
-        auto label = LabelTTF::create(string->getCString(), Constants::fontName, Constants::defaultFontSize);
-        label->setPosition(Point(Constants::vEdgeMargin, cellSize.height - 2*Constants::vEdgeMargin));
+        auto label = LabelTTF::create(string->getCString(), Constants::fontName, Constants::fontSize*0.70);
+        label->setHorizontalAlignment(TextHAlignment::CENTER);
+        label->setDimensions(Size(cellSize.width*0.60,0));
+        label->setPosition(Point(temp.width/2,temp.height/2));
         label->setColor(RGB_COLOR6);
-		label->setAnchorPoint(Point(0,1));
+		label->setAnchorPoint(Point(0.5,0.5));
         label->setTag(123);
-        cell->addChild(label);
-        
-        auto labelMore = Label::create(stringMore.c_str(),Constants::fontName, Constants::defaultFontSize*0.5);
-        auto labelSize = label->getBoundingBox().size;
-        labelMore->setPosition(Point(Constants::vEdgeMargin, cellSize.height - 2*Constants::vEdgeMargin - labelSize.height));
-        labelMore->setColor(RGB_COLOR6);
-		labelMore->setAnchorPoint(Point(0,1));
-        labelMore->setTag(124);
-        cell->addChild(labelMore);
-        
+        sprite->addChild(label);
     }
     else
     {
         auto sprite = cell->getChildByTag(111);
         switch (idx%2) {
             case 0:
-                sprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber)) ;
+                sprite->setPositionX(sprite->getBoundingBox().size.width/2);
                 break;
             case 1:
-                sprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber)) ;
+                sprite->setPositionX(sprite->getBoundingBox().size.width*0.60 + (sprite->getBoundingBox().size.width/2));
                 break;
             default:
                 break;
         }
-        
-        auto label = (LabelTTF*)cell->getChildByTag(123);
+        if(LevelXML::getDidCompleteLevelAt(id) == true)
+        {
+            sprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
+        }
+        else
+        {
+            sprite->setColor(RGB_COLOR8);
+        }
+        auto label = (LabelTTF*)sprite->getChildByTag(123);
         label->setString(string->getCString());
-        auto labelMore = (LabelTTF*)cell->getChildByTag(124);
-        labelMore->setString(stringMore.c_str());
     }
 
     
@@ -142,5 +135,10 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
 
 ssize_t TableLevel::numberOfCellsInTableView(TableView *table)
 {
-    return LevelXML::getTotalLevelsInBundle(LevelXML::curBundleNumber);
+    return LevelXML::getTotalLevelsInBundle(LevelXML::curBundleNumber) + 1;//Empty Block
+}
+
+Size TableLevel::getCellSize()
+{
+    return cellSize;
 }
