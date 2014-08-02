@@ -16,12 +16,10 @@
 
 class Header : public cocos2d::MenuItem
 {
-    cocos2d::Sprite* backSprite;
-    cocos2d::Sprite* foreSprite;
     cocos2d::Label* lblText;
 public:
-    Header(std::string text,std::string image,Color3B color);
-    static Header* create(std::string text,std::string image,Color3B color);
+    Header(std::string text);
+    static Header* create(std::string text);
     
 };
 

@@ -33,7 +33,7 @@ _animationsRunning(0)
     arrow = Sprite::create(IMG_ARROW);
     arrow->setOpacity(220);
     arrow->setAnchorPoint(Point(0.5, 0.5));
-    arrow->setColor(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber));
+    arrow->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
     this->addChild(arrow);
     
     

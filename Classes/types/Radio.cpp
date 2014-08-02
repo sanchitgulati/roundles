@@ -33,9 +33,6 @@ Radio::Radio(std::string text)
     on->setScale(Util::getScreenRatio(on)*0.125);
     off->setScale(Util::getScreenRatio(off)*0.125);
     
-    tick = Sprite::create(IMG_TICK_GREEN);
-    tick->setScale(Util::getScreenRatio(tick)*0.125);
-    
     auto barSize = bar->getBoundingBox().size;
     auto onoffsize = on->getBoundingBox().size;
     

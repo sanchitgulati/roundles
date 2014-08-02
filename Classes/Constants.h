@@ -14,33 +14,46 @@
 
 #define PI 3.14
 
-#define RGBA_COLOR1 Color4B(255,255,255,255) // was bg //(237,237,237)
-#define RGB_COLOR1 Color3B(255,255,255)     // is bg
+//BG
+#define RGBA_COLOR1 Color4B(239,239,239,255)
+#define RGB_COLOR1 Color3B(239,239,239)
 
-#define RGBA_COLOR2 Color4B(240,201,74,255) //was logo //(128,215,232)
-#define RGB_COLOR2 Color3B(240,201,74)      //Menu Item
 
-#define RGBA_COLOR3 Color4B(51,113,126,255) //was inner logo  //(83,190,230)
-#define RGB_COLOR3 Color3B(51,113,126)      // Heading
+//MENU_ITEMS
+#define RGBA_COLOR2 Color4B(240,201,74,255)
+#define RGB_COLOR2 Color3B(240,201,74)
 
-#define RGBA_COLOR4 Color4B(235,239,242,255) // was heading  //(79,79,79)
-#define RGB_COLOR4 Color3B(235,239,242)      // is highlight
 
-#define RGBA_COLOR5 Color4B(83,190,230,255)
-#define RGB_COLOR5 Color3B(83,190,230)    //is text against bg
+//HEADING
+#define RGBA_COLOR3 Color4B(51,113,126,255)
+#define RGB_COLOR3 Color3B(51,113,126)
 
+//IS HIGHLIGHT
+#define RGBA_COLOR4 Color4B(225,229,232,255)
+#define RGB_COLOR4 Color3B(225,229,232)
+
+
+//IS TEXT AGAINST BG
+//LAST VAL 82,190,230
+#define RGBA_COLOR5 Color4B(42,91,121,255)
+#define RGB_COLOR5 Color3B(42,91,121)
+
+
+//IS TEXT AGAINST MENU_ITEM
 #define RGBA_COLOR6 Color4B(255,255,255,255)
-#define RGB_COLOR6 Color3B(255,255,255) //is text against Menu Item
+#define RGB_COLOR6 Color3B(255,255,255)
 
+
+//BLACK TEXT
 #define RGB_COLOR7 Color3B(83,101,121)
-#define RGBA_COLOR7 Color4B(83,101,121,255)  // is black
+#define RGBA_COLOR7 Color4B(83,101,121,255)
 
 #define SFX_BTN_CLICKED "sfx/btn_Clicked.wav"
 #define SFX_POSITIVE "sfx/btn_Postive.wav"
 #define SFX_NEGATIVE "sfx/btn_Negation.wav"
 #define SFX_MUSIC "sfx/caribbean_lobby-rick_dickert.mp3"
 
-#define GAME_OPACITY 220.0
+#define GAME_OPACITY 128.0
 
 #define SWIPE_THRESHOLD 100.0
 
@@ -49,19 +62,16 @@
 #define MENU_HEIGHT 0.90
 
 
-#define IMG_BLUR "images/blur.png"
+#define IMG_LOCK "images/lock.png"
 
-#define IMG_CIRCLE_BTN "images/circleBtn.png"
-#define IMG_CIRCLE_OBJECT "images/circleBtn.png"
-#define IMG_CIRCLE_MM "images/circleMM.png"
-#define IMG_CIRCLE_SHADOW "images/circleShadow.png"
-#define IMG_CIRCLE_LIGHT "images/circleGameOuter.png"
+#define IMG_CIRCLE_BORDER "images/btnCircle.png"
+#define IMG_CIRCLE_WHITE_HI "images/circleWhiteHiRes.png"
+#define IMG_CIRCLE_WHITE "images/circleWhiteLoRes.png"
 
 #define IMG_CIRCLE_TWITTER "images/twitter.png"
-#define IMG_CIRCLE_WHITE "images/circleWhiteHiRes.png"
-#define IMG_CIRCLE_WHITE_BORDER "images/circleWhiteBorder.png"
+
 #define IMG_RECT_WHITE "images/rectWhite.png"
-#define IMG_BUTTON_WHITE "images/btnWhiteFlat.png"
+#define IMG_BUTTON_WHITE "images/btnRectangle.png"
 
 
 #define IMG_BUTTON_MENU "images/btnMenu.png"
@@ -74,8 +84,6 @@
 #define IMG_BUTTON_ACHIEVE "images/btnAchieve.png"
 
 #define IMG_BUTTON_BACK "images/btnBack.png"
-#define IMG_BUTTON_OPTION "images/btnOption.png"
-#define IMG_TICK_GREEN "images/btnTick.png"
 #define IMG_ARROW "images/arrowPlayer.png"
 
 #define IMG_SANCHIT "images/sanchit.png"

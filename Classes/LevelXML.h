@@ -71,8 +71,9 @@ public:
     static int getTotalLevelsInBundle(int);
     
     static std::string getBundleNameAt(int);
+    static Color3B getBundleColorAt(int index);
     static Color3B getBundleColorInnerAt(int);
-    static Color3B getBundleColorOuterAt(int);
+//    static Color3B getBundleColorOuterAt(int);
     
     static bool setCurrentBundleId(int);
     static bool setCurrentLevelId(int);

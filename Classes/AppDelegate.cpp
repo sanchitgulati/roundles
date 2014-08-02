@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
-#include "MainMenuScene.h"
+#include "LogoSplash.h"
+#include "Constants.h"
 #include "LevelXML.h"
 
 #include "SimpleAudioEngine.h"
@@ -53,7 +54,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     LevelXML::curBundleNumber = UserDefault::getInstance()->getIntegerForKey("curBundleNumber", 0);
     
     // create a scene. it's an autorelease object
-    auto scene = MainMenu::createScene();
+    
+    auto scene = Scene::create();
+    scene->addChild(LogoSplash::create());
 
     // run
     director->runWithScene(scene);

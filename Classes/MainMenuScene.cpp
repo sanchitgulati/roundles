@@ -87,7 +87,7 @@ bool MainMenu::init()
     
     /* Object Placement and other settings */
     
-    btnPlay = Rectton::create("PLAY ROUNDELS", RGB_COLOR2);
+    btnPlay = Rectton::create("P L A Y", RGB_COLOR2);
     btnPlay->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.30));
     btnPlay->setCallback(CC_CALLBACK_1(MainMenu::menuCallback, this));
     btnPlay->setTag(bPlay);
@@ -128,8 +128,8 @@ bool MainMenu::init()
     
     for(int i=0; i < bundleSize;i++,theta+=step)
     {
-        
-        auto bundle = Rotator::create(LevelXML::getBundleColorOuterAt(i), LevelXML::getBundleColorInnerAt(i));
+        auto txt =  cocos2d::StringUtils::format("%s",LevelXML::getBundleNameAt(i).c_str());
+        auto bundle = Rotator::create(LevelXML::getBundleColorAt(i), txt, 50.0f,false);
         /* Calculations for x and y */
 //        float deltaEclipse = bundle->getBoundingBox().size.width*0.20; //to be saved
 //        float x = (r+deltaEclipse)*cos(theta); //to be saved
@@ -146,6 +146,11 @@ bool MainMenu::init()
     
     bundleNode->setPosition(Point(origin.x + visibleSize.width*(0.50),origin.y + visibleSize.height*0.20 ));
     bundleNode->setRotation(selectedBundle*step*(180.0/PI));
+    auto& children = bundleNode->getChildren();
+    for(const auto &child : children)
+    {
+        child->setRotation(-1*selectedBundle*step*(180.0/PI));
+    }
     this->addChild(bundleNode,zReloader);
     
     
@@ -255,7 +260,16 @@ void MainMenu::swipeLeft(Point location)
         if(selectedBundle == -1)
             selectedBundle = LevelXML::getTotalBundlesSize()-1;
         changeGameNameLetterColor();
-        bundleNode->runAction(RotateBy::create(0.5, -1*multipler*step*(180.0/PI)));
+        
+        
+        bundleNode->runAction(Sequence::create(RotateBy::create(VFX_CONSTANT, -1*multipler*step*(180.0/PI)),DelayTime::create(0.2),NULL));
+        
+        auto& children = bundleNode->getChildren();
+        for(const auto &child : children)
+        {
+            static_cast<Rotator *>(child)->animateRotation(1*multipler*step*(180.0/PI),VFX_CONSTANT+0.2); //reverse of top
+        }
+        
     }
     log("left");
 }
@@ -272,7 +286,14 @@ void MainMenu::swipeRight(Point location)
         if(selectedBundle == LevelXML::getTotalBundlesSize())
             selectedBundle = 0;
         changeGameNameLetterColor();
-        bundleNode->runAction(RotateBy::create(0.5, multipler*step*(180.0/PI)));
+        
+        bundleNode->runAction(Sequence::create(RotateBy::create(VFX_CONSTANT, 1*multipler*step*(180.0/PI)),DelayTime::create(0.2),NULL));
+        
+        auto& children = bundleNode->getChildren();
+        for(const auto &child : children)
+        {
+            static_cast<Rotator *>(child)->animateRotation(-1*multipler*step*(180.0/PI),VFX_CONSTANT+0.2); //reverse of top
+        }
     }
     
     

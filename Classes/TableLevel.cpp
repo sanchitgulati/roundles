@@ -40,26 +40,6 @@ bool TableLevel::init()
 	this->addChild(tableView);
 	tableView->reloadData();
     
-    auto blur = Sprite::create(IMG_BLUR);
-    blur->setPosition(Point(0, tableSize.height));
-    blur->setAnchorPoint(Point(0,1));
-    blur->setScaleX(Util::getScreenRatioWidth(blur));
-//    this->addChild(blur);
-    
-    auto blur1 = Sprite::create(IMG_BLUR);
-    blur1->setPosition(Point(0, tableSize.height));
-    blur1->setAnchorPoint(Point(0,0));
-    blur1->setFlippedY(true);
-    blur1->setScaleX(Util::getScreenRatioWidth(blur1));
-//    this->addChild(blur1);
-    
-    auto blur2 = Sprite::create(IMG_BLUR);
-    blur2->setPosition(Point(0, 0));
-    blur2->setAnchorPoint(Point(0,0));
-    blur2->setFlippedY(true);
-    blur2->setScaleX(Util::getScreenRatioWidth(blur2));
-//    this->addChild(blur2);
-    
     return true;
 }
 
@@ -108,7 +88,7 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
                 sprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber)) ;
                 break;
             case 1:
-                sprite->setColor(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber)) ;
+                sprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber)) ;
                 break;
             default:
                 break;
@@ -144,7 +124,7 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
                 sprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber)) ;
                 break;
             case 1:
-                sprite->setColor(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber)) ;
+                sprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber)) ;
                 break;
             default:
                 break;

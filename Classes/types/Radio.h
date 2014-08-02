@@ -18,7 +18,6 @@ class Radio : public cocos2d::MenuItemToggle
     cocos2d::Label* lblText;
     cocos2d::Sprite* circle;
     cocos2d::Sprite* bar;
-    cocos2d::Sprite* tick;
     cocos2d::MenuItem* on;
     cocos2d::MenuItem* off;
     

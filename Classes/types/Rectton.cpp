@@ -18,17 +18,17 @@ Rectton::Rectton(std::string text,Color3B color)
     _originalScale = 0;
     this->setAnchorPoint(Point(0.5f, 0.5f));
     
-    this->lblText = Label::create(text, Constants::fontNameBold, Constants::fontSize/1.2);
+    this->lblText = Label::create(text, Constants::fontNameBold, Constants::fontSize);
     
     this->backSprite = Sprite::create(IMG_BUTTON_WHITE);
-    this->backSprite->setScale(Util::getScreenRatioWidth(backSprite)*0.6);
+    this->backSprite->setScale(Util::getScreenRatioWidth(backSprite)*0.5);
     
     this->backSprite->setColor(color);
     auto sizeMenuItem = this->backSprite->getBoundingBox().size;
     
     this->setContentSize(sizeMenuItem);
     this->getBoundingBox().setRect(0, 0, sizeMenuItem.width, sizeMenuItem.height);
-    this->setScale(Util::getScreenRatio(backSprite)*0.4);
+    this->setScale(Util::getScreenRatio(backSprite)*0.5);
     
     _originalScale = this->getScale();
     _originalPosition = this->getPosition();
@@ -37,8 +37,9 @@ Rectton::Rectton(std::string text,Color3B color)
     
     
     this->backSprite->setAnchorPoint(Point(0.0f,0.0f));
-    this->lblText->setPosition(Point(sizeMenuItem.width/8.0f,sizeMenuItem.height/4.0f ));
-    this->lblText->setAnchorPoint(Point(0.0f, 0.0f));
+    
+    this->lblText->setPosition(Point(sizeMenuItem.width/2.0f,sizeMenuItem.height/2.0f ));
+    this->lblText->setAnchorPoint(Point(0.5f, 0.5f));
     
     this->addChild(backSprite);
     this->addChild(lblText);

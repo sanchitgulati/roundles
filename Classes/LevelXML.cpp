@@ -83,6 +83,11 @@ std::string LevelXML::getBundleNameAt(int index)
     return stringStream.str();
 }
 
+Color3B LevelXML::getBundleColorAt(int index)
+{
+    return getBundleColorInnerAt(index);
+}
+
 Color3B LevelXML::getBundleColorInnerAt(int index)
 {
     int localIndex = 0;
@@ -120,7 +125,7 @@ Color3B LevelXML::getBundleColorInnerAt(int index)
     }
     return Color3B::BLACK;
 }
-
+/*
 Color3B LevelXML::getBundleColorOuterAt(int index)
 {
     int localIndex = 0;
@@ -158,6 +163,8 @@ Color3B LevelXML::getBundleColorOuterAt(int index)
     }
     return Color3B::BLACK;
 }
+*/
+
 
 /* To call only after curBundle is set */
 int LevelXML::getTotalLevelsInBundle(int index)

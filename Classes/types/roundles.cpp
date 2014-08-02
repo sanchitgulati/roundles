@@ -58,8 +58,8 @@ Roundles::Roundles(std::string heading,std::string message)
     _originalPosition = this->getPosition();
     
     
-    this->addChild(bar);
     this->addChild(circleLeft);
+    this->addChild(bar);
     this->addChild(circleRight);
     this->addChild(lblText);
     this->addChild(lblHeading);

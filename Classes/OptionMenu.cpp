@@ -170,7 +170,6 @@ bool OptionMenu::init()
 
 void OptionMenu::update(float dt)
 {
-    log("container pos %f %f",container->getPositionX(),container->getPositionY());
 }
 
 
@@ -242,7 +241,7 @@ void OptionMenu::refreshHeader()
         _header->removeFromParentAndCleanup(true);
     
     
-    _header = Header::create(menuNames.at(selectedMenu),IMG_BUTTON_OPTION, RGB_COLOR3);
+    _header = Header::create(menuNames.at(selectedMenu));
     _header->setEnabled(false);
     _header->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*MENU_HEIGHT ));
     _header->setOpacity(0);

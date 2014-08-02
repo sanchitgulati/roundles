@@ -238,7 +238,7 @@ bool GameScene::loadLevel(bool reset)
     //That Circle in the backgroud
     _bgCircle->setScale(Util::getScreenRatioWidth(_bgCircle)*BG_CIRCLE_INIT_SCALE);
     _bgCircle->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.35 ));
-    _bgCircle->setColor(LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber));
+    _bgCircle->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
     
     Color3B c = LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber);
     auto scaleTo = (winSize.width/_bgCircle->getContentSize().width)*BG_CIRCLE_SCALE;
@@ -618,7 +618,7 @@ void GameScene::updateGame(bool init)
         btnUndo->setVisible(false);
         //TODO: Animations
         
-        Color3B c = LevelXML::getBundleColorOuterAt(LevelXML::curBundleNumber);
+        Color3B c = LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber);
         
         auto expand = ScaleBy::create(0.3,1.2);
         auto blackHole = ScaleTo::create(0.3,BG_CIRCLE_INIT_SCALE);

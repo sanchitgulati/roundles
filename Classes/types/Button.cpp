@@ -19,10 +19,10 @@ Button::Button(std::string text,std::string image,Color3B color)
 
     this->lblText = Label::create(text, Constants::fontName, Constants::fontSize/2.0);
     this->foreSprite = Sprite::create(image);
-    this->backSprite = Sprite::create(IMG_CIRCLE_BTN);
+    this->backSprite = Sprite::create(IMG_CIRCLE_BORDER);
     this->backSprite->setScale(Util::getScreenRatio(backSprite)*0.22);
     this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*0.12);
-    this->backSprite->setColor(color);
+//    this->backSprite->setColor(color); //As per new UI
     this->lblText->setColor(RGB_COLOR5);
     
     _originalScale = this->getScale();

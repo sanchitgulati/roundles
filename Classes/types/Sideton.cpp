@@ -17,7 +17,7 @@ Sideton::Sideton(std::string text,std::string image,Color3B color)
     this->setAnchorPoint(Point(0.5f, 0.5f));
     
     this->foreSprite = Sprite::create(image);
-    this->backSprite = Sprite::create(IMG_CIRCLE_BTN);
+    this->backSprite = Sprite::create(IMG_CIRCLE_BORDER);
     this->backSprite->setScale(Util::getScreenRatio(backSprite)*0.10);
     this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*0.08);
     _originalColor = color;
