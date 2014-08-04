@@ -103,6 +103,30 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
 		label->setAnchorPoint(Point(0.5,0.5));
         label->setTag(123);
         sprite->addChild(label);
+        
+        
+        
+        /* Repeat of else{}, for bug */
+        switch (idx%2) {
+            case 0:
+                sprite->setPositionX(sprite->getBoundingBox().size.width/2);
+                break;
+            case 1:
+                sprite->setPositionX(sprite->getBoundingBox().size.width*0.60 + (sprite->getBoundingBox().size.width/2));
+                break;
+            default:
+                break;
+        }
+        if(LevelXML::getDidCompleteLevelAt(id) == true)
+        {
+            auto c = LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber);
+            sprite->setColor(c);
+        }
+        else
+        {
+            sprite->setColor(RGB_COLOR8);
+        }
+        /*End*/
     }
     else
     {
@@ -120,7 +144,7 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
         if(LevelXML::getDidCompleteLevelAt(id) == true)
         {
             auto c = LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber);
-            sprite->setColor(Color3B(c.r + idx*2,c.g + idx*2,c.b + idx*2));
+            sprite->setColor(c);
         }
         else
         {

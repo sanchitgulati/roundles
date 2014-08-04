@@ -616,7 +616,7 @@ void GameScene::updateGame(bool init)
         btnUndo->setEnabled(false);
         btnUndo->setVisible(false);
         //TODO: Animations
-        
+        //TODO: Check is to unlock new bundle
         Color3B c = LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber);
         
         auto expand = ScaleBy::create(0.3,1.2);

@@ -125,46 +125,6 @@ Color3B LevelXML::getBundleColorInnerAt(int index)
     }
     return Color3B::BLACK;
 }
-/*
-Color3B LevelXML::getBundleColorOuterAt(int index)
-{
-    int localIndex = 0;
-    char delimiter = ',';
-    std::string token;
-    pugi::xml_object_range<pugi::xml_named_node_iterator> itBundle = doc.children("bundle");
-    for(pugi::xml_named_node_iterator it=itBundle.begin(); it!=itBundle.end(); it++)
-    {
-        if(localIndex == index)
-        {
-            std::string rgbString = it->attribute("rgb_outer").value();
-            std::istringstream iString(rgbString);
-            Color3B newColor = Color3B();
-            newColor = Color3B::BLACK;
-            for(int i =0;std::getline(iString, token, delimiter);i++)
-            {
-                switch (i) {
-                    case 0:
-                        newColor.r = std::atoi(token.c_str());
-                        break;
-                    case 1:
-                        newColor.g = std::atoi(token.c_str());
-                        break;
-                    case 2:
-                        newColor.b = std::atoi(token.c_str());
-                        break;
-                        
-                    default:
-                        break;
-                }
-            }
-            return newColor;
-        }
-        localIndex++;
-    }
-    return Color3B::BLACK;
-}
-*/
-
 
 /* To call only after curBundle is set */
 int LevelXML::getTotalLevelsInBundle(int index)
@@ -244,7 +204,6 @@ bool LevelXML::getDidCompleteLevelAt(int index)
 {
     char key[10];
     sprintf(key, "%d-%d",curBundleNumber,index);
-    log("retrieving for key %s value : %d",key,cocos2d::UserDefault::getInstance()->getBoolForKey(key, false));
     return cocos2d::UserDefault::getInstance()->getBoolForKey(key, false);
 }
 
@@ -315,4 +274,33 @@ int LevelXML::getLevelId()
     return std::atoi(curLevel.attribute("id").value());
 }
 
+
+bool LevelXML::isUnlockedBundleAt(int index)
+{
+    char key[10];
+    sprintf(key, "unlocked-%d",index);
+    return cocos2d::UserDefault::getInstance()->getBoolForKey(key, false);
+}
+
+void LevelXML::setBundleUnlockedAt(int index)
+{
+    char key[10];
+    sprintf(key, "unlocked-%d",index);
+    cocos2d::UserDefault::getInstance()->setBoolForKey(key, true);
+}
+
+
+int LevelXML::totalLevelsCompletedOfBundleAt(int index)
+{
+    char key[10];
+    int ret = 0;
+    for(int i =0;i < getTotalLevelsInBundle(index);i++)
+    {
+        sprintf(key, "%d-%d",index,i);
+        auto val = cocos2d::UserDefault::getInstance()->getBoolForKey(key, false);
+        if(val)
+            ret++;
+    }
+    return ret;
+}
 

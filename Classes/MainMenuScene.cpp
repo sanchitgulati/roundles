@@ -129,10 +129,8 @@ bool MainMenu::init()
     for(int i=0; i < bundleSize;i++,theta+=step)
     {
         auto txt =  cocos2d::StringUtils::format("%s",LevelXML::getBundleNameAt(i).c_str());
-        auto bundle = Rotator::create(LevelXML::getBundleColorAt(i), txt, 50.0f,false);
-        /* Calculations for x and y */
-//        float deltaEclipse = bundle->getBoundingBox().size.width*0.20; //to be saved
-//        float x = (r+deltaEclipse)*cos(theta); //to be saved
+        auto val = LevelXML::isUnlockedBundleAt(i);
+        auto bundle = Rotator::create(LevelXML::getBundleColorAt(i), txt, 50.0f,!val);
         float x = r*cos(theta);
         float y = r*sin(theta);
         /* End */
@@ -199,7 +197,9 @@ void MainMenu::menuCallback(Ref* pSender)
         }
             break;
         case bTutorial:
-        
+        {
+            
+        }
             break;
         default:
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)

@@ -91,13 +91,13 @@ bool OptionMenu::init()
     radioSound->setPosition(Point(origin.x + visibleSize.width*(0.85), origin.y + visibleSize.height*0.60));
     radioSound->setCallback(CC_CALLBACK_1(OptionMenu::soundCallback, this));
     auto valS = UserDefault::getInstance()->getBoolForKey("sound", true);
-    radioSound->setSelectedIndex(valS);
+    radioSound->setSelectedIndex(!valS); //bug resolved
     
     auto radioMusic = Radio::create("Music");
     radioMusic->setPosition(Point(origin.x + visibleSize.width*(0.85), origin.y + visibleSize.height*0.50));
     radioMusic->setCallback(CC_CALLBACK_1(OptionMenu::musicCallback, this));
     auto valM = UserDefault::getInstance()->getBoolForKey("music", true);
-    radioMusic->setSelectedIndex(valM);
+    radioMusic->setSelectedIndex(!valM); //bug resolved
 
     auto radioIAP = Radio::create("Remove Ads");
     radioIAP->setPosition(Point(origin.x + visibleSize.width*(0.85), origin.y + visibleSize.height*0.40));
@@ -180,19 +180,23 @@ void OptionMenu::menuCallback(Ref* pSender)
     
     auto obj = (Node*)pSender;
     switch (obj->getTag()) {
-            case bBack:
+        case bBack:
         {
             auto s = (Scene*)MainMenu::create();
             Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
-
+            break;
         }
+        case 666:
+        {
+            log("Open Twitter");
             break;
-            default:
-            Director::getInstance()->end();
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-            exit(0);
+        }
+        case 696:
+        {
+            log("Open Twitter");
             break;
-#endif
+        }
+            
     }
 }
 

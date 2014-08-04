@@ -38,13 +38,17 @@ bool AppDelegate::applicationDidFinishLaunching() {
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect( SFX_BTN_CLICKED );
     
     // set default volume
-    
     auto valM = UserDefault::getInstance()->getBoolForKey("music", true);
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(valM*SOUND_MAX);
     
     
     auto valS = UserDefault::getInstance()->getBoolForKey("sound", true);
     CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(valS*MUSIC_MAX);
+    
+    
+    //Unlock First Bundle Pernamently
+    UserDefault::getInstance()->setBoolForKey("unlocked-0", true);
+    UserDefault::getInstance()->flush();
     
     //Play Playholder Music
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic(SFX_MUSIC,true);

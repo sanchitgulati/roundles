@@ -16,6 +16,9 @@ enum {kZoomActionTag,kSlideActionTag};
 Roundles::Roundles(std::string heading,std::string message)
 {
     this->setEnabled(true);
+    this->setAnchorPoint(Point(0.0f, 0.0f));
+    
+    
     lblText = Label::create(message, Constants::fontName, Constants::fontSize*0.50);
     lblText->setAnchorPoint(Point(0.5f,0.5f));
     lblText->setColor(RGB_COLOR7);
@@ -35,6 +38,8 @@ Roundles::Roundles(std::string heading,std::string message)
     bar->setScaleY(Util::getScreenRatio(bar)*0.15);
     bar->setScaleX((lblText->getContentSize().width + circleLeft->getBoundingBox().size.width*0.50)/bar->getBoundingBox().size.width);
 
+    
+    
     
     auto barSize = bar->getBoundingBox().size;
     
@@ -56,6 +61,12 @@ Roundles::Roundles(std::string heading,std::string message)
     
     _originalScale = this->getScale();
     _originalPosition = this->getPosition();
+    
+    
+    auto sizeMenuItem = this->bar->getBoundingBox().size;
+    sizeMenuItem.width += circleRight->getBoundingBox().size.width*2;
+    this->setContentSize(sizeMenuItem);
+    this->getBoundingBox().setRect(0, 0, sizeMenuItem.width, sizeMenuItem.height);
     
     
     this->addChild(circleLeft);

@@ -89,6 +89,10 @@ public:
     static int getGridSizeY();
     static int getLevelId();
     
+    static bool isUnlockedBundleAt(int);
+    static void setBundleUnlockedAt(int);
+    
+    static int totalLevelsCompletedOfBundleAt(int );
     
     static std::vector<int> getSolutionLevel();
     
