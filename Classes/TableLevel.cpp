@@ -119,7 +119,8 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
         }
         if(LevelXML::getDidCompleteLevelAt(id) == true)
         {
-            sprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
+            auto c = LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber);
+            sprite->setColor(Color3B(c.r + idx*2,c.g + idx*2,c.b + idx*2));
         }
         else
         {

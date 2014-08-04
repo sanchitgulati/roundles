@@ -49,8 +49,8 @@
 #define RGBA_COLOR7 Color4B(83,101,121,255)
 
 //GREY_LOCKED
-#define RGB_COLOR8 Color3B(66,66,66)
-#define RGBA_COLOR8 Color4B(66,66,66,255)
+#define RGB_COLOR8 Color3B(222,222,222)
+#define RGBA_COLOR8 Color4B(222,222,222,255)
 
 
 #define SFX_BTN_CLICKED "sfx/btn_Clicked.wav"

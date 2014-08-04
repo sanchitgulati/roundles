@@ -80,7 +80,7 @@ bool MainMenu::init()
     btnSetting->setTag(bSetting);
     
     
-    auto btnTutorial = Button::create("Achievements",IMG_BUTTON_ACHIEVE,RGB_COLOR2);
+    auto btnTutorial = Button::create("Tutorial",IMG_BUTTON_TUTORIAL,RGB_COLOR2);
     btnTutorial->setCallback(CC_CALLBACK_1(MainMenu::menuCallback, this));
     btnTutorial->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*MENU_HEIGHT ));
     btnTutorial->setTag(bTutorial);

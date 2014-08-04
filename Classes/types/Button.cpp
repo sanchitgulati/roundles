@@ -19,26 +19,22 @@ Button::Button(std::string text,std::string image,Color3B color)
 
     this->lblText = Label::create(text, Constants::fontName, Constants::fontSize/2.0);
     this->foreSprite = Sprite::create(image);
-    this->backSprite = Sprite::create(IMG_CIRCLE_BORDER);
-    this->backSprite->setScale(Util::getScreenRatio(backSprite)*0.15);
-    this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*0.08);
-//    this->backSprite->setColor(color); //As per new UI
+    this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*0.15);
     this->lblText->setColor(RGB_COLOR5);
+    this->foreSprite->setColor(RGB_COLOR5);
     
     _originalScale = this->getScale();
     _originalPosition = this->getPosition();
     
-    auto sizeMenuItem = this->backSprite->getBoundingBox().size;
+    auto sizeMenuItem = this->foreSprite->getBoundingBox().size;
     this->setContentSize(sizeMenuItem);
     this->getBoundingBox().setRect(0, 0, sizeMenuItem.width, sizeMenuItem.height);
     
-    this->addChild(backSprite);
     this->addChild(lblText);
     this->addChild(foreSprite);
     
-    auto shadowCorrection = 0;// 8 * backSprite->getScale();
+    auto shadowCorrection = 0;
     
-    backSprite->setAnchorPoint(Point(0,0));
     foreSprite->setPosition(Point(sizeMenuItem.width/2.0f - shadowCorrection,sizeMenuItem.height/2.0f + shadowCorrection));
     this->lblText->setAnchorPoint(Point(0.0f, 1.0f));
     this->lblText->setPositionY(-1* sizeMenuItem.height*0.10);
@@ -112,6 +108,5 @@ void Button::unselected()
 
 void Button::setScale(float val)
 {
-    this->backSprite->setScale(Util::getScreenRatio(backSprite)*val);
-    this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*val - 0.05);
+    this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*val);
 }
