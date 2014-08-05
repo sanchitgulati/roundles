@@ -18,13 +18,17 @@ Roundles::Roundles(std::string heading,std::string message)
     this->setEnabled(true);
     this->setAnchorPoint(Point(0.0f, 0.0f));
     
+    //localization
+    auto localContent = LocalizedString::localizedString(heading.c_str())->getCString();
+    auto localContentMessage = LocalizedString::localizedString(message.c_str())->getCString();
+    //end
     
-    lblText = Label::create(message, Constants::fontName, Constants::fontSize*0.50);
+    lblText = Label::create(localContentMessage, Constants::fontName, Constants::fontSize*0.50);
     lblText->setAnchorPoint(Point(0.5f,0.5f));
     lblText->setColor(RGB_COLOR7);
     
     
-    lblHeading = Label::create(heading, Constants::fontName, Constants::fontSize*0.50);
+    lblHeading = Label::create(localContent, Constants::fontName, Constants::fontSize*0.50);
     lblHeading->setAnchorPoint(Point(0.5f,0.5f));
     lblHeading->setColor(RGB_COLOR5);
     

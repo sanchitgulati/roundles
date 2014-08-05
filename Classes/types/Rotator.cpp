@@ -83,7 +83,9 @@ Rotator::Rotator(Color3B color,std::string text,float percentage,bool locked)
     }
     else
     {
-        auto textLbl = Label::create(text, Constants::fontName, Constants::fontSize*1.5);
+        
+        auto localContent = LocalizedString::localizedString(text.c_str())->getCString();
+        auto textLbl = Label::create(localContent, Constants::fontName, Constants::fontSize*1.5);
         textLbl->setAnchorPoint(Point(0.5,0.5));
         textLbl->setColor(RGB_COLOR1);
         textLbl->getTexture()->setAliasTexParameters();

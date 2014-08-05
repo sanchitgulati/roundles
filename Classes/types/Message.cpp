@@ -28,7 +28,8 @@ Message* Message::create(std::string text)
 
 Message::Message(std::string text)
 {
-    lblText = Label::create(text, Constants::fontName, Constants::fontSize*0.75);
+    auto localContent = LocalizedString::localizedString(text.c_str())->getCString();
+    lblText = Label::create(localContent, Constants::fontName, Constants::fontSize*0.75);
     lblText->setColor(RGB_COLOR5);
     lblText->setAnchorPoint(Point(0.5f, 0.5f));
     this->addChild(lblText);

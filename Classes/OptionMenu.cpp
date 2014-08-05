@@ -112,6 +112,40 @@ bool OptionMenu::init()
     menuNames.push_back("Options");
 
     
+    auto val = UserDefault::getInstance()->getStringForKey("language", "Base");
+    
+    auto radioEnglish = Radio::create("English");
+    radioEnglish->setPosition(Point(origin.x + visibleSize.width*(0.85), origin.y + visibleSize.height*0.60));
+    radioEnglish->setCallback(CC_CALLBACK_1(OptionMenu::languageCallback, this));
+    radioEnglish->setUserData((void*)"en.lproj");
+    radioEnglish->setSelectedIndex(val.compare("en.lproj") ? 1 : 0);
+    
+    auto radioJap = Radio::create("Japanese");
+    radioJap->setPosition(Point(origin.x + visibleSize.width*(0.85), origin.y + visibleSize.height*0.50));
+    radioJap->setCallback(CC_CALLBACK_1(OptionMenu::languageCallback, this));
+    radioJap->setUserData((void*)"ja.lproj");
+    radioJap->setSelectedIndex(val.compare("ja.lproj") ? 1 : 0);
+    
+    auto radioFrench = Radio::create("French");
+    radioFrench->setPosition(Point(origin.x + visibleSize.width*(0.85), origin.y + visibleSize.height*0.40));
+    radioFrench->setCallback(CC_CALLBACK_1(OptionMenu::languageCallback, this));
+    radioFrench->setUserData((void*)"fr.lproj");
+    radioFrench->setSelectedIndex(val.compare("fr.lproj") ? 1 : 0);
+    
+    auto radioGerman = Radio::create("German");
+    radioGerman->setPosition(Point(origin.x + visibleSize.width*(0.85), origin.y + visibleSize.height*0.30));
+    radioGerman->setCallback(CC_CALLBACK_1(OptionMenu::languageCallback, this));
+    radioGerman->setUserData((void*)"de.lproj");
+    radioGerman->setSelectedIndex(val.compare("de.lproj") ? 1 : 0);
+    
+    
+    auto menuLang = Menu::create(radioEnglish,radioJap,radioFrench,radioGerman, NULL);
+    menuLang->setPosition(Point(0,0));
+    container->addChild(menuLang);
+    menuNames.push_back("Language");
+    
+
+    
     auto lblText = Label::create("We took a shot at a puzzle, let us now if you liked it!", Constants::fontName, Constants::fontSize*0.70);
     lblText->setColor(RGB_COLOR5);
     lblText->setMaxLineWidth(visibleSize.width*0.80);
@@ -144,7 +178,9 @@ bool OptionMenu::init()
     menuNames.push_back("Credits");
     
     
-    menuCredits->setPositionX(visibleSize.width);
+    
+    menuLang->setPositionX(1*visibleSize.width);
+    menuCredits->setPositionX(2*visibleSize.width);
     
     
     
@@ -236,7 +272,15 @@ void OptionMenu::musicCallback(cocos2d::Ref *pSender)
             break;
     }
 }
-
+void OptionMenu::languageCallback(cocos2d::Ref *pSender)
+{
+    auto element = dynamic_cast<Node *>(pSender);
+    UserDefault::getInstance()->setStringForKey("language", static_cast<char *>(element->getUserData()));
+    log("Language set to %s",element->getUserData());
+    UserDefault::getInstance()->flush();
+    auto s = (Scene*)OptionMenu::create();
+    Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
+}
 
 
 void OptionMenu::refreshHeader()

@@ -16,8 +16,9 @@ Button::Button(std::string text,std::string image,Color3B color)
 {
     this->setEnabled(true);
     this->setAnchorPoint(Point(0.5f, 0.5f));
-
-    this->lblText = Label::create(text, Constants::fontName, Constants::fontSize/2.0);
+    
+    auto localContent = LocalizedString::localizedString(text.c_str())->getCString();
+    this->lblText = Label::create(localContent, Constants::fontName, Constants::fontSize/2.0);
     this->foreSprite = Sprite::create(image);
     this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*0.15);
     this->lblText->setColor(RGB_COLOR5);

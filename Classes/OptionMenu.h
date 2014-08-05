@@ -57,6 +57,7 @@ public:
     
     void soundCallback(Ref* pSender);
     void musicCallback(Ref* pSender);
+    void languageCallback(Ref* pSender);
     
     //touch delegated
     bool onTouchBegan(Touch* touch, Event  *event);

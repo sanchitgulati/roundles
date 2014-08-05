@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include "cocos2d.h"
+#include "Util.h"
 
 class Ice : public cocos2d::Node
 {

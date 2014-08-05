@@ -18,7 +18,8 @@ Rectton::Rectton(std::string text,Color3B color)
     _originalScale = 0;
     this->setAnchorPoint(Point(0.5f, 0.5f));
     
-    this->lblText = Label::create(text, Constants::fontNameBold, Constants::fontSize);
+    auto localContent = LocalizedString::localizedString(text.c_str())->getCString();
+    this->lblText = Label::create(localContent, Constants::fontNameBold, Constants::fontSize);
     
     this->backSprite = Sprite::create(IMG_BUTTON_WHITE);
     this->backSprite->setScale(Util::getScreenRatioWidth(backSprite)*0.5);

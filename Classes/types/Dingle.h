@@ -12,6 +12,7 @@
 #include <iostream>
 
 #include "cocos2d.h"
+#include "Util.h"
 
 class Dingle : public cocos2d::Node
 {
