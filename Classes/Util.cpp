@@ -52,24 +52,7 @@ Color3B Util::randomBrightColor()
     }
 }
 
-void Util::loadParticleDefaults(cocos2d::ParticleSystemQuad *emitter)
-{
-    Size winSize = Director::getInstance()->getWinSize();
-    emitter->setBlendAdditive(false);
-    emitter->setSourcePosition(Point(winSize.width/2, winSize.height/2.0f));
-    emitter->setPosVar(Point(winSize.width/2.0f, winSize.height/2.0f));
-    emitter->setEmissionRate(2.0f);
-    try
-    {
-        Color4F colorInner = Color4F(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
-        colorInner.a = 0.5;
-        emitter->setStartColor(colorInner);
-    }
-    catch(std::exception e)
-    {
-        log("Unable to setStartColor to particle emitter");
-    }
-}
+
 
 std::string Util::to_roman(unsigned int value)
 {

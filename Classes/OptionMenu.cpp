@@ -9,6 +9,10 @@
 #include "OptionMenu.h"
 #include "MainMenuScene.h"
 #include "SimpleAudioEngine.h"
+#include "extensions/cocos-ext.h"
+
+using namespace cocos2d;
+using namespace extension;
 
 enum btnId
 {
@@ -70,10 +74,6 @@ bool OptionMenu::init()
     lbackground = LayerColor::create(RGBA_COLOR1, visibleSize.width, visibleSize.height);
     this->addChild(lbackground,zBg);
     
-    auto emitter = ParticleSystemQuad::create("particleTexture.plist");
-    Util::loadParticleDefaults(emitter);
-    this->addChild(emitter,zBg);
-    
     auto btnBack = Button::create("Back", IMG_BUTTON_BACK, RGB_COLOR2);
     btnBack->setCallback(CC_CALLBACK_1(OptionMenu::menuCallback, this));
     btnBack->setTag(bBack);
@@ -87,23 +87,23 @@ bool OptionMenu::init()
     
 
     
-    auto radioSound = Radio::create("Sound Effects");
+    auto radioSound = Switch::create("Sound Effects");
     radioSound->setPosition(Point(origin.x + visibleSize.width*(0.85), origin.y + visibleSize.height*0.60));
-    radioSound->setCallback(CC_CALLBACK_1(OptionMenu::soundCallback, this));
+    radioSound->addTargetWithActionForControlEvents(this,cccontrol_selector(OptionMenu::soundCallback), Control::EventType::VALUE_CHANGED);
     auto valS = UserDefault::getInstance()->getBoolForKey("sound", true);
-    radioSound->setSelectedIndex(!valS); //bug resolved
+    radioSound->setOn(valS);
     
-    auto radioMusic = Radio::create("Music");
+    auto radioMusic = Switch::create("Music");
     radioMusic->setPosition(Point(origin.x + visibleSize.width*(0.85), origin.y + visibleSize.height*0.50));
-    radioMusic->setCallback(CC_CALLBACK_1(OptionMenu::musicCallback, this));
+    radioMusic->addTargetWithActionForControlEvents(this,cccontrol_selector(OptionMenu::musicCallback), Control::EventType::VALUE_CHANGED);
     auto valM = UserDefault::getInstance()->getBoolForKey("music", true);
-    radioMusic->setSelectedIndex(!valM); //bug resolved
-
-    auto radioIAP = Radio::create("Remove Ads");
-    radioIAP->setPosition(Point(origin.x + visibleSize.width*(0.85), origin.y + visibleSize.height*0.40));
+    radioMusic->setOn(valM);
     
-    auto radioLevels = Radio::create("Reset Game Progress");
-    radioLevels->setPosition(Point(origin.x + visibleSize.width*(0.85), origin.y + visibleSize.height*0.30));
+    auto radioIAP = OptButton::create("Remove Ads");
+    radioIAP->setPosition(Point(origin.x + visibleSize.width*(0.15), origin.y + visibleSize.height*0.40));
+    
+    auto radioLevels = OptButton::create("Reset Game Progress");
+    radioLevels->setPosition(Point(origin.x + visibleSize.width*(0.15), origin.y + visibleSize.height*0.30));
 
     
     auto menuSetting = Menu::create(radioMusic,radioIAP,radioLevels,radioSound, NULL);
@@ -239,38 +239,58 @@ void OptionMenu::menuCallback(Ref* pSender)
 
 
 
-void OptionMenu::soundCallback(cocos2d::Ref *pSender)
+void OptionMenu::soundCallback(cocos2d::Ref *pSender,Control::EventType controlEvent)
 {
-    auto item = dynamic_cast<Radio *>(pSender);
-    switch (item->getSelectedIndex()) {
-        case 0: //on
-            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(SOUND_MAX);
-            UserDefault::getInstance()->setBoolForKey("sound", true);
-            break;
-        case 1: //off
-            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.0f);
-            UserDefault::getInstance()->setBoolForKey("sound", false);
-            break;
-        default:
-            break;
+    
+    ControlSwitch* pSwitch = (ControlSwitch*)pSender;
+    if (pSwitch->isOn())
+    {
+        log("On");
     }
+    else
+    {
+        log("Off");
+    }
+//    auto item = dynamic_cast<Switch *>(pSender);
+//    switch (item->getSelectedIndex()) {
+//        case 0: //on
+//            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(SOUND_MAX);
+//            UserDefault::getInstance()->setBoolForKey("sound", true);
+//            break;
+//        case 1: //off
+//            CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.0f);
+//            UserDefault::getInstance()->setBoolForKey("sound", false);
+//            break;
+//        default:
+//            break;
+//    }
 }
 
-void OptionMenu::musicCallback(cocos2d::Ref *pSender)
+void OptionMenu::musicCallback(cocos2d::Ref *pSender,Control::EventType controlEvent)
 {
-    auto item = dynamic_cast<Radio *>(pSender);
-    switch (item->getSelectedIndex()) {
-        case 0: //on
-            CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(MUSIC_MAX);
-            UserDefault::getInstance()->setBoolForKey("music", true);
-            break;
-        case 1: //off
-            CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.0f);
-            UserDefault::getInstance()->setBoolForKey("music", false);
-            break;
-        default:
-            break;
+    
+    ControlSwitch* pSwitch = (ControlSwitch*)pSender;
+    if (pSwitch->isOn())
+    {
+        log("On");
     }
+    else
+    {
+        log("Off");
+    }
+//    auto item = dynamic_cast<Switch *>(pSender);
+//    switch (item->getSelectedIndex()) {
+//        case 0: //on
+//            CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(MUSIC_MAX);
+//            UserDefault::getInstance()->setBoolForKey("music", true);
+//            break;
+//        case 1: //off
+//            CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.0f);
+//            UserDefault::getInstance()->setBoolForKey("music", false);
+//            break;
+//        default:
+//            break;
+//    }
 }
 void OptionMenu::languageCallback(cocos2d::Ref *pSender)
 {

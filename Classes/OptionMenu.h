@@ -12,6 +12,7 @@
 #include <iostream>
 
 #include "cocos2d.h"
+#include "extensions/cocos-ext.h"
 #include "Constants.h"
 #include "LevelXML.h"
 #include "Util.h"
@@ -55,8 +56,8 @@ public:
     //callbacks
     
     
-    void soundCallback(Ref* pSender);
-    void musicCallback(Ref* pSender);
+    void soundCallback(Ref* pSender,cocos2d::extension::Control::EventType controlEvent);
+    void musicCallback(Ref* pSender,cocos2d::extension::Control::EventType controlEvent);
     void languageCallback(Ref* pSender);
     
     //touch delegated

@@ -70,10 +70,6 @@ bool MainMenu::init()
     this->addChild(lbackground,zBg);
     
     
-    emitter = ParticleSystemQuad::create("particleTexture.plist");
-    Util::loadParticleDefaults(emitter);
-    this->addChild(emitter,zBg);
-    
     auto btnSetting = Button::create("Setting",IMG_BUTTON_MENU,RGB_COLOR2);
     btnSetting->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*MENU_HEIGHT ));
     btnSetting->setCallback(CC_CALLBACK_1(MainMenu::menuCallback, this));
@@ -315,7 +311,6 @@ void MainMenu::changeGameNameLetterColor()
     
     Color4F colorInner = Color4F(LevelXML::getBundleColorInnerAt(selectedBundle));
     colorInner.a = 0.3;
-    emitter->setStartColor(colorInner);
 }
 
 void MainMenu::changePlayRecttonText()

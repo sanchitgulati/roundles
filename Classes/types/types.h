@@ -23,5 +23,7 @@
 #include "Turner.h"
 #include "Ice.h"
 #include "Roundles.h"
+#include "Switch.h"
+#include "OptButton.h"
 
 #endif

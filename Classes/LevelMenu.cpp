@@ -60,10 +60,7 @@ bool LevelMenu::init()
     /* Initiation Of Variables */
     lbackground = LayerColor::create(RGBA_COLOR1, visibleSize.width, visibleSize.height);
     this->addChild(lbackground,zBg);
-    auto emitter = ParticleSystemQuad::create("particleTexture.plist");
-    Util::loadParticleDefaults(emitter);
-    this->addChild(emitter,zBg);
-    
+        
     
     auto btnBack = Button::create("Back", IMG_BUTTON_BACK, RGB_COLOR2);
     btnBack->setCallback(CC_CALLBACK_1(LevelMenu::menuCallback, this));

@@ -110,4 +110,5 @@ void Button::unselected()
 void Button::setScale(float val)
 {
     this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*val);
+//    this->setScale(Util::getScreenRatio(foreSprite)*val);
 }
