@@ -25,7 +25,6 @@ public:
     static float getScreenRatioWidth(Node*);
     static float getScreenRatioHeight(Node*);
     static Color3B randomBrightColor();
-    static void loadParticleDefaults(cocos2d::ParticleSystemQuad*);
     static std::string to_roman(unsigned int value);
 };
 #endif /* defined(__OneClosedLoop__Util__) */

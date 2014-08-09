@@ -67,9 +67,6 @@ bool GameScene::init()
     this->addChild(lbackground,zBg);
     
     
-    auto emitter = ParticleSystemQuad::create("particleTexture.plist");
-    Util::loadParticleDefaults(emitter);
-    this->addChild(emitter,zBg);
     
     auto btnBack = Button::create("Back",IMG_BUTTON_BACK,RGB_COLOR2);
     btnBack->setPosition(Point(origin.x + visibleSize.width*0.15, origin.y + visibleSize.height*MENU_HEIGHT ));

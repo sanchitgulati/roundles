@@ -45,7 +45,6 @@ public:
     //Menu Pointers
     Rectton* btnPlay;
     Label* lblGameName;
-    cocos2d::ParticleSystemQuad* emitter;
     
     //touch delegated
     bool onTouchBegan(Touch* touch, Event  *event);

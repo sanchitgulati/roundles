@@ -23,5 +23,6 @@
 #include "Turner.h"
 #include "Ice.h"
 #include "Roundles.h"
+#include "Dialog.h"
 
 #endif
