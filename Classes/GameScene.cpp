@@ -283,7 +283,7 @@ void GameScene::menuCallback(Ref* pSender)
             int i = 0;
             for (std::vector<int>::iterator it = solution.begin() ; it != solution.end(); ++it)
             {
-                auto element = Label::create("", Constants::fontName, Constants::fontSize);
+                auto element = Label::createWithTTF("", Constants::fontName, Constants::fontSize);
                 switch ((int)*it) {
                     case dTop:
                         element->setString("Up");

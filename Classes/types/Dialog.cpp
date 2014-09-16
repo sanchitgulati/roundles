@@ -22,7 +22,7 @@ Dialog::Dialog(std::string text)
     this->addChild(box);
     
     auto localContent = LocalizedString::localizedString(text.c_str())->getCString();
-    lblText = Label::create(localContent, Constants::fontName, Constants::fontSize/2.0);
+    lblText = Label::createWithTTF(localContent, Constants::fontName, Constants::fontSize/2.0);
     lblText->setHorizontalAlignment(TextHAlignment::CENTER);
     this->addChild(lblText);
     

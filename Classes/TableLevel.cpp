@@ -53,7 +53,7 @@ void TableLevel::tableCellTouched(TableView* table, TableViewCell* cell)
         Director::getInstance()->replaceScene(TransitionFade::create(VFX_CONSTANT, s,RGB_COLOR1));
     });
     auto action = MoveBy::create(0.1f, Point(0,-5));
-    auto rotate = RotateBy::create(0.1f, Vertex3F(-10, 0, 0));
+    auto rotate = RotateBy::create(0.1f, Vec3(-10, 0, 0));
     if(cell->getIdx() != LevelXML::getTotalLevelsInBundle(LevelXML::curBundleNumber))
     {
         cell->runAction(Sequence::create(rotate,callFunc,NULL));
@@ -95,9 +95,9 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
         sprite->setTag(111);
         cell->addChild(sprite);
         
-        auto label = LabelTTF::create(string->getCString(), Constants::fontName, Constants::fontSize*0.70);
+        auto label = Label::createWithTTF(string->getCString(), Constants::fontName, Constants::fontSize*0.70);
         label->setHorizontalAlignment(TextHAlignment::CENTER);
-        label->setDimensions(Size(cellSize.width*0.60,0));
+        label->setDimensions(cellSize.width*0.60,0);
         label->setPosition(Point(temp.width/2,temp.height/2));
         label->setColor(RGB_COLOR6);
 		label->setAnchorPoint(Point(0.5,0.5));
@@ -150,7 +150,7 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
         {
             sprite->setColor(RGB_COLOR8);
         }
-        auto label = (LabelTTF*)sprite->getChildByTag(123);
+        auto label = (Label*)sprite->getChildByTag(123);
         label->setString(string->getCString());
     }
 

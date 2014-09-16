@@ -15,7 +15,7 @@ USING_NS_CC;
 Radio::Radio(std::string text)
 {
     auto localContent = LocalizedString::localizedString(text.c_str())->getCString();
-    lblText = Label::create(localContent, Constants::fontName, Constants::fontSize*0.70);
+    lblText = Label::createWithTTF(localContent, Constants::fontName, Constants::fontSize*0.70);
     lblText->setAnchorPoint(Point(0.0f,0.5f));
     lblText->setColor(RGB_COLOR5);
     

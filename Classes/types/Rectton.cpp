@@ -19,7 +19,7 @@ Rectton::Rectton(std::string text,Color3B color)
     this->setAnchorPoint(Point(0.5f, 0.5f));
     
     auto localContent = LocalizedString::localizedString(text.c_str())->getCString();
-    this->lblText = Label::create(localContent, Constants::fontNameBold, Constants::fontSize);
+    this->lblText = Label::createWithTTF(localContent, Constants::fontNameBold, Constants::fontSize);
     
     this->backSprite = Sprite::create(IMG_BUTTON_WHITE);
     this->backSprite->setScale(Util::getScreenRatioWidth(backSprite)*0.5);

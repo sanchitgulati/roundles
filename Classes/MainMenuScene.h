@@ -65,25 +65,4 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(MainMenu);
 };
-
-
-class PrimitivesClass : public cocos2d::Layer
-{
-public:
-    // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
-    virtual bool init();
- 
-    //Variables
-    Size winSize;
-    
-    
-    CustomCommand _customCommand;
-    void drawPolygon();
-    void drawCircle();
-    virtual void draw(Renderer *renderer, const kmMat4 &transform, bool transformUpdated) override;
-    void onDraw(const kmMat4 &transform, bool transformUpdated);
-    
-    CREATE_FUNC(PrimitivesClass);
-};
-
 #endif // __HELLOWORLD_SCENE_H__

@@ -154,10 +154,6 @@ bool MainMenu::init()
 
     menu->setPosition(Point::ZERO);
     this->addChild(menu, zMenu);
-    
-    //Temp
-    Layer *primLayer = PrimitivesClass::create();
-    this->addChild(primLayer, zPrimatives);
 
     
     //schedule update
@@ -322,69 +318,4 @@ void MainMenu::changeGameNameLetterColor()
 void MainMenu::changePlayRecttonText()
 {
     
-}
-
-
-//--------------------------------------------------------------------------//
-//--------------------------------------------------------------------------//
-//--------------------------------------------------------------------------//
-//--------------------------------------------------------------------------//
-//--------------------------------------------------------------------------//
-//--------------------------------------------------------------------------//
-
-
-/* Primitive Class To Test Things */
-
-bool PrimitivesClass::init()
-{
-    winSize = Director::getInstance()->getWinSize();
-    
-    return true;
-}
-
-void PrimitivesClass::draw(Renderer *renderer, const kmMat4 &transform, bool transformUpdated)
-{
-    _customCommand.init(_globalZOrder);
-    _customCommand.func = CC_CALLBACK_0(PrimitivesClass::onDraw, this, transform, transformUpdated);
-    renderer->addCommand(&_customCommand);
-}
-
-void PrimitivesClass::onDraw(const kmMat4 &transform, bool transformUpdated)
-{
-//    drawPolygon();
-//    drawCircle();
-}
-
-void PrimitivesClass::drawCircle()
-{
-    int cx = winSize.width*0.50;
-    int cy = winSize.height*0.50;
-    int r = winSize.width*0.40;
-    float step = 0.1;
-    int pointSize = 5;
-    
-    DrawPrimitives::setDrawColor4B(0,0,255,128);
-    for(float theta = 0; theta < 2*PI;theta += step)
-    {
-        float x =  cx + (r+ 50)*cos(theta);
-        float y = cy + r*sin(theta);
-        DrawPrimitives::setPointSize(pointSize);
-        DrawPrimitives::drawPoint(Point(x, y) );
-    }
-
-}
-
-void PrimitivesClass::drawPolygon()
-{
-    glLineWidth(1);
-    DrawPrimitives::setDrawColor4B(255,255,255,255);
-    DrawPrimitives::setPointSize(1);
-    
-    // Anti-Aliased
-//    glEnable(GL_LINE_SMOOTH);
-    
-    // filled poly
-    glLineWidth(1);
-    Point filledVertices[] = { Point(10,120), Point(50,120), Point(50,170), Point(25,200), Point(10,170) };
-    DrawPrimitives::drawSolidPoly(filledVertices, 5, Color4F(0.5f, 0.5f, 1, 1 ) );
 }

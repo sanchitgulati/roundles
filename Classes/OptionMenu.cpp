@@ -143,7 +143,7 @@ bool OptionMenu::init()
     
 
     
-    auto lblText = Label::create("We took a shot at a puzzle, let us now if you liked it!", Constants::fontName, Constants::fontSize*0.70);
+    auto lblText = Label::createWithTTF("We took a shot at a puzzle, let us now if you liked it!", Constants::fontName, Constants::fontSize*0.70);
     lblText->setColor(RGB_COLOR5);
     lblText->setMaxLineWidth(visibleSize.width*0.80);
     lblText->setHorizontalAlignment(TextHAlignment::CENTER);

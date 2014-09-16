@@ -59,7 +59,7 @@ bool LogoSplash::init() {
         auto tipsString = StringUtils::format("%s : %s",LocalizedString::localizedString("TIP")->getCString(),
                                               LocalizedString::localizedString(tips[dice].c_str())->getCString());
         
-        labelHint = Label::create(tipsString, Constants::fontName, Constants::fontSize*0.50);
+        labelHint = Label::createWithTTF(tipsString, Constants::fontName, Constants::fontSize*0.50);
         labelHint->setDimensions(screenSize.width*0.70,0);
         labelHint->setColor(RGB_COLOR7);
         labelHint->setAnchorPoint(Point(0.5, 0.5));
