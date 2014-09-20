@@ -16,7 +16,7 @@
 #define BG_CIRCLE_SCALE 1.2
 #define BG_CIRCLE_INIT_SCALE 0.5
 
-enum{bMenu,bBack,bHint,bRestart,bUndo};
+enum{bMenu,bBack,bHint,bTitle,bPrev,bNext,bRestart,bSetting,bUndo};
 
 enum{zSingle,zDingle,zPlayer}; //z_player to be last
 
@@ -73,35 +73,42 @@ bool GameScene::init()
     btnBack->setCallback(CC_CALLBACK_1(GameScene::menuCallback, this));
     btnBack->setTag(bBack);
     
-    auto btnHint = Button::create("Hint",IMG_BUTTON_HINT,RGB_COLOR2);
-    btnHint->setPosition(Point(origin.x + visibleSize.width*0.50, origin.y + visibleSize.height*(1-MENU_HEIGHT) ));
-    btnHint->setCallback(CC_CALLBACK_1(GameScene::menuCallback, this));
-    btnHint->setTag(bHint);
     
+    auto btnLevelTitle = Header::create(LevelXML::getLevelNameAt(LevelXML::curLevelNumber));
+    btnLevelTitle->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*MENU_HEIGHT ));
+    btnLevelTitle->setCallback(CC_CALLBACK_1(GameScene::menuCallback, this));
+    btnLevelTitle->setTag(bTitle);
+    
+    auto btnSetting = Button::create("Setting",IMG_BUTTON_MENU,RGB_COLOR2);
+    btnSetting->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*0.10 ));
+    btnSetting->setCallback(CC_CALLBACK_1(GameScene::menuCallback, this));
+    btnSetting->setTag(bSetting);
+    
+    auto btnPrev = Button::create("Prev",IMG_BUTTON_RESTART,RGB_COLOR2);
+    btnPrev->setPosition(Point(origin.x + visibleSize.width*(0.15*1), origin.y + visibleSize.height*0.10 ));
+    btnPrev->setCallback(CC_CALLBACK_1(GameScene::menuCallback, this));
+    btnPrev->setTag(bPrev);
+    
+    auto btnNext = Button::create("Next",IMG_BUTTON_RESTART,RGB_COLOR2);
+    btnNext->setPosition(Point(origin.x + visibleSize.width*(0.15*3), origin.y + visibleSize.height*0.10 ));
+    btnNext->setCallback(CC_CALLBACK_1(GameScene::menuCallback, this));
+    btnNext->setTag(bNext);
     
     auto btnRestart = Button::create("Restart",IMG_BUTTON_RESTART,RGB_COLOR2);
-    btnRestart->setPosition(Point(origin.x + visibleSize.width*(1-0.15), origin.y + visibleSize.height*MENU_HEIGHT ));
+    btnRestart->setPosition(Point(origin.x + visibleSize.width*(0.15*2), origin.y + visibleSize.height*0.10 ));
     btnRestart->setCallback(CC_CALLBACK_1(GameScene::menuCallback, this));
     btnRestart->setTag(bRestart);
     
     
+    auto btnHint = Button::create("Hint",IMG_BUTTON_HINT,RGB_COLOR2);
+    btnHint->setPosition(Point(origin.x + visibleSize.width*(0.15 * 4), origin.y + visibleSize.height*(1-MENU_HEIGHT) ));
+    btnHint->setCallback(CC_CALLBACK_1(GameScene::menuCallback, this));
+    btnHint->setTag(bHint);
     
-    btnUndo = Sideton::create("Undo",IMG_BUTTON_UNDO,RGB_COLOR2);
-    btnUndo->setPosition(Point(origin.x + visibleSize.width*.50, origin.y + visibleSize.height*0.10 ));
-    btnUndo->setCallback(CC_CALLBACK_1(GameScene::menuCallback, this));
-    btnUndo->setTag(bUndo);
     
     // create menu, it's an autorelease object
-    auto menu = Menu::create(btnBack, btnHint,btnRestart,btnUndo, NULL);
+    auto menu = Menu::create(btnBack, btnHint,btnLevelTitle,btnSetting,btnPrev,btnNext,btnRestart, NULL);
     menu->setTag(bMenu);
-    
-    
-    //the next menu/ you win menu
-    
-    
-    //That Circle in the backgroud
-    _bgCircle = Sprite::create(IMG_CIRCLE_WHITE);
-    this->addChild(_bgCircle);
     
     
     levelNode = nullptr; //CrossPlatform Shit
@@ -230,17 +237,7 @@ bool GameScene::loadLevel(bool reset)
     }
     level.erase(toDel); //Delete _player from Level Vector
     _player->setTotalElements(totalElements); // to be changed with diffrent element types
-    
-    //That Circle in the backgroud
-    _bgCircle->setScale(Util::getScreenRatioWidth(_bgCircle)*BG_CIRCLE_INIT_SCALE);
-    _bgCircle->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.35 ));
-    _bgCircle->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
-    
-    Color3B c = LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber);
-    auto scaleTo = (winSize.width/_bgCircle->getContentSize().width)*BG_CIRCLE_SCALE;
-    _bgCircle->runAction(ScaleTo::create(0.8,scaleTo));
-    //0.5, level fadein + 0.3 fx time
-    _bgCircle->runAction(TintTo::create(0.8, c.r, c.g, c.b));
+
     
     
     levelNode->setVisible(false);
@@ -594,35 +591,13 @@ void GameScene::updateGame(bool init)
         }
     }
     
-    //Disable/Enable Undo Button
-    if(moves.size() == 1lu )
-    {
-        btnUndo->setEnabled(false);
-    }
-    else
-    {
-        btnUndo->setEnabled(true);
-    }
-    
-    
     if(level.size() == 0lu)
     {
         log("You Win");
         LevelXML::setLevelCompletedAt(LevelXML::curLevelNumber); //TODO: Collect More Data
         _player->setVisible(false); // make the ugly go away.
-        btnUndo->setEnabled(false);
-        btnUndo->setVisible(false);
         //TODO: Animations
         //TODO: Check is to unlock new bundle
-        Color3B c = LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber);
-        
-        auto expand = ScaleBy::create(0.3,1.2);
-        auto blackHole = ScaleTo::create(0.3,BG_CIRCLE_INIT_SCALE);
-        auto tintTo = TintTo::create(0.6, c.r, c.g, c.b);
-        
-        _bgCircle->runAction(Sequence::create(expand,blackHole, NULL));
-        _bgCircle->runAction(tintTo);
-        
     }
     else
     {

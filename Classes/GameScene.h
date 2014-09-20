@@ -51,11 +51,6 @@ public:
     //Player
     Player* _player;
     
-    //Class Variables
-    cocos2d::Sprite* _bgCircle;
-    
-    //Buttons
-    Sideton* btnUndo;
     
     //Level
     std::vector<LevelElement> level;

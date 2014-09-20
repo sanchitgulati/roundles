@@ -1,7 +1,7 @@
 <!-- 0: Null 1 : Start 2 : Single 3 : Double 4 : Head Turner 5 : Ice -->
 <!-- 0 : Top 1 : Right 2: Bottom 3: Left -->
 <?xml version="1.0" encoding="UTF-8"?>
-<bundle value="tiny red" img="charRabbit.png" rgb_inner="246,151,157" >
+<bundle value="tiny red" img="charRabbit.png" rgb_inner="233,135,0" >
 	<level id="1" gridX="4" gridY="4" >
 		<title>The Start</title>
 		<data>
