@@ -40,6 +40,7 @@ bool LogoSplash::init() {
         auto touchListener = EventListenerTouchAllAtOnce::create();
         touchListener->onTouchesEnded = CC_CALLBACK_2(LogoSplash::onTouchesEnded, this);
         touchListener->onTouchesBegan = CC_CALLBACK_2(LogoSplash::onTouchesBegan, this);
+        _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
         
         this->setColor(Color3B(RGB_COLOR1));
         this->setOpacity(255);

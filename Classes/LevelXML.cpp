@@ -83,6 +83,22 @@ std::string LevelXML::getBundleNameAt(int index)
     return stringStream.str();
 }
 
+std::string LevelXML::getBundleImageAt(int index)
+{
+    int localIndex = 0;
+    pugi::xml_object_range<pugi::xml_named_node_iterator> itBundle = doc.children("bundle");
+    for(pugi::xml_named_node_iterator it=itBundle.begin(); it!=itBundle.end(); it++)
+    {
+        if(localIndex == index)
+            return it->attribute("img").value();
+        localIndex++;
+    }
+    std::ostringstream stringStream;
+    stringStream << "No Bundle At Given Index ";
+    stringStream << index;
+    return stringStream.str();
+}
+
 Color3B LevelXML::getBundleColorAt(int index)
 {
     return getBundleColorInnerAt(index);

@@ -43,7 +43,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     
     auto valS = UserDefault::getInstance()->getBoolForKey("sound", true);
-    CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(valS*MUSIC_MAX);
+//    CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(valS*MUSIC_MAX); //hack //test //todel //todo
+    CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0);
+    
     
     
     //Unlock First Bundle Pernamently

@@ -84,15 +84,9 @@ bool MainMenu::init()
     
     /* Object Placement and other settings */
     
-    btnPlay = Rectton::create("P L A Y", RGB_COLOR2);
-    btnPlay->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*0.30));
-    btnPlay->setCallback(CC_CALLBACK_1(MainMenu::menuCallback, this));
-    btnPlay->setTag(bPlay);
-    
-    lblGameName = Label::createWithBMFont(Constants::bitmapFontName,"ROUNDELS");
+    lblGameName = Label::createWithBMFont(Constants::bitmapFontName,"PONDERING");
     auto gameTitle = MenuItemLabel::create(lblGameName, CC_CALLBACK_1(MainMenu::menuCallback, this));
     
-    bundleNode = Node::create();
     
     gameTitle->setEnabled(false);
     gameTitle->setColor(RGB_COLOR6);
@@ -100,6 +94,7 @@ bool MainMenu::init()
     gameTitle->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*MENU_HEIGHT ));
     for(int i = 0; i < lblGameName->getStringLength(); i++)
     {
+        
         lblGameName->getLetter(i)->setColor(RGB_COLOR5);
         
         if(i == 1) // 1 is hardcored for "O"
@@ -122,12 +117,16 @@ bool MainMenu::init()
     int r = winSize.width*0.45;
     step = 2*PI/bundleSize;
     float theta= PI*0.5;
+    cocos2d::Vector<MenuItem*> list;
     
     for(int i=0; i < bundleSize;i++,theta+=step)
     {
-        auto txt =  cocos2d::StringUtils::format("%s",LevelXML::getBundleNameAt(i).c_str());
+        auto txt = cocos2d::StringUtils::format("%s",LevelXML::getBundleNameAt(i).c_str());
+        auto img = cocos2d::StringUtils::format("images/%s",LevelXML::getBundleImageAt(i).c_str());
         auto val = LevelXML::isUnlockedBundleAt(i);
-        auto bundle = Rotator::create(LevelXML::getBundleColorAt(i), txt, 50.0f,!val);
+        auto bundle = Rotator::create(img,LevelXML::getBundleColorAt(i), txt, 50.0f,!val);
+        bundle->setCallback(CC_CALLBACK_1(MainMenu::menuCallback, this));
+        bundle->setTag(bPlay);
         float x = r*cos(theta);
         float y = r*sin(theta);
         /* End */
@@ -135,10 +134,12 @@ bool MainMenu::init()
         
         //Transferring Values
         bundle->setPosition(Point(x,y));
-        bundleNode->addChild(bundle,bundleSize-i);
+        list.pushBack(bundle);
     }
     //End
     
+    bundleNode = Menu::createWithArray(list);
+    bundleNode->setAnchorPoint(Point(0.0,0.0));
     bundleNode->setPosition(Point(origin.x + visibleSize.width*(0.50),origin.y + visibleSize.height*0.20 ));
     bundleNode->setRotation(selectedBundle*step*(180.0/PI));
     auto& children = bundleNode->getChildren();
@@ -150,7 +151,7 @@ bool MainMenu::init()
     
     
     // create menu, it's an autorelease object
-    auto menu = Menu::create(btnPlay, btnSetting,btnTutorial,gameTitle, NULL);
+    auto menu = Menu::create(btnSetting,btnTutorial,gameTitle, NULL);
 
     menu->setPosition(Point::ZERO);
     this->addChild(menu, zMenu);

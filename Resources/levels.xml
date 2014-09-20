@@ -1,7 +1,7 @@
 <!-- 0: Null 1 : Start 2 : Single 3 : Double 4 : Head Turner 5 : Ice -->
 <!-- 0 : Top 1 : Right 2: Bottom 3: Left -->
 <?xml version="1.0" encoding="UTF-8"?>
-<bundle value="tiny red" rgb_inner="246,151,157" >
+<bundle value="tiny red" img="charRabbit.png" rgb_inner="246,151,157" >
 	<level id="1" gridX="4" gridY="4" >
 		<title>The Start</title>
 		<data>
@@ -77,7 +77,7 @@
         <solution isValid="0"></solution>
     </level>
 </bundle>
-<bundle value="5x5" rgb_inner="189,139,190">
+<bundle value="5x5" img="charSandy.png" rgb_inner="189,139,190">
     <level id="1" gridX="4" gridY="4" >
         <title>The Omen</title>
         <data>
@@ -134,7 +134,7 @@
         <solution isValid="0"></solution>
     </level>
 </bundle>
-<bundle value="6x6" rgb_inner="138,201,180" >
+<bundle value="6x6" img="charBlacky.png" rgb_inner="138,201,180" >
     <level id="1" gridX="4" gridY="4">
         <title>Easy</title>
         <data>

@@ -60,6 +60,11 @@ Radio::Radio(std::string text)
     on->setColor(RGB_COLOR2);
     off->setColor(Color3B::GRAY);
     
+//    auto dn = DrawNode::create();
+//    dn->drawDot(getPosition(), 2, Color4F::BLUE);
+//    this->addChild(dn);
+    
+    
     this->addChild(circle);
     this->addChild(bar);
     this->addChild(lblText);

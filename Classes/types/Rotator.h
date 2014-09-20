@@ -15,16 +15,21 @@
 #include "Util.h"
 
 
-class Rotator : public cocos2d::Node
+class Rotator : public cocos2d::MenuItem
 {
     cocos2d::ProgressTimer* outer;
     cocos2d::Sprite* inner;
+    float _originalScale;
+    Point _originalPosition;
+    virtual void selected();
+    virtual void unselected();
     
 public:
-    Rotator(cocos2d::Color3B color,std::string text,float percentage,bool locked);
-    static Rotator* create(cocos2d::Color3B color,std::string text,float percentage,bool locked = true);
+    Rotator(std::string img,cocos2d::Color3B color,std::string text,float percentage,bool locked);
+    static Rotator* create(std::string img,cocos2d::Color3B color,std::string text,float percentage,bool locked = true);
     virtual cocos2d::Rect getBoundingBox();
     void animateRotation(float val,float time = VFX_CONSTANT);
     void setRotation(float val);
+//    void setCallback(cocos2d::Ref* target);
 };
 #endif /* defined(__roundels__Rotator__) */

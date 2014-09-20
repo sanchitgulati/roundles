@@ -34,7 +34,7 @@ public:
     LayerColor* lbackground;
     
     //Bundle Related
-    Node* bundleNode;
+    Menu* bundleNode;
     float step;
     //Pointers to Everything
     ccArray *arrBundle;
@@ -43,7 +43,6 @@ public:
     int selectedBundle;
     
     //Menu Pointers
-    Rectton* btnPlay;
     Label* lblGameName;
     
     //touch delegated

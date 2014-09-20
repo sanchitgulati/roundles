@@ -73,6 +73,8 @@
 #define IMG_CIRCLE_WHITE_HI "images/circleWhiteHiRes.png"
 #define IMG_CIRCLE_WHITE "images/circleWhiteLoRes.png"
 
+#define IMG_RABBIT "images/charRabbit.png"
+
 #define IMG_CIRCLE_TWITTER "images/twitter.png"
 
 #define IMG_RECT_WHITE "images/rectWhite.png"
