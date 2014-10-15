@@ -172,7 +172,7 @@ bool GameScene::loadLevel(bool reset)
             case eStart:
             {
                 
-                _player = Player::create();
+                _player = Player::create(IMG_RABBIT);
                 _player->setGridPosition(it->x, it->y);
                 _player->setHead(it->head);
                 _player->setPosition(getScreenCoordinates(it->x, it->y));
@@ -187,7 +187,6 @@ bool GameScene::loadLevel(bool reset)
             {
                 auto temp = static_cast<LevelElement>(*it);
                 it->ccElement = createCCElement(temp);
-                log("values single %f %f",getScreenCoordinates(it->x, it->y).x,getScreenCoordinates(it->x, it->y).y);
                 it->dots = 1;
                 totalElements+=it->dots;
                 break;
@@ -289,78 +288,6 @@ void GameScene::menuCallback(Ref* pSender)
                 i++;
             }
             
-            break;
-        }
-        case bUndo:
-        {
-            if(moves.size() == 1)
-                break;
-            
-            auto lastElement = moves.back();
-            moves.pop_back();
-            
-            
-            auto _playerElement = moves.back();
-            
-            _player->setGridPosition(_playerElement.x, _playerElement.y);
-            _player->setHead(_playerElement.head);
-            _player->setCapturedElements(-1);
-            _player->setMoves(_player->getMoves()-1);
-            
-            auto deltaTime = calculateDeltaTime(_playerElement.x, _playerElement.y);
-            auto screen_coor = getScreenCoordinates(_playerElement.x, _playerElement.y);
-            _player->moveAnimation(screen_coor.x, screen_coor.y, deltaTime);
-            _player->contractSoul(deltaTime);
-            _player->rotateHead(_playerElement.head, deltaTime);
-            
-            
-            switch (lastElement.type)
-            {
-                case eSingle:
-                {
-                    lastElement.ccElement = createCCElement(lastElement);
-                    level.push_back(lastElement);
-                    break;
-                }
-                case eDingle:
-                {
-                    auto flag = false;
-                    for (std::vector<LevelElement>::iterator it = level.begin() ; it != level.end(); ++it)
-                    {
-                        if(it->x == lastElement.x && it->y == lastElement.y)
-                        {
-                            it->dots++;
-                            auto cast = static_cast<Dingle*>(it->ccElement);
-                            cast->updateDots(it->dots);
-                            flag = true;
-                            break;
-                        }
-                    }
-                    if(!flag)
-                    {
-                        lastElement.ccElement = createCCElement(lastElement);
-                        lastElement.dots = 1;
-                        static_cast<Dingle *>(lastElement.ccElement)->updateDots(0+1);
-                        level.push_back(lastElement);
-                    }
-                }
-                case eIce:
-                {
-                    lastElement.ccElement = createCCElement(lastElement);
-                    level.push_back(lastElement);
-                    break;
-                }
-                case eTurner:
-                {
-                    lastElement.ccElement = createCCElement(lastElement);
-                    level.push_back(lastElement);
-                    break;
-                }
-                default:
-                    break;
-            }
-           
-
             break;
         }
         default:
@@ -625,9 +552,8 @@ void GameScene::updatePlayer(int x,int y,int head,float deltaTime)
     
     
     auto screen_coor = getScreenCoordinates(x, y);
-    _player->moveAnimation(screen_coor.x, screen_coor.y, deltaTime);
     _player->rotateHead(head,deltaTime);
-    _player->expandSoul(deltaTime);
+    _player->moveAnimation(screen_coor.x, screen_coor.y, deltaTime,deltaTime);
     
     
 }

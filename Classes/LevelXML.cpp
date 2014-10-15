@@ -101,7 +101,40 @@ std::string LevelXML::getBundleImageAt(int index)
 
 Color3B LevelXML::getBundleColorAt(int index)
 {
-    return getBundleColorInnerAt(index);
+    int localIndex = 0;
+    char delimiter = ',';
+    std::string token;
+    pugi::xml_object_range<pugi::xml_named_node_iterator> itBundle = doc.children("bundle");
+    for(pugi::xml_named_node_iterator it=itBundle.begin(); it!=itBundle.end(); it++)
+    {
+        if(localIndex == index)
+        {
+            std::string rgbString = it->attribute("base_color").value();
+            std::istringstream iString(rgbString);
+            Color3B newColor = Color3B();
+            newColor = Color3B::BLACK;
+            for(int i =0;std::getline(iString, token, delimiter);i++)
+            {
+                switch (i) {
+                    case 0:
+                        newColor.r = std::atoi(token.c_str());
+                        break;
+                    case 1:
+                        newColor.g = std::atoi(token.c_str());
+                        break;
+                    case 2:
+                        newColor.b = std::atoi(token.c_str());
+                        break;
+                        
+                    default:
+                        break;
+                }
+            }
+            return newColor;
+        }
+        localIndex++;
+    }
+    return Color3B::BLACK;
 }
 
 Color3B LevelXML::getBundleColorInnerAt(int index)

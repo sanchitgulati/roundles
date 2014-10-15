@@ -18,54 +18,34 @@ bool Player::init()
     return Node::init();
 }
 
-Player::Player()
+Player::Player(const char* image)
 : capturedElements(0),
 _moves(0),
 _animationsRunning(0)
 {
-//    setAnchorPoint(Point(0.5f, 0.5f));
-    //Init the element with z-index smallest
     _started = CallFuncN::create(CC_CALLBACK_1(Player::animationStarted,this));
     _started->retain();
     _done = CallFuncN::create(CC_CALLBACK_1(Player::animationDone,this));
     _done->retain();
     
-//    arrow = Sprite::create(IMG_ARROW);
-//    arrow->setOpacity(220);
-//    arrow->setAnchorPoint(Point(0.5, 0.5));
-//    arrow->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
-//    this->addChild(arrow);
     
-    
-//    sprite = Sprite::create(IMG_CIRCLE_WHITE);
-    sprite = Sprite::create("images/charRabbit.png");
-//    sprite->setColor(RGB_COLOR7);
-    sprite->setAnchorPoint(Point(0.5, 0.5));
+    sprite = Sprite::create(image);
+    setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+    sprite->setFlippedX(true);
+    setContentSize(sprite->getContentSize());
     this->addChild(sprite);
-
-    
-//    innerSprite = Sprite::create(IMG_CIRCLE_WHITE);
-//    innerSprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
-//    innerSprite->setScale(0.5);
-//    auto size = sprite->getBoundingBox().size;
-//    innerSprite->setPosition(Point(size.width/2.0f,size.height/2.0f));
-//    sprite->addChild(innerSprite);
 }
 
 void Player::setScale(float scale)
 {
     sprite->setScale(scale);
-    
-//    auto temp = sprite->getBoundingBox().size.width / arrow->getBoundingBox().size.width;
-//    arrow->setScale(1.5*temp);
-//    
-//    //Re-Positioning the Arrow
-//    arrow->setPosition(Point(sprite->getBoundingBox().size.width/2.0,sprite->getBoundingBox().size.height/2.0));
+    auto size = sprite->getBoundingBox().size;
+    sprite->setPosition(size.width/2,size.height/2);
 }
 
-Player* Player::create()
+Player* Player::create(const char* image)
 {
-    Player *pRet = new Player();
+    Player *pRet = new Player(image);
     if (pRet && pRet->init())
     {
         pRet->autorelease();
@@ -84,15 +64,12 @@ Player* Player::create()
 void Player::setHead(int direction)
 {
     this->head = direction;
-//    arrow->setRotation((direction + 1)*90);
-    
     sprite->setRotation((direction + 1)*90);
 }
 
 void Player::setTotalElements(int value)
 {
     totalElements = value+1;
-//    innerSprite->setScale(1.0/value);
 }
 
 void Player::setCapturedElements(int delta)
@@ -151,11 +128,12 @@ bool Player::canMove(int direction)
     }
 }
 
-void Player::moveAnimation(int screen_x, int screen_y,float deltaTime)
+void Player::moveAnimation(int screen_x, int screen_y,float delay,float deltaTime)
 {
+    auto delayAction = DelayTime::create(delay);
     auto move = MoveTo::create(deltaTime, Point(screen_x,screen_y));
-    auto move_ease_in = EaseBounceInOut::create(move->clone());
-    this->runAction(Sequence::create(_started,move_ease_in,_done, NULL));
+    auto move_ease_in = EaseQuadraticActionInOut::create(move->clone());
+    this->runAction(Sequence::create(delayAction,_started,move_ease_in,_done, NULL));
 }
 
 void Player::rotateHead(int head,float deltaTime)

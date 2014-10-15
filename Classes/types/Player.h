@@ -32,8 +32,8 @@ protected:
     
 public:
     virtual bool init();
-    Player();
-    static Player* create();
+    Player(const char* image);
+    static Player* create(const char* image);
     
     
     //Getter's and Setter's
@@ -49,7 +49,7 @@ public:
     bool canMove(int direction);
     
     //Animations
-    void moveAnimation(int screen_x,int screen_y,float deltaTime);
+    void moveAnimation(int screen_x,int screen_y,float delay,float deltaTime);
     void rotateHead(int head,float deltaTime);
     void expandSoul(float deltaTime);
     void contractSoul(float deltaTime);

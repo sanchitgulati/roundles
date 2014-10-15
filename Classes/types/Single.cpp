@@ -21,16 +21,11 @@ Single::Single()
 {
     setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     sprite = Sprite::create(IMG_CIRCLE_WHITE);
-    sprite->setColor(RGB_COLOR7);
+    auto c = LevelXML::getBundleColorAt(LevelXML::curBundleNumber);
+    sprite->setColor(c);
+    sprite->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     this->addChild(sprite);
     setContentSize(sprite->getContentSize());
-    
-    dot = Sprite::create(IMG_CIRCLE_WHITE);
-    dot->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
-    auto size = sprite->getBoundingBox().size;
-    dot->setScale(0.25);
-    dot->setPosition(Point(size.width/2.0,size.height/2.0));
-    sprite->addChild(dot);
     
 }
 

@@ -110,7 +110,8 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
         }
         if(LevelXML::getDidCompleteLevelAt(id) == true)
         {
-            sprite->setColor(RGB_COLOR8);
+            auto c = LevelXML::getBundleColorAt(LevelXML::curBundleNumber);
+            sprite->setColor(c);
         }
         else
         {
