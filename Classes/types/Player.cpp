@@ -23,43 +23,44 @@ Player::Player()
 _moves(0),
 _animationsRunning(0)
 {
-    setAnchorPoint(Point(0.5f, 0.5f));
+//    setAnchorPoint(Point(0.5f, 0.5f));
     //Init the element with z-index smallest
     _started = CallFuncN::create(CC_CALLBACK_1(Player::animationStarted,this));
     _started->retain();
     _done = CallFuncN::create(CC_CALLBACK_1(Player::animationDone,this));
     _done->retain();
     
-    arrow = Sprite::create(IMG_ARROW);
-    arrow->setOpacity(220);
-    arrow->setAnchorPoint(Point(0.5, 0.5));
-    arrow->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
-    this->addChild(arrow);
+//    arrow = Sprite::create(IMG_ARROW);
+//    arrow->setOpacity(220);
+//    arrow->setAnchorPoint(Point(0.5, 0.5));
+//    arrow->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
+//    this->addChild(arrow);
     
     
-    sprite = Sprite::create(IMG_CIRCLE_WHITE);
-    sprite->setColor(RGB_COLOR7);
-    sprite->setAnchorPoint(Point(0, 0));
+//    sprite = Sprite::create(IMG_CIRCLE_WHITE);
+    sprite = Sprite::create("images/charRabbit.png");
+//    sprite->setColor(RGB_COLOR7);
+    sprite->setAnchorPoint(Point(0.5, 0.5));
     this->addChild(sprite);
 
     
-    innerSprite = Sprite::create(IMG_CIRCLE_WHITE);
-    innerSprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
-    innerSprite->setScale(0.5);
-    auto size = sprite->getBoundingBox().size;
-    innerSprite->setPosition(Point(size.width/2.0f,size.height/2.0f));
-    sprite->addChild(innerSprite);
+//    innerSprite = Sprite::create(IMG_CIRCLE_WHITE);
+//    innerSprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
+//    innerSprite->setScale(0.5);
+//    auto size = sprite->getBoundingBox().size;
+//    innerSprite->setPosition(Point(size.width/2.0f,size.height/2.0f));
+//    sprite->addChild(innerSprite);
 }
 
 void Player::setScale(float scale)
 {
     sprite->setScale(scale);
     
-    auto temp = sprite->getBoundingBox().size.width / arrow->getBoundingBox().size.width;
-    arrow->setScale(1.5*temp);
-    
-    //Re-Positioning the Arrow
-    arrow->setPosition(Point(sprite->getBoundingBox().size.width/2.0,sprite->getBoundingBox().size.height/2.0));
+//    auto temp = sprite->getBoundingBox().size.width / arrow->getBoundingBox().size.width;
+//    arrow->setScale(1.5*temp);
+//    
+//    //Re-Positioning the Arrow
+//    arrow->setPosition(Point(sprite->getBoundingBox().size.width/2.0,sprite->getBoundingBox().size.height/2.0));
 }
 
 Player* Player::create()
@@ -83,13 +84,15 @@ Player* Player::create()
 void Player::setHead(int direction)
 {
     this->head = direction;
-    arrow->setRotation((direction + 1)*90);
+//    arrow->setRotation((direction + 1)*90);
+    
+    sprite->setRotation((direction + 1)*90);
 }
 
 void Player::setTotalElements(int value)
 {
     totalElements = value+1;
-    innerSprite->setScale(1.0/value);
+//    innerSprite->setScale(1.0/value);
 }
 
 void Player::setCapturedElements(int delta)
@@ -157,19 +160,20 @@ void Player::moveAnimation(int screen_x, int screen_y,float deltaTime)
 
 void Player::rotateHead(int head,float deltaTime)
 {
-    arrow->runAction(Sequence::create(_started,RotateTo::create(deltaTime,(head + 1)*90),_done,NULL));
+//    arrow->runAction(Sequence::create(_started,RotateTo::create(deltaTime,(head + 1)*90),_done,NULL));
+    sprite->runAction(Sequence::create(_started,RotateTo::create(deltaTime,(head + 1)*90),_done,NULL));
 }
 
 void Player::expandSoul(float deltaTime)
 {
-    float val = (1.0 / (totalElements-capturedElements == 0 ? 1.0 : totalElements-capturedElements));
-    innerSprite->runAction(Sequence::create(_started,ScaleTo::create(deltaTime, val),_done,NULL));
+//    float val = (1.0 / (totalElements-capturedElements == 0 ? 1.0 : totalElements-capturedElements));
+//    innerSprite->runAction(Sequence::create(_started,ScaleTo::create(deltaTime, val),_done,NULL));
 }
 
 void Player::contractSoul(float deltaTime)
 {
-    float val = (1.0 / (totalElements-capturedElements == 0 ? 1.0 : totalElements-capturedElements));
-    innerSprite->runAction(Sequence::create(_started,ScaleTo::create(deltaTime, val),_done,NULL));
+//    float val = (1.0 / (totalElements-capturedElements == 0 ? 1.0 : totalElements-capturedElements));
+//    innerSprite->runAction(Sequence::create(_started,ScaleTo::create(deltaTime, val),_done,NULL));
 }
 
 void Player::animationStarted(Node * sender)

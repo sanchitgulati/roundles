@@ -12,10 +12,6 @@
 #include "MainMenuScene.h"
 #include "SimpleAudioEngine.h"
 
-
-#define BG_CIRCLE_SCALE 1.2
-#define BG_CIRCLE_INIT_SCALE 0.5
-
 enum{bMenu,bBack,bHint,bTitle,bPrev,bNext,bRestart,bSetting,bUndo};
 
 enum{zSingle,zDingle,zPlayer}; //z_player to be last
@@ -107,7 +103,7 @@ bool GameScene::init()
     
     
     // create menu, it's an autorelease object
-    auto menu = Menu::create(btnBack, btnHint,btnLevelTitle,btnSetting,btnPrev,btnNext,btnRestart, NULL);
+    auto menu = Menu::create(btnBack, btnHint,btnLevelTitle,btnSetting,btnRestart, NULL); //,btnPrev,btnNext
     menu->setTag(bMenu);
     
     
@@ -117,13 +113,10 @@ bool GameScene::init()
     if(!ret)
         return false;
     
-    levelNode->setContentSize(Size(LevelXML::getGridSizeX()*_size,LevelXML::getGridSizeY()*_size));
-    levelNode->setAnchorPoint(Point(0.5, 0.5));
-    levelNode->setPosition(Point(visibleSize.width/2, visibleSize.height/2));
     this->addChild(levelNode);
     
     
-    menu->setPosition(Point::ZERO);
+    menu->setPosition(Vec2::ZERO);
     this->addChild(menu, zMenu);
  
     //schedule update
@@ -138,47 +131,38 @@ bool GameScene::loadLevel(bool reset)
         moves.clear();
     }
     
-    /*Getting Scale For Future Use */
-    auto scaleSprite = Sprite::create(IMG_CIRCLE_WHITE);
-    // IMG_CIRCLE_WHITE should be same as circle used inside Single,PLayer,Dingle
-    float scale = 0.5f;
-    int gridSize = (LevelXML::getGridSizeX() > LevelXML::getGridSizeY() ? LevelXML::getGridSizeX() : LevelXML::getGridSizeY());
-    switch (gridSize) {
-        case 3:
-            scale = 0.16f;
-            break;
-        case 4:
-            scale = 0.15f;
-            break;
-        case 5:
-            scale = 0.14f;
-            break;
-        case 6:
-            scale = 0.13f;
-            break;
-        case 7:
-            scale = 0.12f;
-            break;
-        case 8:
-            scale = 0.11f;
-            break;
-        default:
-            log("Invalid Grid Size, raising exception!");
-            return false;
-            break;
-    }
-    scaleSprite->setScale(Util::getScreenRatio(scaleSprite)*scale);
-    _size = scaleSprite->getBoundingBox().size.width*1.4f;
-    _levelScale = Point(scaleSprite->getScaleX(),scaleSprite->getScaleY());
     
     if(levelNode != nullptr || reset == true)
         levelNode->removeAllChildrenWithCleanup(true);
     else
         levelNode = Node::create();
     
+    auto totalPixelsPerBlock = visibleSize.width/LevelXML::getGridSizeX();
+    _desiredWidth = totalPixelsPerBlock*0.75;
+    _margin = totalPixelsPerBlock*0.25;
+    
+    levelNode->setAnchorPoint(Vec2(0.0,0.5));
+    levelNode->setPosition(Vec2(0,visibleSize.height*0.40));
+    levelNode->setContentSize(Size(visibleSize.width, _desiredWidth*LevelXML::getGridSizeY()));
+    
+    
     /* Load Up Level */
     level = LevelXML::getCurrentLevel();
     solution = LevelXML::getSolutionLevel(); //TODO: make it like grid numbers
+    
+    for(int i = 0; i < LevelXML::getGridSizeX(); i++)
+    {
+        for(int j =0;j < LevelXML::getGridSizeX(); j++)
+        {
+            auto grid = Sprite::create(IMG_CIRCLE_WHITE);
+            grid->setScale(_desiredWidth/grid->getBoundingBox().size.width);
+            levelNode->addChild(grid);
+            grid->setPosition(getScreenCoordinates(i, j));
+            grid->setAnchorPoint(Vec2::ZERO);
+        }
+    }
+    
+    
     
     int totalElements = 0;
     std::vector<LevelElement>::iterator toDel;
@@ -192,9 +176,9 @@ bool GameScene::loadLevel(bool reset)
                 _player->setGridPosition(it->x, it->y);
                 _player->setHead(it->head);
                 _player->setPosition(getScreenCoordinates(it->x, it->y));
-                _player->setScale(_levelScale.x);
+                _player->setScale(_desiredWidth/_player->getBoundingBox().size.width);
                 _player->setLocalZOrder(zPlayer);
-                levelNode->addChild(_player);
+                levelNode->addChild(_player,99);
                 moves.push_back(static_cast<LevelElement>(*it));
                 toDel = it;
                 break;
@@ -203,6 +187,7 @@ bool GameScene::loadLevel(bool reset)
             {
                 auto temp = static_cast<LevelElement>(*it);
                 it->ccElement = createCCElement(temp);
+                log("values single %f %f",getScreenCoordinates(it->x, it->y).x,getScreenCoordinates(it->x, it->y).y);
                 it->dots = 1;
                 totalElements+=it->dots;
                 break;
@@ -237,13 +222,6 @@ bool GameScene::loadLevel(bool reset)
     }
     level.erase(toDel); //Delete _player from Level Vector
     _player->setTotalElements(totalElements); // to be changed with diffrent element types
-
-    
-    
-    levelNode->setVisible(false);
-    auto delayTime = DelayTime::create(0.9);
-    auto callFunc = CallFuncN::create(CC_CALLBACK_1(GameScene::toggleVisible,this,true));
-    levelNode->runAction(Sequence::create(delayTime,callFunc, NULL));
     
     //Start Load
     updateGame(true);
@@ -400,7 +378,7 @@ Node* GameScene::createCCElement(LevelElement element)
         case eSingle:
         {
             auto CCElement = Single::create();
-            CCElement->setScale(_levelScale.x);
+            CCElement->setScale(_desiredWidth/CCElement->getBoundingBox().size.width);
             CCElement->setPosition(getScreenCoordinates(element.x, element.y));
             CCElement->setLocalZOrder(zSingle);
             levelNode->addChild(CCElement);
@@ -410,7 +388,7 @@ Node* GameScene::createCCElement(LevelElement element)
         case eDingle:
         {
             auto CCElement = Dingle::create();
-            CCElement->setScale(_levelScale.x);
+            CCElement->setScale(_desiredWidth/CCElement->getBoundingBox().size.width);
             CCElement->setPosition(getScreenCoordinates(element.x, element.y));
             CCElement->setLocalZOrder(zDingle);
             levelNode->addChild(CCElement);
@@ -420,7 +398,7 @@ Node* GameScene::createCCElement(LevelElement element)
         case eTurner:
         {
             auto CCElement = Turner::create();
-            CCElement->setScale(_levelScale.x);
+            CCElement->setScale(_desiredWidth/CCElement->getBoundingBox().size.width);
             CCElement->setPosition(getScreenCoordinates(element.x, element.y));
             CCElement->setLocalZOrder(zDingle);
             levelNode->addChild(CCElement);
@@ -430,7 +408,7 @@ Node* GameScene::createCCElement(LevelElement element)
         case eIce:
         {
             auto CCElement = Ice::create();
-            CCElement->setScale(_levelScale.x);
+            CCElement->setScale(_desiredWidth/CCElement->getBoundingBox().size.width);
             CCElement->setPosition(getScreenCoordinates(element.x, element.y));
             CCElement->setLocalZOrder(zDingle);
             levelNode->addChild(CCElement);
@@ -692,7 +670,7 @@ void GameScene::storeMoveForUndo(LevelElement element, int head)
 
 Point GameScene::getScreenCoordinates(int x, int y)
 {
-    return Point(x*_size,y*_size);
+    return Point((x+0.5)*_margin + x*_desiredWidth,(y+0.5)*_margin + y*_desiredWidth);
 }
 
 LevelElement GameScene::getLevelElementAt(int x, int y)

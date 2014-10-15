@@ -72,8 +72,7 @@ bool LevelMenu::init()
     this->addChild(heading);
     
     auto tblLevel = TableLevel::create();
-    auto val = tblLevel->getCellSize();
-    tblLevel->setPosition(Point(visibleSize.width/2  - val.width/2 ,0));
+    tblLevel->setPosition(Point(0 ,0));
     this->addChild(tblLevel);
     
     
@@ -105,7 +104,6 @@ void LevelMenu::menuCallback(Ref* pSender)
         {
             auto s = (Scene*)MainMenu::create();
             Director::getInstance()->replaceScene(TransitionFade::create(0.5f, s,RGB_COLOR1));
-            
         }
             break;
             default:

@@ -21,14 +21,12 @@ bool Dingle::init()
 Dingle::Dingle()
 : _dots(2)
 {
-    setAnchorPoint(Point(0.5f, 0.5f));
     sprite = Sprite::create(IMG_CIRCLE_WHITE);
-    sprite->setAnchorPoint(Point(0, 0));
     sprite->setColor(RGB_COLOR7);
     this->addChild(sprite);
+    setContentSize(sprite->getContentSize());
     
     dot = Sprite::create(IMG_CIRCLE_WHITE);
-    dot->setAnchorPoint(Point(0.5, 0.5));
     dot->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
     auto size = sprite->getBoundingBox().size;
     dot->setScale(0.5);

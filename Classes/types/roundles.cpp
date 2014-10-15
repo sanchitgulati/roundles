@@ -23,16 +23,16 @@ Roundles::Roundles(std::string heading,std::string message)
     auto localContentMessage = LocalizedString::localizedString(message.c_str())->getCString();
     //end
     
-    lblText = Label::create(localContentMessage, Constants::fontName, Constants::fontSize*0.50);
+    lblText = Label::createWithTTF(localContentMessage, Constants::fontName, Constants::fontSize*0.50);
     lblText->setAnchorPoint(Point(0.5f,0.5f));
     lblText->setColor(RGB_COLOR7);
     
     
-    lblHeading = Label::create(localContent, Constants::fontName, Constants::fontSize*0.50);
+    lblHeading = Label::createWithTTF(localContent, Constants::fontName, Constants::fontSize*0.50);
     lblHeading->setAnchorPoint(Point(0.5f,0.5f));
     lblHeading->setColor(RGB_COLOR5);
     
-    circleLeft = Sprite::create(IMG_CIRCLE_WHITE);
+    circleLeft = Sprite::create(IMG_CIRCLE_NO_BORDER);
     circleLeft->setScale(Util::getScreenRatio(circleLeft)*0.15);
     
     circleRight = Sprite::create(IMG_CIRCLE_TWITTER);

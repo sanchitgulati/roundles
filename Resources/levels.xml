@@ -7,7 +7,7 @@
 		<data>
 			<element type="1" positionX="3" positionY="2" head="3"></element>
 			<element type="2" positionX="0" positionY="0"></element>
-			<element type="3" positionX="0" positionY="1"></element>
+			<element type="2" positionX="0" positionY="1"></element>
 			<element type="2" positionX="0" positionY="2"></element>
 			<element type="2" positionX="0" positionY="3"></element>
 			<element type="2" positionX="1" positionY="0"></element>
@@ -27,7 +27,7 @@
         </solution>
 	</level>
     <level id="2" gridX="4" gridY="4" >
-		<title>Lets Try Again</title>
+		<title>Again</title>
 		<data>
 			<element type="1" positionX="3" positionY="3" head="3"></element>
 			<element type="2" positionX="0" positionY="0"></element>
@@ -40,7 +40,7 @@
 		</data>
         <solution isValid="0"></solution>
     </level>
-    <level id="3" gridX="5" gridY="5" >
+    <level id="3" gridX="4" gridY="5" >
 		<title>As Simple As That</title>
 		<data>
 			<element type="1" positionX="0" positionY="2" head="1"></element>
@@ -50,19 +50,18 @@
 			<element type="2" positionX="1" positionY="3"></element>
 			<element type="4" positionX="2" positionY="1" headed="1"></element>
 			<element type="2" positionX="2" positionY="3"></element>
-			<element type="2" positionX="4" positionY="0"></element>
-			<element type="2" positionX="4" positionY="1"></element>
-			<element type="2" positionX="4" positionY="3"></element>
+			<element type="2" positionX="3" positionY="0"></element>
+			<element type="2" positionX="3" positionY="1"></element>
+			<element type="2" positionX="3" positionY="3"></element>
 		</data>
         <solution isValid="0"></solution>
 	</level>
-    <level id="4" gridX="5" gridY="5" >
+    <level id="4" gridX="4" gridY="5" >
 		<title>Deja vu</title>
 		<data>
-			<element type="1" positionX="0" positionY="2" head="1"></element>
+			<element type="1" positionX="1" positionY="2" head="1"></element>
 			<element type="2" positionX="1" positionY="0"></element>
 			<element type="2" positionX="1" positionY="1"></element>
-			<element type="2" positionX="1" positionY="2"></element>
 			<element type="2" positionX="1" positionY="3"></element>
 			<element type="2" positionX="2" positionY="0"></element>
 			<element type="2" positionX="2" positionY="1"></element>
@@ -77,265 +76,7 @@
         <solution isValid="0"></solution>
     </level>
 </bundle>
-<bundle value="5x5" img="charSandy.png" rgb_inner="189,139,190">
-    <level id="1" gridX="4" gridY="4" >
-        <title>The Omen</title>
-        <data>
-            <element type="1" positionX="3" positionY="2"></element>
-            <element type="2" positionX="0" positionY="0"></element>
-            <element type="2" positionX="3" positionY="3"></element>
-            <element type="2" positionX="0" positionY="3"></element>
-            <element type="2" positionX="3" positionY="0"></element>
-        </data>
-        <solution isValid="0"></solution>
-    </level>
-    <level id="1" gridX="5" gridY="5" >
-        <title>The Omen</title>
-        <data>
-            <element type="1" positionX="3" positionY="2"></element>
-            <element type="2" positionX="0" positionY="0"></element>
-            <element type="2" positionX="4" positionY="4"></element>
-            <element type="2" positionX="0" positionY="4"></element>
-            <element type="2" positionX="4" positionY="0"></element>
-        </data>
-        <solution isValid="0"></solution>
-    </level>
-    <level id="1" gridX="6" gridY="6" >
-        <title>The Omen</title>
-        <data>
-            <element type="1" positionX="3" positionY="2"></element>
-            <element type="2" positionX="0" positionY="0"></element>
-            <element type="2" positionX="5" positionY="5"></element>
-            <element type="2" positionX="0" positionY="5"></element>
-            <element type="2" positionX="5" positionY="0"></element>
-        </data>
-        <solution isValid="0"></solution>
-    </level>
-    <level id="1" gridX="7" gridY="7" >
-        <title>The Omen</title>
-        <data>
-            <element type="1" positionX="3" positionY="2"></element>
-            <element type="2" positionX="0" positionY="0"></element>
-            <element type="2" positionX="6" positionY="6"></element>
-            <element type="2" positionX="0" positionY="6"></element>
-            <element type="2" positionX="6" positionY="0"></element>
-        </data>
-        <solution isValid="0"></solution>
-    </level>
-    <level id="1" gridX="8" gridY="8" >
-        <title>The Omen</title>
-        <data>
-            <element type="1" positionX="3" positionY="2"></element>
-            <element type="2" positionX="0" positionY="0"></element>
-            <element type="2" positionX="7" positionY="7"></element>
-            <element type="2" positionX="0" positionY="7"></element>
-            <element type="2" positionX="7" positionY="0"></element>
-        </data>
-        <solution isValid="0"></solution>
-    </level>
+<bundle value="Ruff" img="charSandy.png" rgb_inner="189,139,190">
 </bundle>
 <bundle value="6x6" img="charBlacky.png" rgb_inner="138,201,180" >
-    <level id="1" gridX="4" gridY="4">
-        <title>Easy</title>
-        <data>
-            <element type="1" positionX="3" positionY="3" head="2" />
-            <element type="2" positionX="1" positionY="1" />
-            <element type="2" positionX="1" positionY="0" />
-            <element type="2" positionX="3" positionY="2" />
-            <element type="2" positionX="0" positionY="1" />
-            <element type="2" positionX="2" positionY="0" />
-            <element type="2" positionX="3" positionY="1" />
-            <element type="2" positionX="2" positionY="1" />
-        </data>
-        <solution isValid="0" />
-    </level>
-    <level id="1" gridX="4" gridY="4">
-        <title>Easy 2</title>
-        <data>
-            <element type="1" positionX="2" positionY="3" head="3" />
-            <element type="2" positionX="0" positionY="0" />
-            <element type="2" positionX="0" positionY="3" />
-            <element type="2" positionX="2" positionY="1" />
-            <element type="2" positionX="0" positionY="2" />
-            <element type="2" positionX="2" positionY="0" />
-            <element type="2" positionX="2" positionY="2" />
-            <element type="2" positionX="1" positionY="3" />
-        </data>
-        <solution isValid="0" />
-    </level>
-    <level id="1" gridX="4" gridY="4">
-        <title>Easy 3</title>
-        <data>
-            <element type="1" positionX="3" positionY="2" head="3" />
-            <element type="2" positionX="1" positionY="0" />
-            <element type="2" positionX="0" positionY="2" />
-            <element type="2" positionX="3" positionY="1" />
-            <element type="2" positionX="1" positionY="1" />
-            <element type="2" positionX="0" positionY="1" />
-        </data>
-        <solution isValid="0" />
-    </level>
-    <level id="1" gridX="4" gridY="4">
-        <title>Easy 4</title>
-        <data>
-            <element type="1" positionX="3" positionY="3" head="2" />
-            <element type="2" positionX="2" positionY="1" />
-            <element type="2" positionX="0" positionY="3" />
-            <element type="2" positionX="0" positionY="1" />
-            <element type="2" positionX="1" positionY="1" />
-            <element type="2" positionX="2" positionY="0" />
-            <element type="2" positionX="2" positionY="2" />
-            <element type="2" positionX="3" positionY="2" />
-            <element type="2" positionX="2" positionY="3" />
-            <element type="2" positionX="1" positionY="2" />
-        </data>
-        <solution isValid="0" />
-    </level>
-    <level id="1" gridX="4" gridY="4">
-        <title>Easy 5</title>
-        <data>
-            <element type="1" positionX="3" positionY="3" head="2" />
-            <element type="2" positionX="1" positionY="2" />
-            <element type="2" positionX="2" positionY="3" />
-            <element type="2" positionX="3" positionY="0" />
-            <element type="2" positionX="3" positionY="1" />
-            <element type="2" positionX="0" positionY="2" />
-            <element type="2" positionX="0" positionY="0" />
-            <element type="2" positionX="3" positionY="2" />
-        </data>
-        <solution isValid="0" />
-    </level>
-    <level id="1" gridX="6" gridY="6">
-        <title>Medium 1</title>
-        <data>
-            <element type="1" positionX="4" positionY="5" />
-            <element type="2" positionX="0" positionY="4" />
-            <element type="2" positionX="2" positionY="3" />
-            <element type="2" positionX="3" positionY="4" />
-            <element type="2" positionX="0" positionY="5" />
-            <element type="2" positionX="3" positionY="2" />
-            <element type="2" positionX="3" positionY="3" />
-            <element type="2" positionX="0" positionY="2" />
-            <element type="2" positionX="1" positionY="4" />
-            <element type="2" positionX="1" positionY="5" />
-            <element type="2" positionX="3" positionY="5" />
-            <element type="2" positionX="2" positionY="2" />
-        </data>
-        <solution isValid="0" />
-    </level>
-    <level id="1" gridX="6" gridY="6">
-        <title>Medium 2</title>
-        <data>
-            <element type="1" positionX="5" positionY="5" />
-            <element type="2" positionX="2" positionY="2" />
-            <element type="2" positionX="0" positionY="4" />
-            <element type="2" positionX="1" positionY="0" />
-            <element type="2" positionX="2" positionY="4" />
-            <element type="2" positionX="4" positionY="2" />
-            <element type="2" positionX="3" positionY="2" />
-            <element type="2" positionX="4" positionY="4" />
-            <element type="2" positionX="1" positionY="3" />
-            <element type="2" positionX="3" positionY="3" />
-            <element type="2" positionX="3" positionY="0" />
-            <element type="2" positionX="4" positionY="5" />
-            <element type="2" positionX="1" positionY="5" />
-            <element type="2" positionX="2" positionY="0" />
-            <element type="2" positionX="4" positionY="3" />
-        </data>
-        <solution isValid="0" />
-    </level>
-    <level id="1" gridX="6" gridY="6">
-        <title>Medium 3</title>
-        <data>
-            <element type="1" positionX="5" positionY="5" />
-            <element type="2" positionX="3" positionY="1" />
-            <element type="2" positionX="5" positionY="0" />
-            <element type="2" positionX="2" positionY="1" />
-            <element type="2" positionX="0" positionY="1" />
-            <element type="2" positionX="3" positionY="5" />
-            <element type="2" positionX="4" positionY="0" />
-            <element type="2" positionX="5" positionY="2" />
-            <element type="2" positionX="5" positionY="3" />
-            <element type="2" positionX="3" positionY="3" />
-            <element type="2" positionX="2" positionY="3" />
-            <element type="2" positionX="1" positionY="0" />
-            <element type="2" positionX="3" positionY="0" />
-            <element type="2" positionX="4" positionY="3" />
-            <element type="2" positionX="0" positionY="5" />
-            <element type="2" positionX="4" positionY="1" />
-            <element type="2" positionX="5" positionY="1" />
-        </data>
-        <solution isValid="0" />
-    </level>
-    <level id="1" gridX="6" gridY="6">
-        <title>Medium 4</title>
-        <data>
-            <element type="1" positionX="4" positionY="4" />
-            <element type="2" positionX="1" positionY="0" />
-            <element type="2" positionX="1" positionY="4" />
-            <element type="2" positionX="2" positionY="1" />
-            <element type="2" positionX="3" positionY="2" />
-            <element type="2" positionX="0" positionY="1" />
-            <element type="2" positionX="4" positionY="2" />
-            <element type="2" positionX="4" positionY="3" />
-            <element type="2" positionX="3" positionY="1" />
-            <element type="2" positionX="3" positionY="0" />
-        </data>
-        <solution isValid="0" />
-    </level>
-    <level id="1" gridX="6" gridY="6">
-        <title>Medium 5</title>
-        <data>
-            <element type="1" positionX="5" positionY="4" />
-            <element type="2" positionX="4" positionY="3" />
-            <element type="2" positionX="4" positionY="4" />
-            <element type="2" positionX="3" positionY="0" />
-            <element type="2" positionX="1" positionY="0" />
-            <element type="2" positionX="4" positionY="2" />
-            <element type="2" positionX="2" positionY="1" />
-            <element type="2" positionX="0" positionY="0" />
-            <element type="2" positionX="2" positionY="3" />
-            <element type="2" positionX="1" positionY="1" />
-            <element type="2" positionX="3" positionY="1" />
-            <element type="2" positionX="4" positionY="1" />
-            <element type="2" positionX="3" positionY="2" />
-            <element type="2" positionX="1" positionY="4" />
-            <element type="2" positionX="4" positionY="0" />
-        </data>
-        <solution isValid="0" />
-    </level>
-    <level id="1" gridX="6" gridY="6">
-        <title>Medium 6</title>
-        <data>
-            <element type="1" positionX="4" positionY="5" />
-            <element type="2" positionX="0" positionY="0" />
-            <element type="2" positionX="4" positionY="2" />
-            <element type="2" positionX="4" positionY="1" />
-            <element type="2" positionX="4" positionY="3" />
-            <element type="2" positionX="3" positionY="5" />
-            <element type="2" positionX="2" positionY="3" />
-            <element type="2" positionX="2" positionY="0" />
-            <element type="2" positionX="2" positionY="1" />
-            <element type="2" positionX="1" positionY="0" />
-            <element type="2" positionX="1" positionY="3" />
-            <element type="2" positionX="4" positionY="0" />
-            <element type="2" positionX="0" positionY="1" />
-        </data>
-        <solution isValid="0" />
-    </level>
-    <level id="1" gridX="6" gridY="6">
-        <title>Harder</title>
-        <data>
-            <element type="1" positionX="5" positionY="5" />
-            <element type="2" positionX="1" positionY="4" />
-            <element type="2" positionX="1" positionY="0" />
-            <element type="2" positionX="4" positionY="0" />
-            <element type="2" positionX="5" positionY="1" />
-            <element type="2" positionX="0" positionY="1" />
-            <element type="2" positionX="5" positionY="0" />
-            <element type="2" positionX="2" positionY="1" />
-            <element type="2" positionX="5" positionY="4" />
-        </data>
-        <solution isValid="0" />
-    </level>
 </bundle>

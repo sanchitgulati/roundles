@@ -123,7 +123,8 @@ bool MainMenu::init()
     {
         auto txt = cocos2d::StringUtils::format("%s",LevelXML::getBundleNameAt(i).c_str());
         auto img = cocos2d::StringUtils::format("images/%s",LevelXML::getBundleImageAt(i).c_str());
-        auto val = LevelXML::isUnlockedBundleAt(i);
+//        auto val = LevelXML::isUnlockedBundleAt(i);
+        auto val = true;
         auto bundle = Rotator::create(img,LevelXML::getBundleColorAt(i), txt, 50.0f,!val);
         bundle->setCallback(CC_CALLBACK_1(MainMenu::menuCallback, this));
         bundle->setTag(bPlay);

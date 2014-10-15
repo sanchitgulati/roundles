@@ -15,8 +15,8 @@
 #define PI 3.14
 
 //BG
-#define RGBA_COLOR1 Color4B(239,239,239,255)
-#define RGB_COLOR1 Color3B(239,239,239)
+#define RGBA_COLOR1 Color4B(251,251,255,255)
+#define RGB_COLOR1 Color3B(251,251,255)
 
 
 //MENU_ITEMS
@@ -48,9 +48,10 @@
 #define RGB_COLOR7 Color3B(83,101,121)
 #define RGBA_COLOR7 Color4B(83,101,121,255)
 
-//GREY_LOCKED
-#define RGB_COLOR8 Color3B(222,222,222)
-#define RGBA_COLOR8 Color4B(222,222,222,255)
+
+//ART_GREEN_UNLOCKED
+#define RGB_COLOR8 Color3B(218,240,123)
+#define RGBA_COLOR8 Color4B(218,240,123,255)
 
 
 #define SFX_BTN_CLICKED "sfx/btn_Clicked.wav"
@@ -70,8 +71,8 @@
 #define IMG_LOCK "images/lock.png"
 
 #define IMG_CIRCLE_BORDER "images/btnCircle.png"
-#define IMG_CIRCLE_WHITE_HI "images/circleWhiteHiRes.png"
 #define IMG_CIRCLE_WHITE "images/circleWhiteLoRes.png"
+#define IMG_CIRCLE_NO_BORDER "images/circleWhiteLoResNoBorder.png"
 
 #define IMG_RABBIT "images/charRabbit.png"
 

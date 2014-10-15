@@ -14,21 +14,18 @@ using namespace cocos2d;
 
 bool Single::init()
 {
-    Node::init();
     return true;
 }
 
 Single::Single()
 {
-    setAnchorPoint(Point(0.5f, 0.5f));
+    setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     sprite = Sprite::create(IMG_CIRCLE_WHITE);
-    sprite->setAnchorPoint(Point(0, 0));
     sprite->setColor(RGB_COLOR7);
     this->addChild(sprite);
-    
+    setContentSize(sprite->getContentSize());
     
     dot = Sprite::create(IMG_CIRCLE_WHITE);
-    dot->setAnchorPoint(Point(0.5, 0.5));
     dot->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
     auto size = sprite->getBoundingBox().size;
     dot->setScale(0.25);

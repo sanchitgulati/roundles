@@ -54,7 +54,7 @@ Rotator::Rotator(std::string img,Color3B color,std::string text,float percentage
     
     outer->setOpacity(0);
     
-    inner->setScale(Util::getScreenRatioWidth(inner)*0.65);
+    inner->setScale(Util::getScreenRatioWidth(inner)*0.45);
     
     
     auto delayTime = DelayTime::create(0.2);
@@ -74,7 +74,7 @@ Rotator::Rotator(std::string img,Color3B color,std::string text,float percentage
     inner->runAction( action->clone());
     
     
-    this->addChild(outer);
+//    this->addChild(outer);
     this->addChild(inner);
     
     _originalScale = this->getScale();
@@ -88,28 +88,28 @@ Rotator::Rotator(std::string img,Color3B color,std::string text,float percentage
     outer->setPosition(sizeMenuItem.width/2,sizeMenuItem.height/2);
     
     
-    if(locked)
-    {
-        auto lock = Sprite::create(IMG_LOCK);
-        lock->setScale((inner->getBoundingBox().size.height/lock->getBoundingBox().size.height)*0.30);
-        lock->runAction(action->clone());
-        lock->setPosition(sizeMenuItem.width/2,sizeMenuItem.height/2);
-        this->addChild(lock);
-    }
-    else
-    {
-        
-        auto localContent = LocalizedString::localizedString(text.c_str())->getCString();
-        auto textLbl = Label::createWithTTF(localContent, Constants::fontName, Constants::fontSize);
-        textLbl->setAnchorPoint(Point(0.5,0.5));
-        textLbl->setColor(RGB_COLOR1);
-        textLbl->getTexture()->setAliasTexParameters();
-        textLbl->runAction(action->clone());
-        textLbl->setPosition(sizeMenuItem.width/2,sizeMenuItem.height/2);
-        this->addChild(textLbl);
-        
-        
-    }
+//    if(locked)
+//    {
+//        auto lock = Sprite::create(IMG_LOCK);
+//        lock->setScale((inner->getBoundingBox().size.height/lock->getBoundingBox().size.height)*0.30);
+//        lock->runAction(action->clone());
+//        lock->setPosition(sizeMenuItem.width/2,sizeMenuItem.height/2);
+//        this->addChild(lock);
+//    }
+//    else
+//    {
+//        
+//        auto localContent = LocalizedString::localizedString(text.c_str())->getCString();
+//        auto textLbl = Label::createWithTTF(localContent, Constants::fontName, Constants::fontSize);
+//        textLbl->setAnchorPoint(Point(0.5,0.5));
+//        textLbl->setColor(RGB_COLOR1);
+//        textLbl->getTexture()->setAliasTexParameters();
+//        textLbl->runAction(action->clone());
+//        textLbl->setPosition(sizeMenuItem.width/2,sizeMenuItem.height/2);
+//        this->addChild(textLbl);
+//        
+//        
+//    }
     
 //    auto dn = DrawNode::create();
 //    dn->drawDot(getPosition(), 30, Color4F::BLUE);

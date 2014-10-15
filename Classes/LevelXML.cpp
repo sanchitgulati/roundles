@@ -295,7 +295,8 @@ bool LevelXML::isUnlockedBundleAt(int index)
 {
     char key[10];
     sprintf(key, "unlocked-%d",index);
-    return cocos2d::UserDefault::getInstance()->getBoolForKey(key, false);
+    bool ret = true;//cocos2d::UserDefault::getInstance()->getBoolForKey(key, false);
+    return ret;
 }
 
 void LevelXML::setBundleUnlockedAt(int index)

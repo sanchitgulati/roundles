@@ -19,7 +19,7 @@ Radio::Radio(std::string text)
     lblText->setAnchorPoint(Point(0.0f,0.5f));
     lblText->setColor(RGB_COLOR5);
     
-    circle = Sprite::create(IMG_CIRCLE_WHITE);
+    circle = Sprite::create(IMG_CIRCLE_NO_BORDER);
     circle->setScale(Util::getScreenRatio(circle)*0.1);
     
     bar = Sprite::create(IMG_RECT_WHITE);

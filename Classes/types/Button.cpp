@@ -22,7 +22,7 @@ Button::Button(std::string text,std::string image,Color3B color)
     this->foreSprite = Sprite::create(image);
     this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*0.15);
     this->lblText->setColor(RGB_COLOR5);
-    this->foreSprite->setColor(RGB_COLOR5);
+//    this->foreSprite->setColor(RGB_COLOR5);
     
     _originalScale = this->getScale();
     _originalPosition = this->getPosition();

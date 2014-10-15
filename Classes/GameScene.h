@@ -41,8 +41,10 @@ public:
     //Variables
     Size visibleSize;
     Size winSize;
-    float _size;
-    Point _levelScale;
+    
+    float _desiredWidth;
+    float _margin;
+    
     Node* levelNode;
     Point origin;
     float fontSize;
