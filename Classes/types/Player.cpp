@@ -31,6 +31,10 @@ _animationsRunning(0)
     
     sprite = Sprite::create(image);
     setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+    sprite->setColor(LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber));
+    auto eyes = Sprite::create("images/eyes_01.png");
+    eyes->setPosition(sprite->getBoundingBox().size.width*0.40,sprite->getBoundingBox().size.height*0.70);
+    sprite->addChild(eyes);
     sprite->setFlippedX(true);
     setContentSize(sprite->getContentSize());
     this->addChild(sprite);
@@ -64,7 +68,7 @@ Player* Player::create(const char* image)
 void Player::setHead(int direction)
 {
     this->head = direction;
-    sprite->setRotation((direction + 1)*90);
+//    sprite->setRotation((direction + 1)*90);
 }
 
 void Player::setTotalElements(int value)
@@ -128,18 +132,17 @@ bool Player::canMove(int direction)
     }
 }
 
-void Player::moveAnimation(int screen_x, int screen_y,float delay,float deltaTime)
+void Player::moveAnimation(int screen_x, int screen_y,float deltaTime)
 {
-    auto delayAction = DelayTime::create(delay);
     auto move = MoveTo::create(deltaTime, Point(screen_x,screen_y));
     auto move_ease_in = EaseQuadraticActionInOut::create(move->clone());
-    this->runAction(Sequence::create(delayAction,_started,move_ease_in,_done, NULL));
+    this->runAction(Sequence::create(_started,move_ease_in,_done, NULL));
 }
 
 void Player::rotateHead(int head,float deltaTime)
 {
 //    arrow->runAction(Sequence::create(_started,RotateTo::create(deltaTime,(head + 1)*90),_done,NULL));
-    sprite->runAction(Sequence::create(_started,RotateTo::create(deltaTime,(head + 1)*90),_done,NULL));
+//    sprite->runAction(Sequence::create(_started,RotateTo::create(deltaTime,(head + 1)*90),_done,NULL));
 }
 
 void Player::expandSoul(float deltaTime)

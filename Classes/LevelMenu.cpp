@@ -58,8 +58,15 @@ bool LevelMenu::init()
     
     
     /* Initiation Of Variables */
-    lbackground = LayerColor::create(RGBA_COLOR1, visibleSize.width, visibleSize.height);
+    auto c = LevelXML::getBundleColorAt(LevelXML::curBundleNumber);
+    auto ca = Color4B(c);
+    lbackground = LayerColor::create(ca, visibleSize.width, visibleSize.height);
     this->addChild(lbackground,zBg);
+    
+    
+    auto sprite = Sprite::create("images/grass_land.png");
+    sprite->cocos2d::Node::setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+    addChild(sprite);
     
     
     auto btnBack = Button::create("Back", IMG_BUTTON_BACK, RGB_COLOR2);

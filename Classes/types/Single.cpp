@@ -21,7 +21,7 @@ Single::Single()
 {
     setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     sprite = Sprite::create(IMG_CIRCLE_WHITE);
-    auto c = LevelXML::getBundleColorAt(LevelXML::curBundleNumber);
+    auto c = LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber);
     sprite->setColor(c);
     sprite->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     this->addChild(sprite);

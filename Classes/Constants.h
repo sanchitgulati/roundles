@@ -73,6 +73,7 @@
 #define IMG_CIRCLE_BORDER "images/btnCircle.png"
 #define IMG_CIRCLE_WHITE "images/circleWhiteLoRes.png"
 #define IMG_CIRCLE_NO_BORDER "images/circleWhiteLoResNoBorder.png"
+#define IMG_CIRCLE_2PX_BORDER "images/level_rect.png"
 
 #define IMG_RABBIT "images/charRabbit.png"
 

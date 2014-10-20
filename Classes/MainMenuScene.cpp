@@ -66,7 +66,9 @@ bool MainMenu::init()
     arrBundle = new ccArray;
     
     /* Initiation Of Variables */
-    lbackground = LayerColor::create(RGBA_COLOR1, visibleSize.width, visibleSize.height);
+    auto c = LevelXML::getBundleColorAt(LevelXML::curBundleNumber);
+    auto ca = Color4B(c);
+    lbackground = LayerColor::create(ca, visibleSize.width, visibleSize.height);
     this->addChild(lbackground,zBg);
     
     
@@ -84,7 +86,7 @@ bool MainMenu::init()
     
     /* Object Placement and other settings */
     
-    lblGameName = Label::createWithBMFont(Constants::bitmapFontName,"PONDERING");
+    lblGameName = Label::createWithTTF("JUNGLE", Constants::fontNameBold, Constants::fontSize);
     auto gameTitle = MenuItemLabel::create(lblGameName, CC_CALLBACK_1(MainMenu::menuCallback, this));
     
     
@@ -92,24 +94,6 @@ bool MainMenu::init()
     gameTitle->setColor(RGB_COLOR6);
     gameTitle->setScale(Util::getScreenRatio(gameTitle)*0.4);
     gameTitle->setPosition(Point(origin.x + visibleSize.width*(0.50), origin.y + visibleSize.height*MENU_HEIGHT ));
-    for(int i = 0; i < lblGameName->getStringLength(); i++)
-    {
-        
-        lblGameName->getLetter(i)->setColor(RGB_COLOR5);
-        
-        if(i == 1) // 1 is hardcored for "O"
-        {
-            //Add Compicated Animation Here
-            auto delay = DelayTime::create(3.0);
-            auto delaySmall = DelayTime::create(0.1f);
-            
-            auto moveBy = MoveBy::create(0.3f, Point(0,10));
-            auto seq = Sequence::create(moveBy,moveBy->reverse(),delaySmall, NULL);
-            auto sequence = Sequence::create(delay,seq,seq, NULL);
-            lblGameName->getLetter(i)->runAction(RepeatForever::create(sequence));
-            lblGameName->getLetter(i)->setColor(LevelXML::getBundleColorInnerAt(selectedBundle));
-        }
-    }
     
     //Read XML and draw Bundle Circle
     const int bundleSize = LevelXML::getTotalBundlesSize();
@@ -310,11 +294,10 @@ void MainMenu::changeGameNameLetterColor()
     LevelXML::setCurrentBundleId(selectedBundle);
     UserDefault::getInstance()->setIntegerForKey("curBundleNumber", selectedBundle);
     
-    auto c = LevelXML::getBundleColorInnerAt(selectedBundle);
-    lblGameName->getLetter(1)->runAction(TintTo::create(0.3f, c.r, c.g, c.b));
+    auto c = LevelXML::getBundleColorAt(selectedBundle);
+    lbackground->runAction(Sequence::create(TintTo::create(0.3f, c.r, c.g, c.b), NULL));
     
-    Color4F colorInner = Color4F(LevelXML::getBundleColorInnerAt(selectedBundle));
-    colorInner.a = 0.3;
+    
 }
 
 void MainMenu::changePlayRecttonText()

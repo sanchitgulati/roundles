@@ -69,7 +69,7 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
     int id = static_cast<int>(idx);
     
     cocos2d::__String *string;
-    string = String::createWithFormat("%s\n%s",Util::to_roman(id+1).c_str(), LevelXML::getLevelNameAt(static_cast<int>(idx)).c_str());
+    string = String::createWithFormat("%s %s",Util::to_roman(id+1).c_str(), LevelXML::getLevelNameAt(static_cast<int>(idx)).c_str());
     
 
     
@@ -79,7 +79,7 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
     {
         cell = new TableViewCell(); //Can Be Customized, refer to TestCpp
         cell->autorelease();
-        Sprite* sprite = Sprite::create(IMG_CIRCLE_WHITE);
+        Sprite* sprite = Sprite::create("images/grass.png");
         Size temp = sprite->getBoundingBox().size;
         sprite->setScale(cellSize.height/temp.height);
         sprite->setAnchorPoint(Vec2::ZERO);
@@ -111,37 +111,42 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
         if(LevelXML::getDidCompleteLevelAt(id) == true)
         {
             auto c = LevelXML::getBundleColorAt(LevelXML::curBundleNumber);
-            sprite->setColor(c);
+//            sprite->setColor(c);
         }
         else
         {
             auto c = LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber);
-            sprite->setColor(c);
+//            sprite->setColor(c);
         }
         /*End*/
     }
     else
     {
         auto sprite = cell->getChildByTag(111);
+        
+        /* Repeat of else{}, for bug */
         switch (idx%2) {
             case 0:
                 sprite->setPositionX(winSize.width/2 - sprite->getBoundingBox().size.width);
                 break;
             case 1:
-                sprite->setPositionX(winSize.width/2);
+                sprite->setPositionX(winSize.width/2 );
                 break;
             default:
                 break;
         }
         if(LevelXML::getDidCompleteLevelAt(id) == true)
         {
-            sprite->setColor(RGB_COLOR8);
+            auto c = LevelXML::getBundleColorAt(LevelXML::curBundleNumber);
+//            sprite->setColor(c);
         }
         else
         {
             auto c = LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber);
-            sprite->setColor(c);
+//            sprite->setColor(c);
         }
+        /*End*/
+        
         auto label = (Label*)sprite->getChildByTag(123);
         label->setString(string->getCString());
     }

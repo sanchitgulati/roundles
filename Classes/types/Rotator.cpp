@@ -32,35 +32,35 @@ Rotator* Rotator::create(std::string img,Color3B color,std::string text,float pe
 
 Rect Rotator::getBoundingBox()
 {
-    return outer->getBoundingBox();
+    return inner->getBoundingBox();
 }
 
 
 Rotator::Rotator(std::string img,Color3B color,std::string text,float percentage,bool locked)
 {
     setEnabled(true);
-    outer = ProgressTimer::create(Sprite::create(img));
-    outer->setType( ProgressTimer::Type::RADIAL );
+//    outer = ProgressTimer::create(Sprite::create(img));
+//    outer->setType( ProgressTimer::Type::RADIAL );
     inner = Sprite::create(img);
     setAnchorPoint(Point(0.5,0.5));
-    outer->setAnchorPoint(Point(0.5,0.5));
+//    outer->setAnchorPoint(Point(0.5,0.5));
     inner->setAnchorPoint(Point(0.5,0.5));
     
     
-    outer->setColor(color);
+//    outer->setColor(color);
 //    inner->setColor(color);
     
-    outer->setScale(Util::getScreenRatioWidth(outer)*0.70);
-    
-    outer->setOpacity(0);
+//    outer->setScale(Util::getScreenRatioWidth(outer)*0.70);
+//    
+//    outer->setOpacity(0);
     
     inner->setScale(Util::getScreenRatioWidth(inner)*0.45);
     
-    
-    auto delayTime = DelayTime::create(0.2);
-    auto fadeIn = FadeTo::create(0.1, GAME_OPACITY);
-    auto progressTo = ProgressTo::create(2*VFX_CONSTANT, 50);
-    outer->runAction(Sequence::create(delayTime,fadeIn,progressTo, NULL));
+//    
+//    auto delayTime = DelayTime::create(0.2);
+//    auto fadeIn = FadeTo::create(0.1, GAME_OPACITY);
+//    auto progressTo = ProgressTo::create(2*VFX_CONSTANT, 50);
+//    outer->runAction(Sequence::create(delayTime,fadeIn,progressTo, NULL));
     
     auto action = RepeatForever::create(
                                         Sequence::create(
@@ -69,7 +69,7 @@ Rotator::Rotator(std::string img,Color3B color,std::string text,float percentage
                                                          NULL)
                                         );
     
-    outer->runAction( action);
+//    outer->runAction( action);
     
     inner->runAction( action->clone());
     
@@ -85,7 +85,7 @@ Rotator::Rotator(std::string img,Color3B color,std::string text,float percentage
     this->setContentSize(sizeMenuItem);
     this->getBoundingBox().setRect(0, 0, sizeMenuItem.width, sizeMenuItem.height);
     inner->setPosition(sizeMenuItem.width/2,sizeMenuItem.height/2);
-    outer->setPosition(sizeMenuItem.width/2,sizeMenuItem.height/2);
+//    outer->setPosition(sizeMenuItem.width/2,sizeMenuItem.height/2);
     
     
 //    if(locked)

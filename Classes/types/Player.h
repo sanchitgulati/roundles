@@ -49,7 +49,7 @@ public:
     bool canMove(int direction);
     
     //Animations
-    void moveAnimation(int screen_x,int screen_y,float delay,float deltaTime);
+    void moveAnimation(int screen_x,int screen_y,float deltaTime);
     void rotateHead(int head,float deltaTime);
     void expandSoul(float deltaTime);
     void contractSoul(float deltaTime);

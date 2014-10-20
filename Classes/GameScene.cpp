@@ -59,7 +59,9 @@ bool GameScene::init()
     fontSize = Constants::defaultFontSize*(winSize.width/480);
     
     /* Initiation Of Variables */
-    lbackground = LayerColor::create(RGBA_COLOR1, visibleSize.width, visibleSize.height);
+    auto c = LevelXML::getBundleColorAt(LevelXML::curBundleNumber);
+    auto ca = Color4B(c);
+    lbackground = LayerColor::create(ca, visibleSize.width, visibleSize.height);
     this->addChild(lbackground,zBg);
     
     
@@ -172,7 +174,7 @@ bool GameScene::loadLevel(bool reset)
             case eStart:
             {
                 
-                _player = Player::create(IMG_RABBIT);
+                _player = Player::create(IMG_CIRCLE_WHITE);
                 _player->setGridPosition(it->x, it->y);
                 _player->setHead(it->head);
                 _player->setPosition(getScreenCoordinates(it->x, it->y));
@@ -546,14 +548,14 @@ void GameScene::updatePlayer(int x,int y,int head,float deltaTime)
     //Move _player to new location, but Animation Happens Later
     _player->setGridPosition(x, y);
     _player->setHead(head);
-    _player->setCapturedElements(1); //delta +1
-    _player->setMoves(_player->getMoves()+1);
+//    _player->setCapturedElements(1); //delta +1
+//    _player->setMoves(_player->getMoves()+1);
     //End
     
     
     auto screen_coor = getScreenCoordinates(x, y);
-    _player->rotateHead(head,deltaTime);
-    _player->moveAnimation(screen_coor.x, screen_coor.y, deltaTime,deltaTime);
+//    _player->rotateHead(head,deltaTime);
+    _player->moveAnimation(screen_coor.x, screen_coor.y,deltaTime);
     
     
 }
@@ -562,7 +564,7 @@ void GameScene::handleMove(int grid_x,int grid_y,int head)
 {
     auto it = captureElement(grid_x,grid_y);
     auto elementCaptured = static_cast<LevelElement>(*it);
-    storeMoveForUndo(elementCaptured, dLeft);
+//    storeMoveForUndo(elementCaptured, dLeft);
     float deltaTime = calculateDeltaTime(elementCaptured.x,elementCaptured.y);
     
     //Exceptions for turner
