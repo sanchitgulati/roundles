@@ -63,8 +63,9 @@ bool LevelMenu::init()
     lbackground = LayerColor::create(ca, visibleSize.width, visibleSize.height);
     this->addChild(lbackground,zBg);
     
-    
-    auto sprite = Sprite::create("images/grass_land.png");
+    auto icon_str = StringUtils::format("images/%s",LevelXML::getLevelIcon());
+    auto sprite = Sprite::create(icon_str.c_str());
+    sprite->setScale(Util::getScreenRatioWidth(sprite)*0.50);
     sprite->cocos2d::Node::setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     addChild(sprite);
     

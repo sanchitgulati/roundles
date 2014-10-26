@@ -1,7 +1,8 @@
 <!-- 0: Null 1 : Start 2 : Single 3 : Double 4 : Head Turner 5 : Ice -->
 <!-- 0 : Top 1 : Right 2: Bottom 3: Left -->
 <?xml version="1.0" encoding="UTF-8"?>
-<bundle value="tiny red" img="charRabbit.png" rgb_inner="233,135,0" base_color="132,168,86" img="grass_land.png" icon="grass_land.png" level_img = "grass.png" >
+<bundle value="tiny red" img="charRabbit.png" rgb_inner="233,135,0" base_color="132,168,86" icon="grass_land.png"
+    level_img="grass.png" >
 	<level id="1" gridX="4" gridY="4" >
 		<title>The Start</title>
 		<data>
@@ -76,7 +77,157 @@
         <solution isValid="0"></solution>
     </level>
 </bundle>
-<bundle value="Ruff" img="charSandy.png" rgb_inner="189,139,190" base_color="255,233,126">
+<bundle value="Ruff" img="charSandy.png" rgb_inner="189,139,190" base_color="255,233,126" icon="sand_land.png"
+    level_img="sand.png" >
+    <level id="1" gridX="4" gridY="4" >
+        <title>The Start</title>
+        <data>
+            <element type="1" positionX="3" positionY="2" head="3"></element>
+            <element type="2" positionX="0" positionY="0"></element>
+            <element type="2" positionX="0" positionY="1"></element>
+            <element type="2" positionX="0" positionY="2"></element>
+            <element type="2" positionX="0" positionY="3"></element>
+            <element type="2" positionX="1" positionY="0"></element>
+            <element type="2" positionX="1" positionY="1"></element>
+            <element type="2" positionX="1" positionY="3"></element>
+            <element type="2" positionX="2" positionY="1"></element>
+        </data>
+        <solution isValid="0">
+            <!-- <element direction="2"></element>
+             <element direction="0"></element>
+             <element direction="3"></element>
+             <element direction="1"></element>
+             <element direction="1"></element>
+             <element direction="2"></element>
+             <element direction="0"></element>
+             <element direction="3"></element> -->
+        </solution>
+    </level>
+    <level id="2" gridX="4" gridY="4" >
+        <title>Again</title>
+        <data>
+            <element type="1" positionX="3" positionY="3" head="3"></element>
+            <element type="2" positionX="0" positionY="0"></element>
+            <element type="2" positionX="0" positionY="1"></element>
+            <element type="2" positionX="0" positionY="3"></element>
+            <element type="2" positionX="1" positionY="3"></element>
+            <element type="2" positionX="2" positionY="0"></element>
+            <element type="2" positionX="3" positionY="0"></element>
+            <element type="2" positionX="3" positionY="2"></element>
+        </data>
+        <solution isValid="0"></solution>
+    </level>
+    <level id="3" gridX="4" gridY="5" >
+        <title>As Simple As That</title>
+        <data>
+            <element type="1" positionX="0" positionY="2" head="1"></element>
+            <element type="2" positionX="0" positionY="1"></element>
+            <element type="2" positionX="1" positionY="0"></element>
+            <element type="2" positionX="1" positionY="2"></element>
+            <element type="2" positionX="1" positionY="3"></element>
+            <element type="4" positionX="2" positionY="1" headed="1"></element>
+            <element type="2" positionX="2" positionY="3"></element>
+            <element type="2" positionX="3" positionY="0"></element>
+            <element type="2" positionX="3" positionY="1"></element>
+            <element type="2" positionX="3" positionY="3"></element>
+        </data>
+        <solution isValid="0"></solution>
+    </level>
+    <level id="4" gridX="4" gridY="5" >
+        <title>Deja vu</title>
+        <data>
+            <element type="1" positionX="1" positionY="2" head="1"></element>
+            <element type="2" positionX="1" positionY="0"></element>
+            <element type="2" positionX="1" positionY="1"></element>
+            <element type="2" positionX="1" positionY="3"></element>
+            <element type="2" positionX="2" positionY="0"></element>
+            <element type="2" positionX="2" positionY="1"></element>
+            <element type="2" positionX="2" positionY="2"></element>
+            <element type="5" positionX="2" positionY="3" moves="3"></element>
+            <element type="2" positionX="3" positionY="0"></element>
+            <element type="2" positionX="3" positionY="1"></element>
+            <element type="2" positionX="3" positionY="2"></element>
+            <element type="2" positionX="3" positionY="3"></element>
+            <element type="2" positionX="4" positionY="2"></element>
+        </data>
+        <solution isValid="0"></solution>
+    </level>
+
 </bundle>
-<bundle value="Crow" img="charBlacky.png" rgb_inner="138,201,180" base_color="177,229,217">
+<bundle value="Crow" img="charBlacky.png" rgb_inner="138,201,180" base_color="177,229,217" icon="cloud_land.png"
+    level_img="cloud.png">
+    <level id="1" gridX="4" gridY="4" >
+        <title>The Start</title>
+        <data>
+            <element type="1" positionX="3" positionY="2" head="3"></element>
+            <element type="2" positionX="0" positionY="0"></element>
+            <element type="2" positionX="0" positionY="1"></element>
+            <element type="2" positionX="0" positionY="2"></element>
+            <element type="2" positionX="0" positionY="3"></element>
+            <element type="2" positionX="1" positionY="0"></element>
+            <element type="2" positionX="1" positionY="1"></element>
+            <element type="2" positionX="1" positionY="3"></element>
+            <element type="2" positionX="2" positionY="1"></element>
+        </data>
+        <solution isValid="0">
+            <!-- <element direction="2"></element>
+             <element direction="0"></element>
+             <element direction="3"></element>
+             <element direction="1"></element>
+             <element direction="1"></element>
+             <element direction="2"></element>
+             <element direction="0"></element>
+             <element direction="3"></element> -->
+        </solution>
+    </level>
+    <level id="2" gridX="4" gridY="4" >
+        <title>Again</title>
+        <data>
+            <element type="1" positionX="3" positionY="3" head="3"></element>
+            <element type="2" positionX="0" positionY="0"></element>
+            <element type="2" positionX="0" positionY="1"></element>
+            <element type="2" positionX="0" positionY="3"></element>
+            <element type="2" positionX="1" positionY="3"></element>
+            <element type="2" positionX="2" positionY="0"></element>
+            <element type="2" positionX="3" positionY="0"></element>
+            <element type="2" positionX="3" positionY="2"></element>
+        </data>
+        <solution isValid="0"></solution>
+    </level>
+    <level id="3" gridX="4" gridY="5" >
+        <title>As Simple As That</title>
+        <data>
+            <element type="1" positionX="0" positionY="2" head="1"></element>
+            <element type="2" positionX="0" positionY="1"></element>
+            <element type="2" positionX="1" positionY="0"></element>
+            <element type="2" positionX="1" positionY="2"></element>
+            <element type="2" positionX="1" positionY="3"></element>
+            <element type="4" positionX="2" positionY="1" headed="1"></element>
+            <element type="2" positionX="2" positionY="3"></element>
+            <element type="2" positionX="3" positionY="0"></element>
+            <element type="2" positionX="3" positionY="1"></element>
+            <element type="2" positionX="3" positionY="3"></element>
+        </data>
+        <solution isValid="0"></solution>
+    </level>
+    <level id="4" gridX="4" gridY="5" >
+        <title>Deja vu</title>
+        <data>
+            <element type="1" positionX="1" positionY="2" head="1"></element>
+            <element type="2" positionX="1" positionY="0"></element>
+            <element type="2" positionX="1" positionY="1"></element>
+            <element type="2" positionX="1" positionY="3"></element>
+            <element type="2" positionX="2" positionY="0"></element>
+            <element type="2" positionX="2" positionY="1"></element>
+            <element type="2" positionX="2" positionY="2"></element>
+            <element type="5" positionX="2" positionY="3" moves="3"></element>
+            <element type="2" positionX="3" positionY="0"></element>
+            <element type="2" positionX="3" positionY="1"></element>
+            <element type="2" positionX="3" positionY="2"></element>
+            <element type="2" positionX="3" positionY="3"></element>
+            <element type="2" positionX="4" positionY="2"></element>
+        </data>
+        <solution isValid="0"></solution>
+    </level>
+
 </bundle>

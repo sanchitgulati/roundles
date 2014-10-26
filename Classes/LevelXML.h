@@ -89,7 +89,8 @@ public:
     static int getGridSizeX();
     static int getGridSizeY();
     static int getLevelId();
-    
+    static const char * getLevelImage();
+    static const char * getLevelIcon();
     static bool isUnlockedBundleAt(int);
     static void setBundleUnlockedAt(int);
     

@@ -79,7 +79,8 @@ TableViewCell* TableLevel::tableCellAtIndex(TableView *table, ssize_t idx)
     {
         cell = new TableViewCell(); //Can Be Customized, refer to TestCpp
         cell->autorelease();
-        Sprite* sprite = Sprite::create("images/grass.png");
+        auto img_str = StringUtils::format("images/%s",LevelXML::getLevelImage());
+        Sprite* sprite = Sprite::create(img_str.c_str());
         Size temp = sprite->getBoundingBox().size;
         sprite->setScale(cellSize.height/temp.height);
         sprite->setAnchorPoint(Vec2::ZERO);

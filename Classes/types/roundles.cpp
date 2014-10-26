@@ -9,6 +9,7 @@
 #include "Roundles.h"
 #include "Constants.h"
 #include "Util.h"
+#include "LevelXML.h"
 
 USING_NS_CC;
 enum {kZoomActionTag,kSlideActionTag};
@@ -25,12 +26,12 @@ Roundles::Roundles(std::string heading,std::string message)
     
     lblText = Label::createWithTTF(localContentMessage, Constants::fontName, Constants::fontSize*0.50);
     lblText->setAnchorPoint(Point(0.5f,0.5f));
-    lblText->setColor(RGB_COLOR7);
+    lblText->setColor(RGB_COLOR1);
     
     
     lblHeading = Label::createWithTTF(localContent, Constants::fontName, Constants::fontSize*0.50);
     lblHeading->setAnchorPoint(Point(0.5f,0.5f));
-    lblHeading->setColor(RGB_COLOR5);
+    lblHeading->setColor(RGB_COLOR1);
     
     circleLeft = Sprite::create(IMG_CIRCLE_NO_BORDER);
     circleLeft->setScale(Util::getScreenRatio(circleLeft)*0.15);
@@ -59,8 +60,9 @@ Roundles::Roundles(std::string heading,std::string message)
     lblText->setPositionX(-1*circleLeft->getBoundingBox().size.width*0.50);
 
     
-    circleLeft->setColor(RGB_COLOR4);
-    bar->setColor(RGB_COLOR4);
+    auto c = LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber);
+    circleLeft->setColor(c);
+    bar->setColor(c);
     
     
     _originalScale = this->getScale();

@@ -9,6 +9,7 @@
 #include "Radio.h"
 #include "Constants.h"
 #include "Util.h"
+#include "LevelXML.h"
 
 USING_NS_CC;
 
@@ -17,7 +18,7 @@ Radio::Radio(std::string text)
     auto localContent = LocalizedString::localizedString(text.c_str())->getCString();
     lblText = Label::createWithTTF(localContent, Constants::fontName, Constants::fontSize*0.70);
     lblText->setAnchorPoint(Point(0.0f,0.5f));
-    lblText->setColor(RGB_COLOR5);
+    lblText->setColor(RGB_COLOR1);
     
     circle = Sprite::create(IMG_CIRCLE_NO_BORDER);
     circle->setScale(Util::getScreenRatio(circle)*0.1);
@@ -51,9 +52,9 @@ Radio::Radio(std::string text)
     lblText->setPositionY(onoffsize.height/2.0);
     
 
-    
-    circle->setColor(RGB_COLOR4);
-    bar->setColor(RGB_COLOR4);
+    auto c = LevelXML::getBundleColorInnerAt(LevelXML::curBundleNumber);
+    circle->setColor(c);
+    bar->setColor(c);
     
     
     

@@ -14,7 +14,7 @@ Header::Header(std::string text)
 {
     this->setEnabled(true);
     this->lblText = Label::createWithTTF(text, Constants::fontNameBold, Constants::fontSize*0.75);
-    this->lblText->setColor(RGB_COLOR5);
+    this->lblText->setColor(RGB_COLOR1);
     this->lblText->setAnchorPoint(Point(1.0f, 0.5f));
     this->lblText->setHorizontalAlignment(TextHAlignment::RIGHT);
     this->lblText->setOpacity(0);

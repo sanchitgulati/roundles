@@ -67,7 +67,9 @@ bool OptionMenu::init()
     
     
     /* Initiation Of Variables */
-    lbackground = LayerColor::create(RGBA_COLOR1, visibleSize.width, visibleSize.height);
+    auto c = LevelXML::getBundleColorAt(LevelXML::curBundleNumber);
+    auto ca = Color4B(c);
+    lbackground = LayerColor::create(ca, visibleSize.width, visibleSize.height);
     this->addChild(lbackground,zBg);
     
     
@@ -144,7 +146,7 @@ bool OptionMenu::init()
 
     
     auto lblText = Label::createWithTTF("We took a shot at a puzzle, let us now if you liked it!", Constants::fontName, Constants::fontSize*0.70);
-    lblText->setColor(RGB_COLOR5);
+    lblText->setColor(RGB_COLOR1);
     lblText->setMaxLineWidth(visibleSize.width*0.80);
     lblText->setHorizontalAlignment(TextHAlignment::CENTER);
     auto itemText = MenuItemLabel::create(lblText, nullptr);
@@ -164,12 +166,13 @@ bool OptionMenu::init()
     itemRadhikaPhoto->setScale(Util::getScreenRatio(itemRadhikaPhoto)*0.2);
     itemRadhikaPhoto->setPosition(Point(origin.x + visibleSize.width*(0.2), origin.y + visibleSize.height*0.30));
     
-    auto textRadhika = Roundles::create("UI/UX By","Radhika Dutt");
+    auto textRadhika = Roundles::create("Indebt To","Radhika Dutt");
     textRadhika->setPosition(Point(origin.x + visibleSize.width*(0.6), origin.y + visibleSize.height*0.30));
     textRadhika->setCallback(CC_CALLBACK_1(OptionMenu::menuCallback, this));
     textRadhika->setTag(696);
     
     auto menuCredits = Menu::create(itemText,itemSanchitPhoto,itemRadhikaPhoto,textSanchit,textRadhika,NULL);
+//    auto menuCredits = Menu::create(itemText,itemSanchitPhoto,textSanchit,NULL);
     menuCredits->setPosition(Point(0,0));
     container->addChild(menuCredits);
     menuNames.push_back("Credits");

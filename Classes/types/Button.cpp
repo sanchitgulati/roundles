@@ -21,7 +21,7 @@ Button::Button(std::string text,std::string image,Color3B color)
     this->lblText = Label::createWithTTF(localContent, Constants::fontName, Constants::fontSize/2.0);
     this->foreSprite = Sprite::create(image);
     this->foreSprite->setScale(Util::getScreenRatio(foreSprite)*0.15);
-    this->lblText->setColor(RGB_COLOR5);
+    this->lblText->setColor(RGB_COLOR1);
 //    this->foreSprite->setColor(RGB_COLOR5);
     
     _originalScale = this->getScale();

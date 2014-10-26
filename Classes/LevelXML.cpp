@@ -324,6 +324,16 @@ int LevelXML::getLevelId()
 }
 
 
+const char* LevelXML::getLevelImage()
+{
+    return curBundle.attribute("level_img").value();
+}
+
+const char* LevelXML::getLevelIcon()
+{
+    return curBundle.attribute("icon").value();
+}
+
 bool LevelXML::isUnlockedBundleAt(int index)
 {
     char key[10];

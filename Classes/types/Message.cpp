@@ -30,7 +30,7 @@ Message::Message(std::string text)
 {
     auto localContent = LocalizedString::localizedString(text.c_str())->getCString();
     lblText = Label::create(localContent, Constants::fontName, Constants::fontSize*0.75);
-    lblText->setColor(RGB_COLOR5);
+    lblText->setColor(RGB_COLOR1);
     lblText->setAnchorPoint(Point(0.5f, 0.5f));
     this->addChild(lblText);
     auto winSize = Director::getInstance()->getWinSize();
